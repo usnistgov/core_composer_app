@@ -1,0 +1,8 @@
+{% extends 'core_main_app/admin/templates/versions/available.html' %}
+
+{% block box_tools %}
+<a href="{% url 'admin:core_composer_app_upload_type_version' data.version_manager.id %}"
+   class="pull-right btn btn-default">
+	<i class="fa fa-upload"></i> Upload New Version
+</a>
+{% endblock %}

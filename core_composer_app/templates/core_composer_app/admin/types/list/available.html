@@ -1,0 +1,58 @@
+{% extends 'core_main_app/admin/templates/list/available.html' %}
+
+
+{% block box_tools %}
+    <a href="{% url 'admin:core_composer_app_buckets' %}" class="pull-right btn btn-default">
+        <i class="fa fa-tags"></i> Manage Buckets
+    </a>
+    <a href="{% url 'admin:core_composer_app_upload_type' %}" class="pull-right btn btn-default">
+        <i class="fa fa-upload"></i> Upload {{ data.object_name }}
+    </a>
+{% endblock %}
+
+{% block box_body %}
+<table class="table table-bordered table-striped table-hover">
+    <tr>
+        <th>{{ data.object_name }}</th>
+        <th>Buckets</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for object in data.available %}
+        <tr>
+            <td>{{ object.title }}</td>
+            <td>
+                {% for bucket in data.buckets %}
+                    {% if object in bucket.types %}
+                        <span class="bucket" style="background:{{ bucket.color}};" bucketid="{{bucket.id}}">
+                            {{ bucket.label }}
+                        </span>
+                    {% endif %}
+                {% endfor %}
+                </td>
+            <td>
+                <a class="btn btn-default" href="{% url 'admin:core_composer_app_manage_type_versions' object.id %}">
+                    <i class="fa fa-list"></i> Versions
+                </a>
+                <span class="icon legend edit" objectid="{{ object.id }}">
+                    <a class="btn btn-default" href="#"><i class="fa fa-edit"></i> Edit</a>
+                </span>
+                <span>
+                    <a class="btn btn-default"
+                       href="{% url 'admin:core_composer_app_type_buckets' object.id %}">
+                        <i class="fa fa-tags"></i> Edit Buckets </a>
+                </span>
+                <span class="icon legend delete" objectid="{{ object.id }}">
+                    <a class="btn btn-danger" href="#"><i class="fa fa-trash"></i> Disable </a>
+                </span>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td class="empty" colspan="2">
+                No {{ data.object_name }} uploaded.
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}

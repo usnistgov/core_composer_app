@@ -1,0 +1,45 @@
+{% extends 'core_main_app/admin/templates/list/available.html' %}
+
+
+{% block box_tools %}
+<a href="{% url 'admin:core_composer_app_upload_bucket' %}" class="pull-right btn btn-default">
+    <i class="fa fa-plus"></i> Add {{ data.object_name }}
+</a>
+{% endblock %}
+
+{% block box_body %}
+<table class="table table-bordered table-striped table-hover">
+    <tr>
+        <th>{{ data.object_name }}</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for bucket in data.buckets %}
+        <tr>
+            <td>
+                <span class="bucket" style="background:{{ bucket.color}};" bucketid="{{bucket.id}}">
+                    {{ bucket.label }}
+                </span>
+            </td>
+            <td>
+               <span class='icon legend delete'>
+                   <a class="btn btn-danger delete" bucketid='{{ bucket.id }}' href="#">
+                       <i class="fa fa-trash"></i> Delete</a>
+               </span>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td class="empty" colspan="2">
+                No {{ data.object_name }} created yet.
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<div id="dialog-delete-bucket" title="Confirm Delete" style="display:none;">
+<span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 10px 0;"></span>
+Are you sure you want to delete this bucket?
+<div style="display: none;" id="bucket_to_delete"></div>
+</div>
+{% endblock %}

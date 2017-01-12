@@ -1,0 +1,6 @@
+{% extends 'core_main_app/admin/templates/list.html' %}
+
+{% block list_includes %}
+{% include 'core_composer_app/admin/types/list/available.html' %}
+{% include 'core_composer_app/admin/types/list/disabled.html' %}
+{% endblock %}
