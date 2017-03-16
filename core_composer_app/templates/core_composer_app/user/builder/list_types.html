@@ -1,0 +1,13 @@
+<div>
+    <table class="table table-bordered">
+    {% for type in types %}
+        {% if not type.is_disabled %}
+        <tr>
+            <td templateID='{{type.current}}'>{{ type.title }}</td>
+            <td><button class="btn insert">Insert</button>
+            </td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+    </table>
+</div>

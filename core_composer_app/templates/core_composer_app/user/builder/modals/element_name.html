@@ -1,0 +1,22 @@
+{% extends 'core_main_app/_render/admin/theme/tools/modal.html' %}
+
+{% block modal_id %}element-name-modal{% endblock %}
+{% block modal_title %}Rename Element{% endblock %}
+
+{% block modal_body %}
+Use the following form to rename the element:
+<table>
+    <tr>
+        <td>Name:</td>
+        <td>
+            <input type="text" id="newElementName"/>
+        </td>
+    </tr>
+</table>
+<div id="rename-element-error" class="error">
+</div>
+{% endblock %}
+{% block modal_footer %}
+<a class="btn btn-default pull-left" data-dismiss="modal" href="#"><i class="fa fa-times"></i>Cancel</a>
+<a id="rename-element" class="btn btn-primary" href="#">Rename</a>
+{% endblock %}

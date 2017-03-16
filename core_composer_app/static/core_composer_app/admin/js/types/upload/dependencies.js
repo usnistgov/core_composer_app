@@ -1,5 +1,8 @@
-//Resolve dependencies
-resolveDependenciesType = function(event)
+/**
+ * Resolve dependencies
+ * @param event
+ */
+var resolveDependenciesType = function(event)
 {
     event.preventDefault();
 
@@ -7,8 +10,8 @@ resolveDependenciesType = function(event)
 	var dependencies = [];
 
 	$("#dependencies").find("tr:not(:first)").each(function(){
-        schemaLocation = $(this).find(".schemaLocation").text().trim();
-        dependency = $(this).find(".dependency").val();
+        var schemaLocation = $(this).find(".schemaLocation").text().trim();
+        var dependency = $(this).find(".dependency").val();
         schemaLocations.push(schemaLocation);
         dependencies.push(dependency);
     });

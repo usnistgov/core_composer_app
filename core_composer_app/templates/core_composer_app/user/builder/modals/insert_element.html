@@ -1,0 +1,28 @@
+{% extends 'core_main_app/_render/admin/theme/tools/modal.html' %}
+
+{% block modal_id %}insert-element-modal{% endblock %}
+{% block modal_title %}Insert Element{% endblock %}
+
+{% block modal_body %}
+<p>
+Please select the type of the element that you want to insert in the template.
+</p>
+<div id="table_types">
+    {% for bucket in data.buckets %}
+    <h3><span class="bucket" style="background:{{ bucket.color}};">{{bucket.label}}</span></h3>
+    {% include 'core_composer_app/user/builder/list_types.html' with types=bucket.types %}
+    {% endfor %}
+
+    <h3>Built-in Datatypes</h3>
+    {% include 'core_composer_app/user/builder/list_types.html' with types=data.built_in_types %}
+
+    <h3>No Buckets</h3>
+    {% include 'core_composer_app/user/builder/list_types.html' with types=data.no_buckets_types %}
+
+    <h3>My Types</h3>
+    {% include 'core_composer_app/user/builder/list_types.html' with types=data.user_types %}
+</div>
+{% endblock %}
+{% block modal_footer %}
+<a class="btn btn-default pull-left" data-dismiss="modal" href="#"><i class="fa fa-times"></i> Cancel</a>
+{% endblock %}

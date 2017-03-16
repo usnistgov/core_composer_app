@@ -3,6 +3,8 @@
 from core_composer_app.components.bucket.models import Bucket
 import random
 
+from core_main_app.commons.exceptions import ApiError
+
 
 def get_by_id(bucket_id):
     """Returns a bucket given its id
@@ -67,3 +69,67 @@ def _get_random_hex_color():
 
     """
     return '#' + ''.join([random.choice('0123456789ABCDEF') for x in range(6)])
+
+
+def add_type_to_buckets(version_manager, list_bucket_ids):
+    """Adds type version manager to buckets
+
+    Args:
+        version_manager:
+        list_bucket_ids:
+
+    Returns:
+
+    """
+    if list_bucket_ids is None:
+        return
+
+    # Iterate through list of bucket ids
+    for bucket_id in list_bucket_ids:
+        try:
+            # get the bucket using its id
+            bucket = get_by_id(bucket_id)
+        except:
+            raise ApiError("No bucket found with the given id.")
+
+        # add type to bucket
+        bucket.types.append(version_manager)
+        # update bucket
+        upsert(bucket)
+
+
+def update_type_buckets(version_manager, list_bucket_ids):
+    """Removes type from current buckets and puts them in new list
+
+    Args:
+        version_manager:
+        list_bucket_ids:
+
+    Returns:
+
+    """
+    # remove types from current buckets
+    remove_type_from_buckets(version_manager)
+    # add types to new list of buckets
+    add_type_to_buckets(version_manager, list_bucket_ids)
+
+
+def remove_type_from_buckets(version_manager):
+    """Removes the type from all the buckets
+
+    Args:
+        version_manager:
+
+    Returns:
+
+    """
+    buckets = get_all()
+
+    # Iterate through all buckets
+    for bucket in buckets:
+        # if type in bucket
+        if version_manager in bucket.types:
+            # remove type from the bucket
+            bucket.types.remove(version_manager)
+            # update bucket
+            upsert(bucket)

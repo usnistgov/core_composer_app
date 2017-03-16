@@ -1,0 +1,22 @@
+{% extends 'core_main_app/_render/admin/theme/tools/modal.html' %}
+
+{% block modal_id %}root-type-name-modal{% endblock %}
+{% block modal_title %}Root Type Name{% endblock %}
+
+{% block modal_body %}
+Please provide a name for the root type.
+<table>
+<tr>
+    <td>Root type name: </td>
+    <td>
+        <input type="text" id="newRootName" placeholder="Root"/>
+    </td>
+</tr>
+</table>
+<div id="newRootNameError" class="error">
+</div>
+{% endblock %}
+{% block modal_footer %}
+<a class="btn btn-default pull-left" data-dismiss="modal" href="#"><i class="fa fa-times"></i> Cancel</a>
+<a id="rename-root-type" class="btn btn-primary" href="#">Start</a>
+{% endblock %}

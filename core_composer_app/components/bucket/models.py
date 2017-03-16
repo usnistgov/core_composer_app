@@ -38,7 +38,7 @@ class Bucket(Document):
         Returns:
 
         """
-        return Bucket.objects.all()
+        return Bucket.objects().all()
 
     @staticmethod
     def get_colors():

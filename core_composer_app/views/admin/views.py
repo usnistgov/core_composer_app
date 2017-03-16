@@ -35,7 +35,7 @@ def manage_types(request):
     Returns:
 
     """
-    # get all current types
+    # get all types
     type_version_managers = type_version_manager_api.get_global_version_managers()
     # get buckets
     buckets = bucket_api.get_all()
@@ -501,7 +501,7 @@ def manage_type_buckets(request, version_manager_id):
         form = EditTypeBucketsForm(request.POST)
         if form.is_valid():
             buckets = request.POST.getlist('buckets')
-            type_version_manager_api.update_type_buckets(version_manager, buckets)
+            bucket_api.update_type_buckets(version_manager, buckets)
             return redirect(reverse('admin:core_composer_app_types'))
     else:
         form = EditTypeBucketsForm()

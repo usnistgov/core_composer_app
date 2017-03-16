@@ -1,0 +1,53 @@
+<div class="title-page">Select Template</div>
+
+Select a template from the following table. It will automatically load the appropriate form and display it on the next page.
+
+<!-- FIXME: HTML below common with core_curate_app/curate.html -->
+
+<div id="template_selection">
+    <div class="center-text"><h1 class="title-text">Global Templates</h1></div>
+
+<table class="table table-bordered">
+    <tr>
+        <th class="title-table">Template name</th>
+        <th class="title-table" style="width: 150px;">Actions</th>
+    </tr>
+    {% for template in data.global_templates %}
+        <tr>
+            <td templateID='{{template.current}}'>{{ template.title }}</td>
+            <td>
+                <a href="{% url 'core_composer_build_template' template.current %}"
+                   class="btn btn-primary" role="button">Select Template</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% if user.is_authenticated %}
+
+    <div class="center-text"><h3 class="title-text">User Defined Templates</h3></div>
+
+    {% if data.user_templates %}
+    <table class="table table-bordered">
+        <tr>
+            <th>Template name</th>
+            <th class="th-actions">Actions</th>
+        </tr>
+        {% for template in data.user_templates %}
+            {% cycle 'even' '' as rowcolors silent %}
+            <tr class="{{ rowcolors }}">
+                <td templateID='{{template.id}}'>{{ template.title }}</td>
+                <td>
+                    <a href="{% url 'core_composer_build_template' template.current %}"
+                        class="btn btn-primary" role="button">Select Template</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <div class="unavailable">
+            Upload or create your own templates, they will then show here.
+        </div>
+    {% endif %}
+{% endif %}
+</div>

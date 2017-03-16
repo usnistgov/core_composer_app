@@ -28,7 +28,7 @@ def get(type_id):
     Returns:
 
     """
-    return template_api.get(type_id)
+    return Type.get_by_id(type_id)
 
 
 def get_all():

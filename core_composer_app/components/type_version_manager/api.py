@@ -26,7 +26,7 @@ def insert(type_version_manager, type_object, list_bucket_ids=None):
         # insert the version manager in database
         version_manager = version_manager_api.upsert(type_version_manager)
         # Add to the selected buckets
-        _add_type_to_buckets(version_manager, list_bucket_ids)
+        bucket_api.add_type_to_buckets(version_manager, list_bucket_ids)
         return version_manager
     except Exception, e:
         type_api.delete(saved_type)
@@ -42,61 +42,27 @@ def get_global_version_managers():
     return TypeVersionManager.get_global_version_managers()
 
 
-def _add_type_to_buckets(version_manager, list_bucket_ids):
-    """Add type version manager to buckets
-
-    Args:
-        version_manager:
-        list_bucket_ids:
+def get_version_managers_by_user(user_id):
+    """Gets all global version managers of a user
 
     Returns:
 
     """
-    if list_bucket_ids is None:
-        return
-
-    # Iterate through list of bucket ids
-    for bucket_id in list_bucket_ids:
-        # get the bucket using its id
-        bucket = bucket_api.get_by_id(bucket_id)
-        # add type to bucket
-        bucket.types.append(version_manager)
-        # update bucket
-        bucket_api.upsert(bucket)
+    return TypeVersionManager.get_version_managers_by_user(user_id)
 
 
-def update_type_buckets(version_manager, list_bucket_ids):
-    """Removes type from current buckets and puts them in new list
-
-    Args:
-        version_manager:
-        list_bucket_ids:
+def get_no_buckets_types():
+    """Gets list of available types not inside a bucket
 
     Returns:
 
     """
-    # remove types from current buckets
-    _remove_type_from_buckets(version_manager)
-    # add types to new list of buckets
-    _add_type_to_buckets(version_manager, list_bucket_ids)
+    # build list of types
+    bucket_types = []
+    for bucket in bucket_api.get_all():
+        bucket_types += bucket.types
 
-
-def _remove_type_from_buckets(version_manager):
-    """Remove the type from all the buckets
-
-    Args:
-        version_manager:
-
-    Returns:
-
-    """
-    buckets = bucket_api.get_all()
-
-    # Iterate through all buckets
-    for bucket in buckets:
-        # if type in bucket
-        if version_manager in bucket.types:
-            # remove type from the bucket
-            bucket.types.remove(version_manager)
-            # update bucket
-            bucket_api.upsert(bucket)
+    all_types = get_global_version_managers()
+    no_bucket_types = [type_version_manager for type_version_manager in all_types
+                       if type_version_manager not in bucket_types]
+    return no_bucket_types
