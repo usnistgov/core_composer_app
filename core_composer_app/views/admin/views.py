@@ -429,10 +429,12 @@ def manage_buckets(request):
         "css": ['core_composer_app/common/css/bucket.css']
     }
 
+    modals = ['core_composer_app/admin/buckets/modals/delete.html']
+
     return admin_render(request,
                         'core_composer_app/admin/buckets/list.html',
                         assets=assets,
-                        modals=[],
+                        modals=modals,
                         context=context)
 
 
