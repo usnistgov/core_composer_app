@@ -1,3 +1,4 @@
+{% load auth_extras %}
 <h1>Compose Template</h1>
 <p>
 Please click on an element of the tree to start composing the template. A menu will appear and you will be able to
@@ -6,8 +7,12 @@ interact with that element.
 
 <div class="btn-group pull-right">
 	<a class="btn btn-default fa fa-download" href="{% url 'core_composer_download_xsd' %}"> Download </a>
+    {% if user|has_perm:'core_composer_app.save_template' %}
 	<a class="btn btn-default save-template fa fa-floppy-o"> Save as Template </a>
+    {% endif %}
+    {% if user|has_perm:'core_composer_app.save_type' %}
 	<a class="btn btn-default save-type fa fa-floppy-o"> Save as Type </a>
+    {% endif %}
 </div>
 <div id="template_selection">
 	<div class="clearer">&nbsp;</div>

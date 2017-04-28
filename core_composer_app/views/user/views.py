@@ -3,25 +3,29 @@
 from django.contrib.staticfiles import finders
 from django.http.response import HttpResponse
 from django.core.servers.basehttp import FileWrapper
+from django.core.urlresolvers import reverse_lazy
 from os.path import join
 from cStringIO import StringIO
 
+from core_main_app.utils import decorators as decorators
 from core_main_app.utils.xml import xsl_transform
 from core_main_app.utils.rendering import render
 from core_main_app.components.template import api as template_api
 from core_main_app.components.template_version_manager import api as template_version_manager_api
 from core_composer_app.components.type_version_manager import api as type_version_manager_api
 from core_composer_app.components.bucket import api as bucket_api
+from core_composer_app.permissions import rights
 
 from xml_utils.commons.constants import LXML_SCHEMA_NAMESPACE
 from xml_utils.xsd_tree.operations.annotation import remove_annotations
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 from xml_utils.xsd_types.xsd_types import get_xsd_types
 
-# FIXME: add permissions
 # TODO: see if sessions are problematic
 
 
+@decorators.permission_required(content_type=rights.composer_content_type,
+                                permission=rights.composer_access, login_url=reverse_lazy("core_website_login"))
 def index(request):
     """ Page that allows to select a template to start composing
 
@@ -56,6 +60,8 @@ def index(request):
                   context=context)
 
 
+@decorators.permission_required(content_type=rights.composer_content_type,
+                                permission=rights.composer_access, login_url=reverse_lazy("core_website_login"))
 def build_template(request, template_id):
     """View that allows to build the Template
 
@@ -173,6 +179,8 @@ def build_template(request, template_id):
                   modals=modals)
 
 
+@decorators.permission_required(content_type=rights.composer_content_type,
+                                permission=rights.composer_access, login_url=reverse_lazy("core_website_login"))
 def download_xsd(request):
     """Makes the current XSD available for download.
 

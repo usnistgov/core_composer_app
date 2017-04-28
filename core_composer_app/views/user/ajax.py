@@ -10,7 +10,9 @@ from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_composer_app.components.type import api as type_api
 from core_composer_app.utils import xml as composer_xml_utils
+from core_composer_app.permissions import rights
 
+from core_main_app.utils import decorators as decorators
 from core_main_app.components.template.models import Template
 from core_main_app.components.template_version_manager.models import TemplateVersionManager
 from core_main_app.components.template_version_manager import api as template_version_manager_api
@@ -19,6 +21,8 @@ from core_main_app.utils import xml as main_xml_utils
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 
 
+@decorators.permission_required(content_type=rights.composer_content_type,
+                                permission=rights.composer_access, raise_exception=True)
 def insert_element_sequence(request):
     """Inserts the type in the original schema
 
@@ -66,6 +70,8 @@ def insert_element_sequence(request):
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
+@decorators.permission_required(content_type=rights.composer_content_type,
+                                permission=rights.composer_access, raise_exception=True)
 def change_xsd_type(request):
     """Changes the type of the element
 
@@ -90,6 +96,8 @@ def change_xsd_type(request):
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
+@decorators.permission_required(content_type=rights.composer_content_type,
+                                permission=rights.composer_access, raise_exception=True)
 def change_root_type_name(request):
     """Changes the name of the root type
 
@@ -112,6 +120,8 @@ def change_root_type_name(request):
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
+@decorators.permission_required(content_type=rights.composer_content_type,
+                                permission=rights.composer_access, raise_exception=True)
 def rename_element(request):
     """Replaces the current name of the element by the new name
 
@@ -145,6 +155,8 @@ def rename_element(request):
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
+@decorators.permission_required(content_type=rights.composer_content_type,
+                                permission=rights.composer_access, raise_exception=True)
 def delete_element(request):
     """Deletes an element from the xsd string
 
@@ -169,6 +181,8 @@ def delete_element(request):
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
+@decorators.permission_required(content_type=rights.composer_content_type,
+                                permission=rights.composer_access, raise_exception=True)
 def get_element_occurrences(request):
     """Gets the occurrences of the selected element
 
@@ -191,6 +205,8 @@ def get_element_occurrences(request):
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
+@decorators.permission_required(content_type=rights.composer_content_type,
+                                permission=rights.composer_access, raise_exception=True)
 def set_element_occurrences(request):
     """Sets the occurrences of the selected element
 
@@ -216,6 +232,8 @@ def set_element_occurrences(request):
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
+@decorators.permission_required(content_type=rights.composer_content_type,
+                                permission=rights.composer_save_template, raise_exception=True)
 def save_template(request):
     """Saves the current template in the database
 
@@ -261,6 +279,8 @@ def save_template(request):
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
+@decorators.permission_required(content_type=rights.composer_content_type,
+                                permission=rights.composer_save_type, raise_exception=True)
 def save_type(request):
     """Saves the current type in the database
 
