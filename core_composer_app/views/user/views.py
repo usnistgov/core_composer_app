@@ -40,8 +40,9 @@ def index(request):
         "css": ['core_curate_app/user/css/style.css']
     }
 
-    global_active_template_list = template_version_manager_api.get_active_global_version_manager()
-    user_active_template_list = template_version_manager_api.get_active_version_manager_by_user_id(request.user.id)
+    global_active_template_list = template_version_manager_api.get_active_global_version_manager(_cls=False)
+    user_active_template_list = template_version_manager_api.get_active_version_manager_by_user_id(request.user.id,
+                                                                                                   _cls=False)
 
     # Add new template option to global templates
     global_active_template_list.insert(0, {
