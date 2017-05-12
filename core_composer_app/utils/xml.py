@@ -62,10 +62,11 @@ def remove_single_root_element(xsd_string):
     xsd_tree = XSDTree.build_tree(xsd_string)
     # find the root element
     root = xsd_tree.find("{}element".format(LXML_SCHEMA_NAMESPACE))
-    # remove root element from parent (schema)
-    root.getparent().remove(root)
-    # convert the tree to back string
-    xsd_string = XSDTree.tostring(xsd_tree)
+    if root is not None:
+        # remove root element from parent (schema)
+        root.getparent().remove(root)
+        # convert the tree to back string
+        xsd_string = XSDTree.tostring(xsd_tree)
     # return xsd string
     return xsd_string
 

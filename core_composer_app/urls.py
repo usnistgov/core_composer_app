@@ -1,6 +1,6 @@
 """ Url router for the composer application
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from core_composer_app.views.user import views as user_views, ajax as user_ajax
 
 urlpatterns = [
@@ -29,4 +29,6 @@ urlpatterns = [
         name='core_composer_save_template'),
     url(r'^save-type$', user_ajax.save_type,
         name='core_composer_save_type'),
+
+    url(r'^rest/', include('core_composer_app.rest.urls')),
 ]

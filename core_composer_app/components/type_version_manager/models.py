@@ -26,4 +26,4 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        return [vm for vm in TypeVersionManager.objects().all() if vm.user == user_id]
+        return [vm for vm in TypeVersionManager.objects().all() if vm.user == str(user_id)]
