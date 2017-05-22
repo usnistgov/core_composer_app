@@ -4,7 +4,9 @@ Type Version Manager API
 from core_composer_app.components.type import api as type_api
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_composer_app.components.bucket import api as bucket_api
+from core_main_app.components.template import api as template_api
 from core_main_app.components.version_manager import api as version_manager_api
+from core_main_app.components.version_manager.utils import get_latest_version_name
 
 
 def insert(type_version_manager, type_object, list_bucket_ids=None):
@@ -19,17 +21,22 @@ def insert(type_version_manager, type_object, list_bucket_ids=None):
 
     """
     # save the type in database
-    saved_type = type_api.upsert(type_object)
+    type_api.upsert(type_object)
     try:
         # insert the initial template in the version manager
-        version_manager_api.insert_version(type_version_manager, saved_type)
+        version_manager_api.insert_version(type_version_manager, type_object)
         # insert the version manager in database
-        version_manager = version_manager_api.upsert(type_version_manager)
+        version_manager_api.upsert(type_version_manager)
         # Add to the selected buckets
-        bucket_api.add_type_to_buckets(version_manager, list_bucket_ids)
-        return version_manager
+        bucket_api.add_type_to_buckets(type_version_manager, list_bucket_ids)
+        # get type display name
+        display_name = get_latest_version_name(type_version_manager)
+        # update saved template
+        template_api.set_display_name(type_object, display_name)
+        # update saved type
+        return type_version_manager
     except Exception, e:
-        type_api.delete(saved_type)
+        type_api.delete(type_object)
         raise e
 
 
