@@ -5,24 +5,23 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect
-from django.utils.html import escape as html_escape
 from django.template import loader
 from django.template.context import Context
+from django.utils.html import escape as html_escape
 
+from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.bucket.models import Bucket
 from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager import api as type_version_manager_api
-from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_composer_app.views.admin.forms import BucketForm, UploadTypeForm, EditTypeBucketsForm
-
-from core_main_app.components.version_manager import api as version_manager_api
-from core_main_app.utils.rendering import admin_render
-from core_main_app.settings import INSTALLED_APPS
 from core_main_app.commons import exceptions
+from core_main_app.components.version_manager import api as version_manager_api
+from core_main_app.settings import INSTALLED_APPS
+from core_main_app.utils.rendering import admin_render
 from core_main_app.utils.xml import get_imports_and_includes
 from core_main_app.views.admin.forms import UploadVersionForm
-from core_main_app.views.admin.views import _read_xsd_file
+from core_main_app.views.common.views import read_xsd_file
 
 
 @staff_member_required
@@ -50,22 +49,22 @@ def manage_types(request):
     }
 
     assets = {
-        "js": [
-            {
-                "path": 'core_main_app/admin/js/templates/list/restore.js',
-                "is_raw": False
-            },
-            {
-                "path": 'core_main_app/admin/js/templates/list/modals/edit.js',
-                "is_raw": False
-            },
-            {
-                "path": 'core_main_app/admin/js/templates/list/modals/disable.js',
-                "is_raw": False
+                "js": [
+                    {
+                        "path": 'core_main_app/common/js/templates/list/restore.js',
+                        "is_raw": False
+                    },
+                    {
+                        "path": 'core_main_app/common/js/templates/list/modals/edit.js',
+                        "is_raw": False
+                    },
+                    {
+                        "path": 'core_main_app/common/js/templates/list/modals/disable.js',
+                        "is_raw": False
+                    }
+                ],
+                "css": ['core_composer_app/common/css/bucket.css']
             }
-        ],
-        "css": ['core_composer_app/common/css/bucket.css']
-    }
 
     modals = [
         "core_main_app/admin/templates/list/modals/edit.html",
@@ -99,27 +98,6 @@ def manage_type_versions(request, version_manager_id):
         # TODO: catch good exception, redirect to error page
         pass
 
-    assets = {
-        "js": [
-            {
-                "path": 'core_main_app/admin/js/templates/versions/set_current.js',
-                "is_raw": False
-            },
-            {
-                "path": 'core_main_app/admin/js/templates/versions/restore.js',
-                "is_raw": False
-            },
-            {
-                "path": 'core_main_app/admin/js/templates/versions/modals/disable.js',
-                "is_raw": False
-            }
-        ]
-    }
-
-    modals = [
-        "core_main_app/admin/templates/versions/modals/disable.html"
-    ]
-
     # Use categorized version for easier manipulation in template
     versions = version_manager.versions
     categorized_versions = {
@@ -148,6 +126,25 @@ def manage_type_versions(request, version_manager_id):
     # FIXME: make this more dynamic?
     if 'core_parser_app' in INSTALLED_APPS:
         context["core_parser_app_installed"] = True
+
+    assets = {
+                "js": [
+                    {
+                        "path": 'core_main_app/common/js/templates/versions/set_current.js',
+                        "is_raw": False
+                    },
+                    {
+                        "path": 'core_main_app/common/js/templates/versions/restore.js',
+                        "is_raw": False
+                    },
+                    {
+                        "path": 'core_main_app/common/js/templates/versions/modals/disable.js',
+                        "is_raw": False
+                    }
+                ]
+            }
+
+    modals = ["core_main_app/admin/templates/versions/modals/disable.html"]
 
     return admin_render(request,
                         'core_composer_app/admin/types/versions.html',
@@ -226,7 +223,7 @@ def _save_type(request, assets, context):
     # get the file from the form
     xsd_file = request.FILES['xsd_file']
     # read the content of the file
-    xsd_data = _read_xsd_file(xsd_file)
+    xsd_data = read_xsd_file(xsd_file)
     # get the buckets
     buckets = request.POST.getlist('buckets')
 
@@ -385,7 +382,7 @@ def _save_type_version(request, assets, context, type_version_manager):
     # get the file from the form
     xsd_file = request.FILES['xsd_file']
     # read the content of the file
-    xsd_data = _read_xsd_file(xsd_file)
+    xsd_data = read_xsd_file(xsd_file)
 
     try:
         type_object = Type(filename=xsd_file.name, content=xsd_data)
