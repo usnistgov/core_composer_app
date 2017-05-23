@@ -4,14 +4,8 @@
 {% block modal_title %}Save Type{% endblock %}
 
 {% block modal_body %}
-<table>
-    <tr>
-        <td>Save type as:</td>
-        <td>
-            <input type="text" id="newTypeName"/>
-        </td>
-    </tr>
-</table>
+<label for="newTypeName">Name:</label>
+<input type="text" class="form-control" id="newTypeName"/>
 <div id="new-type-error" class="error">
 </div>
 {% endblock %}

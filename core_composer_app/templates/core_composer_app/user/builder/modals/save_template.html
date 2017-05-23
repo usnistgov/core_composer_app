@@ -4,14 +4,8 @@
 {% block modal_title %}Save Template{% endblock %}
 
 {% block modal_body %}
-<table>
-    <tr>
-        <td>Save template as:</td>
-        <td>
-            <input type="text" id="newTemplateName"/>
-        </td>
-    </tr>
-</table>
+<label for="newTemplateName">Name:</label>
+<input type="text" class="form-control" id="newTemplateName"/>
 <div id="new-template-error" class="error">
 </div>
 {% endblock %}

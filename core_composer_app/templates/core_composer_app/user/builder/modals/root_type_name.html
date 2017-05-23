@@ -4,15 +4,8 @@
 {% block modal_title %}Root Type Name{% endblock %}
 
 {% block modal_body %}
-Please provide a name for the root type.
-<table>
-<tr>
-    <td>Root type name: </td>
-    <td>
-        <input type="text" id="newRootName" placeholder="Root"/>
-    </td>
-</tr>
-</table>
+<label for="newRootName">Please provide a name for the root type:</label>
+<input type="text" class="form-control" id="newRootName" placeholder="Root"/>
 <div id="newRootNameError" class="error">
 </div>
 {% endblock %}

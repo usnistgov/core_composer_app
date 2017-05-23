@@ -6,12 +6,12 @@ interact with that element.
 </p>
 
 <div class="btn-group pull-right">
-	<a class="btn btn-default fa fa-download" href="{% url 'core_composer_download_xsd' %}"> Download </a>
+	<a class="btn btn-default" href="{% url 'core_composer_download_xsd' %}"><i class="fa fa-download"></i> Download </a>
     {% if user|has_perm:'core_composer_app.save_template' %}
-	<a class="btn btn-default save-template fa fa-floppy-o"> Save as Template </a>
+	<a class="btn btn-default save-template"><i class="fa fa-floppy-o"></i> Save as Template </a>
     {% endif %}
     {% if user|has_perm:'core_composer_app.save_type' %}
-	<a class="btn btn-default save-type fa fa-floppy-o"> Save as Type </a>
+	<a class="btn btn-default save-type"><i class="fa fa-floppy-o"></i> Save as Type </a>
     {% endif %}
 </div>
 <div id="template_selection">
@@ -20,4 +20,3 @@ interact with that element.
 </div>
 
 <div id="templateID" style="display: none">{{data.template_id}}</div>
-
