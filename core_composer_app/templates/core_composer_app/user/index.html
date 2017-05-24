@@ -30,12 +30,11 @@ Select a template from the following table. It will automatically load the appro
     {% if data.user_templates %}
     <table class="table table-bordered">
         <tr>
-            <th>Template name</th>
-            <th class="th-actions">Actions</th>
+            <th class="title-table">Template name</th>
+            <th class="title-table" style="width: 150px;">Actions</th>
         </tr>
         {% for template in data.user_templates %}
-            {% cycle 'even' '' as rowcolors silent %}
-            <tr class="{{ rowcolors }}">
+            <tr>
                 <td templateID='{{template.id}}'>{{ template.title }}</td>
                 <td>
                     <a href="{% url 'core_composer_build_template' template.current %}"
