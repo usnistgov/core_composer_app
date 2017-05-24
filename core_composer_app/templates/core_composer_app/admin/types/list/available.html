@@ -29,7 +29,7 @@
                         </span>
                     {% endif %}
                 {% endfor %}
-                </td>
+            </td>
             <td>
                 <a class="btn btn-default" href="{% url 'admin:core_composer_app_manage_type_versions' object.id %}">
                     <i class="fa fa-list"></i> Versions
@@ -49,7 +49,7 @@
         </tr>
     {% empty %}
         <tr>
-            <td class="empty" colspan="2">
+            <td class="empty" colspan="3">
                 No {{ data.object_name }} uploaded.
             </td>
         </tr>

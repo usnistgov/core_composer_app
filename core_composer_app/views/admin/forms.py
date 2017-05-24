@@ -23,9 +23,12 @@ class UploadTypeForm(forms.Form):
     """
     Form to upload a new Type
     """
-    name = forms.CharField(label='Enter Type name', max_length=100, required=True)
-    xsd_file = forms.FileField(label='Select a file', required=True)
-    buckets = BucketDataModelChoiceField(label='Select buckets', queryset=bucket_api.get_all(), required=False)
+    name = forms.CharField(label='Enter Type name', max_length=100, required=True,
+                           widget=forms.TextInput(attrs={'class': 'form-control'}))
+    xsd_file = forms.FileField(label='Select a file', required=True,
+                               widget=forms.FileInput(attrs={'class': 'form-control'}))
+    buckets = BucketDataModelChoiceField(label='Select buckets', queryset=bucket_api.get_all(), required=False,
+                                         widget=forms.SelectMultiple(attrs={'class': 'form-control'}))
 
 
 class EditTypeBucketsForm(forms.Form):
