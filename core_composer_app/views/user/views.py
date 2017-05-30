@@ -8,6 +8,7 @@ from os.path import join
 from cStringIO import StringIO
 
 from core_main_app.utils import decorators as decorators
+from core_main_app.utils.file import read_file_content
 from core_main_app.utils.xml import xsl_transform
 from core_main_app.utils.rendering import render
 from core_main_app.components.template import api as template_api
@@ -75,7 +76,7 @@ def build_template(request, template_id):
     """
     if template_id == "new":
         base_template_path = finders.find(join('core_composer_app', 'user', 'xsd', 'new_base_template.xsd'))
-        xsd_string = _read_file_content(base_template_path)
+        xsd_string = read_file_content(base_template_path)
     else:
         template = template_api.get(template_id)
         xsd_string = template.content
@@ -101,7 +102,7 @@ def build_template(request, template_id):
     # loads XSLT
     xslt_path = finders.find(join('core_composer_app', 'user', 'xsl', 'xsd2html.xsl'))
     # reads XSLT
-    xslt_string = _read_file_content(xslt_path)
+    xslt_string = read_file_content(xslt_path)
     # transform XML to HTML
     xsd_to_html_string = xsl_transform(xsd_string, xslt_string)
 
@@ -202,18 +203,3 @@ def download_xsd(request):
     response['Content-Disposition'] = 'attachment; filename=schema.xsd'
 
     return response
-
-
-# FIXME: refactor
-def _read_file_content(file_path):
-    """Reads the content of a file
-
-    Args:
-        file_path:
-
-    Returns:
-
-    """
-    with open(file_path) as _file:
-        file_content = _file.read()
-        return file_content
