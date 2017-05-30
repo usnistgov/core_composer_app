@@ -510,6 +510,6 @@ def manage_type_buckets(request, version_manager_id):
 
     context['form'] = form
     return admin_render(request,
-                        'core_composer_app/admin/edit_buckets.html',
+                        'core_composer_app/admin/buckets/edit.html',
                         assets=assets,
                         context=context)

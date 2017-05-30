@@ -1,0 +1,8 @@
+{% extends "core_main_app/_render/admin/theme/tools/section.html" %}
+{% load staticfiles %}
+
+{% block section_title %} Edit Buckets <small>for <b>{{data.version_manager.title}}</b></small> {% endblock %}
+
+{% block section_content %}
+{% block upload_include %}{% include 'core_composer_app/admin/buckets/edit_content.html' %}{% endblock %}
+{% endblock %}

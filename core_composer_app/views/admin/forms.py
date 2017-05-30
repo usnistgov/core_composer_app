@@ -8,7 +8,8 @@ class BucketForm(forms.Form):
     """
     Form to add a bucket
     """
-    label = forms.CharField(label='Enter Bucket label', max_length=100, required=True)
+    label = forms.CharField(label='Enter Bucket label', max_length=100, required=True,
+                            widget=forms.TextInput(attrs={'class': 'form-control'}))
 
 
 class BucketDataModelChoiceField(forms.ModelMultipleChoiceField):
@@ -35,4 +36,5 @@ class EditTypeBucketsForm(forms.Form):
     """
     Form to edit buckets of a Type
     """
-    buckets = BucketDataModelChoiceField(label='Select new buckets', queryset=bucket_api.get_all(), required=False)
+    buckets = BucketDataModelChoiceField(label='Select new buckets', queryset=bucket_api.get_all(), required=False,
+                                         widget=forms.SelectMultiple(attrs={'class': 'form-control'}))
