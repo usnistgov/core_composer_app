@@ -7,3 +7,4 @@ var setElementOccurrencesUrl = "{% url 'core_composer_set_element_occurrences' %
 var saveTemplateUrl = "{% url 'core_composer_save_template' %}";
 var saveTypeUrl = "{% url 'core_composer_save_type' %}";
 var changeRootTypeNameUrl = "{% url 'core_composer_change_root_type_name' %}";
+var composerIndexUrl = "{% url 'core_composer_index' %}";

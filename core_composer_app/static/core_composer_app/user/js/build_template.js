@@ -37,8 +37,8 @@ var save_template = function(){
                 templateName: templateName
             },
             success: function(data){
-                $("#save-success-modal").modal("show");
                 $("#save-template-modal").modal("hide");
+                displaySaveSuccess();
             },
             error: function(data){
                 $("#new-template-error").html("Not a valid XML schema." + data.responseText);
@@ -76,8 +76,8 @@ var save_type = function(){
                 templateID: templateID
             },
             success: function(data){
-                $("#save-success-modal").modal("show");
                 $("#save-type-modal").modal("hide");
+                displaySaveSuccess();
             },
             error: function (data) {
                 $("#new-type-error").html(data.responseText);
@@ -86,6 +86,14 @@ var save_type = function(){
     }else{
         $( "#new-type-error" ).html("The name can't be empty.")
     }
+};
+
+var displaySaveSuccess = function(){
+    var $save_success_modal = $("#save-success-modal");
+    $save_success_modal.modal("show");
+    $save_success_modal.on("hidden.bs.modal", function () {
+        window.location = composerIndexUrl;
+    });
 };
 
 
