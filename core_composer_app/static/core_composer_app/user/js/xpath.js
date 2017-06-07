@@ -24,7 +24,9 @@ var getXPath = function(target){
  */
 var manageXPath = function(target){
     var $target = $(target);
-	var namespace = $target.text().split(":")[0];
+    var $path = $($target.parent().siblings('.path'));
+	var xpath = $path.text();
+	var namespace = xpath.split(":")[0];
 	var i = 1;
 	$target.closest("ul").children().each(function(){
         if(!($(this).find(".path").html() == $target.closest("li").find(".path").html() )){
