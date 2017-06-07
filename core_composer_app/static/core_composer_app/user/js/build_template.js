@@ -94,7 +94,7 @@ var save_type = function(){
  */
 var displayNewTemplateDialog = function(){
     $( "#newTemplateTypeNameError" ).html("");
-    $( "#root-type-name-modal" ).modal("show");
+    $( "#root-type-name-modal" ).modal({backdrop: 'static', keyboard: false}, 'show');
     $( "#rename-root-type").on('click', changeRootTypeName);
 };
 
