@@ -7,8 +7,6 @@ var target;
  * Loads controllers for menus of build template page
  */
 $(document).ready(function() {
-    $('.btn.insert').on('click', insertElementSequence);
-    $('#unbounded').on('click', OnClickUnbounded);
     // hide any displayed menu
     $(".options_menu").each(function () {
        $(this).hide();
@@ -147,7 +145,6 @@ var insertElementSequence = function(event){
 var displayDeleteElementDialog = function()
 {
     $("#delete-element-modal").modal("show");
-    $("#delete-element").on('click', delete_element);
 };
 
 
@@ -178,7 +175,7 @@ var delete_element = function(){
 var displayChangeTypeDialog = function()
 {
     $("#change-element-type-modal").modal("show");
-    $("#change-element-type").on('click', change_xsd_type);
+
 };
 
 
@@ -220,7 +217,6 @@ var displayRenameElementDialog = function()
     $("#rename-element-error").html("");
     // set current name
     $("#newElementName").val($(target).parent().siblings('.name').html());
-    $("#rename-element").on('click', rename_element);
     $("#element-name-modal").modal("show");
 };
 
@@ -289,7 +285,6 @@ var displayOccurrencesElementDialog = function()
     get_occurrences(xpath);
     // show modal
     $( "#occurrences-modal" ).modal("show");
-    $( "#set-occurrences" ).on('click', setOccurrences);
 };
 
 
@@ -412,3 +407,10 @@ $(document).on('click', '.menu.insert-element', displayInsertElementSequenceDial
 $(document).on('click', '.menu.change-type', displayChangeTypeDialog);
 $(document).on('click', '.menu.element', showMenuElement);
 $(document).on('click', '.menu.sequence', showMenuSequence);
+
+$(document).on('click', '.btn.insert', insertElementSequence);
+$(document).on('click', '#unbounded', OnClickUnbounded);
+$(document).on('click', '#delete-element', delete_element);
+$(document).on('click', '#change-element-type', change_xsd_type);
+$(document).on('click', '#rename-element', rename_element);
+$(document).on('click', '#set-occurrences', setOccurrences);

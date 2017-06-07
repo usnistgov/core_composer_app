@@ -2,9 +2,6 @@
  * Load controllers for build template page
  */
 $(document).ready(function() {
-	$('.btn.save-template').on('click', saveTemplate);
-	$('.btn.save-type').on('click', saveType);
-
 	// new template: offer to rename root type
 	var $templateID = $("#templateID");
 	if ($templateID.html() == "new"){
@@ -12,14 +9,12 @@ $(document).ready(function() {
     }
 });
 
-
 /**
  * Save a composed template
  */
 var saveTemplate = function(){
 	$("#new-template-error").html("");
 	$("#save-template-modal").modal("show");
-	$("#save-template").on("click", save_template);
 };
 
 /**
@@ -56,7 +51,6 @@ var save_template = function(){
 var saveType = function(){
 	$("#new-type-error").html("");
     $("#save-type-modal").modal("show");
-	$("#save-type").on("click", save_type);
 };
 
 
@@ -103,7 +97,6 @@ var displaySaveSuccess = function(){
 var displayNewTemplateDialog = function(){
     $( "#newTemplateTypeNameError" ).html("");
     $( "#root-type-name-modal" ).modal({backdrop: 'static', keyboard: false}, 'show');
-    $( "#rename-root-type").on('click', changeRootTypeName);
 };
 
 
@@ -145,3 +138,11 @@ var change_root_type_name = function(typeName){
         }
     });
 };
+
+
+$(document).on('click', '.btn.save-template', saveTemplate);
+$(document).on('click', '.btn.save-type', saveType);
+
+$(document).on('click', '#save-template', save_template);
+$(document).on('click', '#save-type', save_type);
+$(document).on('click', '#rename-root-type', changeRootTypeName);
