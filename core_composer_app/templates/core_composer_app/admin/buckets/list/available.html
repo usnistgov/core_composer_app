@@ -2,6 +2,10 @@
 
 
 {% block box_tools %}
+<a href="#" class="btn btn-default back-to-previous">
+     <i class="fa fa-arrow-left"></i> Previous page
+</a>
+
 <a href="{% url 'admin:core_composer_app_upload_bucket' %}" class="pull-right btn btn-default">
     <i class="fa fa-plus"></i> Add {{ data.object_name }}
 </a>

@@ -140,6 +140,10 @@ def manage_type_versions(request, version_manager_id):
                     {
                         "path": 'core_main_app/common/js/templates/versions/modals/disable.js',
                         "is_raw": False
+                    },
+                    {
+                        "path": 'core_main_app/common/js/backtoprevious.js',
+                        "is_raw": True
                     }
                 ]
             }
@@ -422,6 +426,10 @@ def manage_buckets(request):
                 "path": 'core_composer_app/admin/js/bucket.raw.js',
                 "is_raw": True
             },
+            {
+                "path": 'core_main_app/common/js/backtoprevious.js',
+                "is_raw": True
+            }
         ],
         "css": ['core_composer_app/common/css/bucket.css']
     }
@@ -445,6 +453,15 @@ def upload_bucket(request):
     Returns:
 
     """
+    assets = {
+        "js": [
+            {
+                "path": 'core_main_app/common/js/backtoprevious.js',
+                "is_raw": True
+            }
+        ]
+    }
+
     context = {
         'object_name': 'Bucket'
     }
@@ -465,7 +482,7 @@ def upload_bucket(request):
     context['form'] = form
     return admin_render(request,
                         'core_composer_app/admin/buckets/add.html',
-                        context=context)
+                        context=context, assets=assets)
 
 
 @staff_member_required
@@ -494,7 +511,13 @@ def manage_type_buckets(request, version_manager_id):
     }
 
     assets = {
-        "css": ['core_composer_app/common/css/bucket.css']
+        "css": ['core_composer_app/common/css/bucket.css'],
+        "js": [
+            {
+                "path": 'core_main_app/common/js/backtoprevious.js',
+                "is_raw": True
+            }
+        ]
     }
     if request.method == 'POST':
         form = EditTypeBucketsForm(request.POST)
