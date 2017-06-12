@@ -8,7 +8,7 @@ from os.path import join
 from cStringIO import StringIO
 
 from core_main_app.utils import decorators as decorators
-from core_main_app.utils.file import read_file_content
+from core_main_app.utils.file import read_file_content, get_file_http_response
 from core_main_app.utils.xml import xsl_transform
 from core_main_app.utils.rendering import render
 from core_main_app.components.template import api as template_api
@@ -194,12 +194,8 @@ def download_xsd(request):
     """
     xsd_string = request.session['newXmlTemplateCompose']
 
-    # build a file
-    # TODO: test encoding
-    template_file = StringIO(xsd_string.encode('utf-8'))
-
-    # build response with file
-    response = HttpResponse(FileWrapper(template_file), content_type='application/xsd')
-    response['Content-Disposition'] = 'attachment; filename=schema.xsd'
-
-    return response
+    # return the file
+    return get_file_http_response(file_content=xsd_string,
+                                  file_name="schema.xsd",
+                                  content_type="application/xsd",
+                                  extension=".xsd")
