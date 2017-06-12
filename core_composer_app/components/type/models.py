@@ -8,12 +8,12 @@ from core_main_app.commons import exceptions
 
 
 class Type(Template):
-    """Type class
+    """Type class.
     """
 
     @staticmethod
     def get_by_id(type_id):
-        """Returns a type given its id
+        """Return a type given its id.
 
         Args:
             type_id:
@@ -30,7 +30,7 @@ class Type(Template):
 
     @staticmethod
     def get_all():
-        """Returns all types
+        """Return all types.
 
         Returns:
 

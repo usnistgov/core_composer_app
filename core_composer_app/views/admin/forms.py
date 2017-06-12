@@ -6,7 +6,7 @@ from core_composer_app.components.bucket import api as bucket_api
 
 class BucketForm(forms.Form):
     """
-    Form to add a bucket
+    Form to add a bucket.
     """
     label = forms.CharField(label='Enter Bucket label', max_length=100, required=True,
                             widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -14,7 +14,7 @@ class BucketForm(forms.Form):
 
 class BucketDataModelChoiceField(forms.ModelMultipleChoiceField):
     """
-    Choice Field to select an existing form
+    Choice Field to select an existing form.
     """
     def label_from_instance(self, obj):
         return obj.label
@@ -22,7 +22,7 @@ class BucketDataModelChoiceField(forms.ModelMultipleChoiceField):
 
 class UploadTypeForm(forms.Form):
     """
-    Form to upload a new Type
+    Form to upload a new Type.
     """
     name = forms.CharField(label='Enter Type name', max_length=100, required=True,
                            widget=forms.TextInput(attrs={'class': 'form-control'}))
@@ -34,7 +34,7 @@ class UploadTypeForm(forms.Form):
 
 class EditTypeBucketsForm(forms.Form):
     """
-    Form to edit buckets of a Type
+    Form to edit buckets of a Type.
     """
     buckets = BucketDataModelChoiceField(label='Select new buckets', queryset=bucket_api.get_all(), required=False,
                                          widget=forms.SelectMultiple(attrs={'class': 'form-control'}))

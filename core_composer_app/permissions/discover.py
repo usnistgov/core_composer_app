@@ -1,4 +1,4 @@
-""" Discover rules for core composer app
+""" Initialize permissions for core composer app
 """
 from django.contrib.auth.models import Permission, Group
 from core_main_app.permissions import rights as main_rights
@@ -6,7 +6,7 @@ from core_composer_app.permissions import rights as composer_rights
 
 
 def init_permissions():
-    """Initialization of groups and permissions
+    """Initialization of groups and permissions.
 
     Returns:
 

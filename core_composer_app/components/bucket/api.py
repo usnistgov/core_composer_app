@@ -1,13 +1,13 @@
 """Bucket api
 """
 from core_composer_app.components.bucket.models import Bucket
-import random
-
 from core_main_app.commons.exceptions import ApiError
+
+import random
 
 
 def get_by_id(bucket_id):
-    """Returns a bucket given its id
+    """Return a bucket given its id.
 
     Args:
         bucket_id:
@@ -19,7 +19,7 @@ def get_by_id(bucket_id):
 
 
 def upsert(bucket):
-    """Saves or Updates a bucket
+    """Save or update a bucket.
 
     Args:
         bucket:
@@ -42,7 +42,7 @@ def upsert(bucket):
 
 
 def get_all():
-    """Returns all buckets
+    """Return all buckets.
 
     Returns:
 
@@ -51,7 +51,7 @@ def get_all():
 
 
 def delete(bucket):
-    """Deletes a bucket
+    """Delete a bucket.
 
     Args:
         bucket:
@@ -63,7 +63,7 @@ def delete(bucket):
 
 
 def _get_random_hex_color():
-    """Returns a random hexa color string
+    """Return a random hexa color string.
 
     Returns:
 
@@ -72,7 +72,7 @@ def _get_random_hex_color():
 
 
 def add_type_to_buckets(version_manager, list_bucket_ids):
-    """Adds type version manager to buckets
+    """Add type version manager to buckets.
 
     Args:
         version_manager:
@@ -99,7 +99,7 @@ def add_type_to_buckets(version_manager, list_bucket_ids):
 
 
 def update_type_buckets(version_manager, list_bucket_ids):
-    """Removes type from current buckets and puts them in new list
+    """Remove type from current buckets and puts them in new list.
 
     Args:
         version_manager:
@@ -115,7 +115,7 @@ def update_type_buckets(version_manager, list_bucket_ids):
 
 
 def remove_type_from_buckets(version_manager):
-    """Removes the type from all the buckets
+    """Remove the type from all the buckets.
 
     Args:
         version_manager:

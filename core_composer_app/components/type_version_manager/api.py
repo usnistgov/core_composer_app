@@ -10,7 +10,7 @@ from core_main_app.components.version_manager.utils import get_latest_version_na
 
 
 def insert(type_version_manager, type_object, list_bucket_ids=None):
-    """Adds a version to a type version manager
+    """Add a version to a type version manager.
 
     Args:
         type_version_manager:
@@ -41,7 +41,7 @@ def insert(type_version_manager, type_object, list_bucket_ids=None):
 
 
 def get_global_version_managers():
-    """Gets all global version managers of a type
+    """Get all global version managers of a type.
 
     Returns:
 
@@ -50,7 +50,7 @@ def get_global_version_managers():
 
 
 def get_version_managers_by_user(user_id):
-    """Gets all global version managers of a user
+    """Get all global version managers of a user.
 
     Returns:
 
@@ -59,7 +59,7 @@ def get_version_managers_by_user(user_id):
 
 
 def get_no_buckets_types():
-    """Gets list of available types not inside a bucket
+    """Get list of available types not inside a bucket.
 
     Returns:
 

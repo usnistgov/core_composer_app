@@ -1,11 +1,8 @@
 """Composer app user views
 """
 from django.contrib.staticfiles import finders
-from django.http.response import HttpResponse
-from django.core.servers.basehttp import FileWrapper
 from django.core.urlresolvers import reverse_lazy
 from os.path import join
-from cStringIO import StringIO
 
 from core_main_app.utils import decorators as decorators
 from core_main_app.utils.file import read_file_content, get_file_http_response
@@ -28,7 +25,7 @@ from xml_utils.xsd_types.xsd_types import get_xsd_types
 @decorators.permission_required(content_type=rights.composer_content_type,
                                 permission=rights.composer_access, login_url=reverse_lazy("core_main_app_login"))
 def index(request):
-    """ Page that allows to select a template to start composing
+    """ Page that allows to select a template to start composing.
 
     Args:
         request:
@@ -65,7 +62,7 @@ def index(request):
 @decorators.permission_required(content_type=rights.composer_content_type,
                                 permission=rights.composer_access, login_url=reverse_lazy("core_main_app_login"))
 def build_template(request, template_id):
-    """View that allows to build the Template
+    """View that allows to build the Template.
 
     Args:
         request:
@@ -184,7 +181,7 @@ def build_template(request, template_id):
 @decorators.permission_required(content_type=rights.composer_content_type,
                                 permission=rights.composer_access, login_url=reverse_lazy("core_main_app_login"))
 def download_xsd(request):
-    """Makes the current XSD available for download.
+    """Make the current XSD available for download.
 
     Args:
         request:

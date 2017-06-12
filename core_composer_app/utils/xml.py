@@ -9,7 +9,7 @@ from lxml.etree import Element
 
 
 def check_type_core_support(xsd_string):
-    """Checks that the format of the the type is supported by the current version of the Core
+    """Check that the format of the the type is supported by the current version of the Core.
 
     Args:
         xsd_string:
@@ -50,7 +50,7 @@ def check_type_core_support(xsd_string):
 
 
 def remove_single_root_element(xsd_string):
-    """Removes root element from the xsd string
+    """Remove root element from the xsd string.
 
     Args:
         xsd_string:
@@ -72,7 +72,7 @@ def remove_single_root_element(xsd_string):
 
 
 def rename_single_root_type(xsd_string, type_name):
-    """Renames the type of the single root element
+    """Rename the type of the single root element.
 
     Args:
         xsd_string:
@@ -97,7 +97,7 @@ def rename_single_root_type(xsd_string, type_name):
 
 
 def delete_xsd_element(xsd_string, xpath):
-    """Deletes element from tree
+    """Delete element from tree.
 
     Args:
         xsd_string:
@@ -126,7 +126,7 @@ def delete_xsd_element(xsd_string, xpath):
 
 
 def change_xsd_element_type(xsd_string, xpath, type_name):
-    """Changes the type of an element (e.g. sequence -> choice)
+    """Change the type of an element (e.g. sequence -> choice).
 
     Args:
         xsd_string:
@@ -152,7 +152,7 @@ def change_xsd_element_type(xsd_string, xpath, type_name):
 
 
 def set_xsd_element_occurrences(xsd_string, xpath, min_occurs, max_occurs):
-    """Sets occurrences of element
+    """Set occurrences of element.
 
     Args:
         xsd_string:
@@ -185,7 +185,7 @@ def set_xsd_element_occurrences(xsd_string, xpath, min_occurs, max_occurs):
 
 
 def get_xsd_element_occurrences(xsd_string, xpath):
-    """Gets the min and max occurrences of the element
+    """Get the min and max occurrences of the element.
 
     Args:
         xsd_string:
@@ -219,7 +219,7 @@ def get_xsd_element_occurrences(xsd_string, xpath):
 
 
 def rename_xsd_element(xsd_string, xpath, new_name):
-    """Renames xsd element
+    """Rename xsd element.
 
     Args:
         xsd_string:
@@ -249,7 +249,7 @@ def rename_xsd_element(xsd_string, xpath, new_name):
 
 # TODO: refactor more
 def _insert_element_type(xsd_string, xpath, type_content, element_type_name, include_url):
-    """Inserts an element of given type in xsd string
+    """Insert an element of given type in xsd string.
 
     Args:
         xsd_string: xsd string
@@ -368,7 +368,7 @@ def _insert_element_type(xsd_string, xpath, type_content, element_type_name, inc
 
 
 def insert_element_type(xsd_string, xpath, type_content, element_type_name, include_url):
-    """Inserts an element of given type in xsd string, and validates result
+    """Insert an element of given type in xsd string, and validates result.
 
     Args:
         xsd_string: xsd string
@@ -395,7 +395,7 @@ def insert_element_type(xsd_string, xpath, type_content, element_type_name, incl
 
 
 def insert_element_built_in_type(xsd_string, xpath, element_type_name):
-    """Inserts element with a builtin type in xsd string
+    """Insert element with a builtin type in xsd string.
 
     Args:
         xsd_string: xsd string
@@ -429,7 +429,7 @@ def insert_element_built_in_type(xsd_string, xpath, element_type_name):
 
 
 def _get_ns_type_name(prefix, type_name, prefix_required=False):
-    """Returns type name formatted with namespace prefix
+    """Return type name formatted with namespace prefix.
 
     Args:
         prefix:
@@ -450,7 +450,7 @@ def _get_ns_type_name(prefix, type_name, prefix_required=False):
 
 
 def _get_valid_xml_name(name):
-    """Returns a valid xml name
+    """Return a valid xml name.
 
     Args:
         name:
@@ -481,7 +481,7 @@ def _get_valid_xml_name(name):
 
 
 def _create_xsd_element(tag, attrib):
-    """Creates an XSD element
+    """Create an XSD element.
 
     Args:
         tag:

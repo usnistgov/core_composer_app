@@ -17,7 +17,8 @@ from core_main_app.components.template.api import init_template_with_dependencie
 
 @api_view(['GET'])
 def get_by_id(request):
-    """GET /rest/type?id=<id>
+    """Get a type by id.
+    GET /rest/type?id=<id>
 
     Args:
         request:
@@ -50,7 +51,8 @@ def get_by_id(request):
 
 
 def _post(request):
-    """ POST /rest/type
+    """Add a type.
+    POST /rest/type
     {
     "filename": "filename",
     "title": "title",

@@ -12,7 +12,7 @@ from core_main_app.commons import exceptions as exceptions
 
 @api_view(['GET'])
 def get_by_id(request):
-    """Returns a type version manager by its id
+    """Return a type version manager by its id.
 
     GET /rest/type-version-manager/get?id=<id>
 
@@ -47,7 +47,7 @@ def get_by_id(request):
 
 @api_view(['GET'])
 def get_all_globals(request):
-    """Returns http response with all global type version managers
+    """Return http response with all global type version managers.
 
     GET /rest/type-version-manager/get/all/global
 
@@ -68,7 +68,7 @@ def get_all_globals(request):
 
 @api_view(['GET'])
 def get_by_user(request):
-    """Returns http response with all type version managers of a user
+    """Return http response with all type version managers of a user.
 
     GET /rest/type-version-manager/get/all/user
 

@@ -26,7 +26,7 @@ from core_main_app.views.common.views import read_xsd_file
 
 @staff_member_required
 def manage_types(request):
-    """View that allows type management
+    """View that allows type management.
 
     Args:
         request:
@@ -80,7 +80,7 @@ def manage_types(request):
 
 @staff_member_required
 def manage_type_versions(request, version_manager_id):
-    """View that allows type versions management
+    """View that allows type versions management.
 
     Args:
         request:
@@ -159,7 +159,7 @@ def manage_type_versions(request, version_manager_id):
 
 @staff_member_required
 def upload_type(request):
-    """Upload type
+    """Upload type.
 
     Args:
         request:
@@ -212,7 +212,7 @@ def upload_type(request):
 
 
 def _save_type(request, assets, context):
-    """Saves a type
+    """Save a type.
 
     Args:
         request:
@@ -244,7 +244,7 @@ def _save_type(request, assets, context):
 
 
 def _handle_xsd_errors(request, assets, context, xsd_error, xsd_content, filename):
-    """Handles XSD errors. Builds dependency resolver if needed.
+    """Handle XSD errors. Builds dependency resolver if needed.
 
     Args:
         request:
@@ -269,12 +269,16 @@ def _handle_xsd_errors(request, assets, context, xsd_error, xsd_content, filenam
 
 
 def _get_dependency_resolver_html(imports, includes, xsd_data, filename):
-    """
-    Return HTML for dependency resolver form
-    :param imports:
-    :param includes:
-    :param xsd_data:
-    :return:
+    """Return HTML for dependency resolver form.
+
+    Args:
+        imports:
+        includes:
+        xsd_data:
+        filename:
+
+    Returns:
+
     """
     # build the list of dependencies
     current_types = type_version_manager_api.get_global_version_managers()
@@ -297,7 +301,7 @@ def _get_dependency_resolver_html(imports, includes, xsd_data, filename):
 
 
 def _upload_type_response(request, assets, context):
-    """Renders type upload response
+    """Render type upload response.
 
     Args:
         request:
@@ -314,7 +318,7 @@ def _upload_type_response(request, assets, context):
 
 @staff_member_required
 def upload_type_version(request, version_manager_id):
-    """Upload type version
+    """Upload type version.
 
     Args:
         request:
@@ -372,7 +376,7 @@ def upload_type_version(request, version_manager_id):
 
 
 def _save_type_version(request, assets, context, type_version_manager):
-    """Saves a type version
+    """Save a type version.
 
     Args:
         request:
@@ -402,7 +406,7 @@ def _save_type_version(request, assets, context, type_version_manager):
 
 @staff_member_required
 def manage_buckets(request):
-    """Manage buckets view
+    """Manage buckets view.
 
     Args:
         request:
@@ -445,7 +449,7 @@ def manage_buckets(request):
 
 @staff_member_required
 def upload_bucket(request):
-    """Upload bucket
+    """Upload bucket.
 
     Args:
         request:
@@ -487,7 +491,7 @@ def upload_bucket(request):
 
 @staff_member_required
 def manage_type_buckets(request, version_manager_id):
-    """
+    """Manage buckets of a type.
 
     Args:
         request:

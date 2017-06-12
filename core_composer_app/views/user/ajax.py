@@ -24,7 +24,7 @@ from xml_utils.xsd_tree.xsd_tree import XSDTree
 @decorators.permission_required(content_type=rights.composer_content_type,
                                 permission=rights.composer_access, raise_exception=True)
 def insert_element_sequence(request):
-    """Inserts the type in the original schema
+    """Insert the type in the original schema.
 
     Args:
         request:
@@ -73,7 +73,7 @@ def insert_element_sequence(request):
 @decorators.permission_required(content_type=rights.composer_content_type,
                                 permission=rights.composer_access, raise_exception=True)
 def change_xsd_type(request):
-    """Changes the type of the element
+    """Change the type of the element.
 
     Args:
         request:
@@ -99,7 +99,7 @@ def change_xsd_type(request):
 @decorators.permission_required(content_type=rights.composer_content_type,
                                 permission=rights.composer_access, raise_exception=True)
 def change_root_type_name(request):
-    """Changes the name of the root type
+    """Change the name of the root type.
 
     Args:
         request:
@@ -123,7 +123,7 @@ def change_root_type_name(request):
 @decorators.permission_required(content_type=rights.composer_content_type,
                                 permission=rights.composer_access, raise_exception=True)
 def rename_element(request):
-    """Replaces the current name of the element by the new name
+    """Replace the current name of the element by the new name.
 
     Args:
         request:
@@ -158,7 +158,7 @@ def rename_element(request):
 @decorators.permission_required(content_type=rights.composer_content_type,
                                 permission=rights.composer_access, raise_exception=True)
 def delete_element(request):
-    """Deletes an element from the xsd string
+    """Delete an element from the xsd string.
 
     Args:
         request:
@@ -184,7 +184,7 @@ def delete_element(request):
 @decorators.permission_required(content_type=rights.composer_content_type,
                                 permission=rights.composer_access, raise_exception=True)
 def get_element_occurrences(request):
-    """Gets the occurrences of the selected element
+    """Get the occurrences of the selected element.
 
     Args:
         request:
@@ -208,7 +208,7 @@ def get_element_occurrences(request):
 @decorators.permission_required(content_type=rights.composer_content_type,
                                 permission=rights.composer_access, raise_exception=True)
 def set_element_occurrences(request):
-    """Sets the occurrences of the selected element
+    """Set the occurrences of the selected element.
 
     Args:
         request:
@@ -235,7 +235,7 @@ def set_element_occurrences(request):
 @decorators.permission_required(content_type=rights.composer_content_type,
                                 permission=rights.composer_save_template, raise_exception=True)
 def save_template(request):
-    """Saves the current template in the database
+    """Save the current template in the database.
 
     Args:
         request:
@@ -282,7 +282,7 @@ def save_template(request):
 @decorators.permission_required(content_type=rights.composer_content_type,
                                 permission=rights.composer_save_type, raise_exception=True)
 def save_type(request):
-    """Saves the current type in the database
+    """Save the current type in the database.
 
     Args:
         request:
@@ -337,7 +337,7 @@ def save_type(request):
 
 
 def _get_dependencies_ids(list_dependencies):
-    """Returns list of type ids from list of dependencies
+    """Return list of type ids from list of dependencies.
 
     Args:
         list_dependencies:
@@ -366,7 +366,7 @@ def _get_dependencies_ids(list_dependencies):
 
 
 def _error_response(error):
-    """Returns HttpResponse containing the error message
+    """Return HttpResponse containing the error message.
 
     Args:
         error:

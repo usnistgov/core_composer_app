@@ -33,7 +33,7 @@ class CreateTypeSerializer(BasicSerializer):
     content = CharField(required=True)
 
     def create(self, validated_data):
-        """Creates a Type object
+        """Create a Type object.
 
         Args:
             validated_data:
@@ -51,7 +51,7 @@ class CreateTypeVersionManagerSerializer(BasicSerializer):
     title = CharField(required=True)
 
     def create(self, validated_data):
-        """Creates a Type Version Manager
+        """Create a Type Version Manager.
 
         Args:
             validated_data:

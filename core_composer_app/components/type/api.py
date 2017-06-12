@@ -7,7 +7,7 @@ from core_composer_app.components.type.models import Type
 
 
 def upsert(type_object):
-    """Saves or Updates the type
+    """Save or update the type.
 
     Args:
         type_object:
@@ -15,12 +15,14 @@ def upsert(type_object):
     Returns:
 
     """
+    # Check that the type is supported by the core
     check_type_core_support(type_object.content)
+    # Save type
     return template_api.upsert(type_object)
 
 
 def get(type_id):
-    """Gets a type
+    """Get a type.
 
     Args:
         type_id:
@@ -32,7 +34,7 @@ def get(type_id):
 
 
 def get_all():
-    """Lists all types
+    """List all types.
 
     Returns:
 
@@ -41,7 +43,7 @@ def get_all():
 
 
 def delete(type_object):
-    """Deletes the type
+    """Delete the type.
 
     Returns:
 

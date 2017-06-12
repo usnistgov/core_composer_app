@@ -10,7 +10,7 @@ class ComposerAppConfig(AppConfig):
     name = 'core_composer_app'
 
     def ready(self):
-        """ Runs when the app is ready
+        """ Run when the app is ready.
 
         Returns:
 

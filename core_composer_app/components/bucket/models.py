@@ -8,7 +8,7 @@ from core_main_app.commons import exceptions
 
 
 class Bucket(Document):
-    """Bucket class to store types by domain
+    """Bucket class to store types by domain.
     """
     label = fields.StringField(unique=True)
     color = fields.StringField(unique=True)
@@ -16,7 +16,7 @@ class Bucket(Document):
 
     @staticmethod
     def get_by_id(bucket_id):
-        """Returns a bucket given its id
+        """Return a bucket given its id.
 
         Args:
             bucket_id:
@@ -33,7 +33,7 @@ class Bucket(Document):
 
     @staticmethod
     def get_all():
-        """Returns all buckets
+        """Return all buckets.
 
         Returns:
 
@@ -42,7 +42,7 @@ class Bucket(Document):
 
     @staticmethod
     def get_colors():
-        """Returns all colors
+        """Return all colors.
 
         Returns:
 

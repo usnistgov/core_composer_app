@@ -14,7 +14,7 @@ from core_main_app.views.admin.ajax import _get_xsd_content_from_html, _get_depe
 
 
 def delete_bucket(request):
-    """Deletes a bucket
+    """Delete a bucket.
 
     Args:
         request:
@@ -34,10 +34,13 @@ def delete_bucket(request):
 
 
 def resolve_dependencies(request):
-    """
-    Resolve import/includes to avoid local references
-    :param request:
-    :return:
+    """Resolve import/includes to avoid local references.
+
+    Args:
+        request:
+
+    Returns:
+
     """
     try:
         # Get the parameters

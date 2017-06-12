@@ -1,10 +1,8 @@
 """ Add Composer in main menu
 """
-
 from django.core.urlresolvers import reverse
 from menu import Menu, MenuItem
 
-# FIXME: CHECK AUTHENTICATION !
 Menu.add_item(
     "main", MenuItem("Composer", reverse("core_composer_index"))
 )

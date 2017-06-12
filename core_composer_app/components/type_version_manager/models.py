@@ -5,11 +5,12 @@ from core_main_app.components.template_version_manager.models import TemplateVer
 
 
 class TypeVersionManager(TemplateVersionManager):
-    """Manages versions of types"""
+    """Manage versions of types.
+    """
 
     @staticmethod
     def get_global_version_managers(_cls=True):
-        """Returns all Type Version Managers with user set to None
+        """Return all Type Version Managers with user set to None.
 
         Returns:
 
@@ -18,7 +19,7 @@ class TypeVersionManager(TemplateVersionManager):
 
     @staticmethod
     def get_version_managers_by_user(user_id):
-        """Returns Type Version Managers with user set to user_id
+        """Return Type Version Managers with user set to user_id.
 
         Args:
             user_id:
