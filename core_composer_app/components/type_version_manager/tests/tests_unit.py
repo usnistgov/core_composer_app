@@ -9,9 +9,10 @@ from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager.api import get_no_buckets_types
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_composer_app.components.type_version_manager import api as version_manager_api
-from core_main_app.commons.exceptions import CoreError
+from core_main_app.commons.exceptions import CoreError, ModelError, NotUniqueError
 
 from django.core import exceptions as django_exceptions
+from mongoengine import errors as mongoengine_exceptions
 
 
 class TestTypeVersionManagerInsert(TestCase):
@@ -68,10 +69,10 @@ class TestTypeVersionManagerInsert(TestCase):
         mock_save.return_value = type_object
         mock_delete.return_value = None
         mock_version_manager = _create_type_version_manager(title="Schema")
-        mock_version_manager_save.side_effect = django_exceptions.ValidationError("")
+        mock_version_manager_save.side_effect = mongoengine_exceptions.NotUniqueError
 
         # Act + Assert
-        with self.assertRaises(django_exceptions.ValidationError):
+        with self.assertRaises(NotUniqueError):
             version_manager_api.insert(mock_version_manager, type_object)
 
     @patch.object(Type, 'save')
@@ -103,7 +104,7 @@ class TestTypeVersionManagerInsert(TestCase):
         mock_delete.return_value = None
 
         # Act + Assert
-        with self.assertRaises(django_exceptions.ValidationError):
+        with self.assertRaises(ModelError):
             version_manager_api.insert(version_manager, type_object)
 
 

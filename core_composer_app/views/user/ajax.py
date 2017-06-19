@@ -17,6 +17,7 @@ from core_main_app.components.template.models import Template
 from core_main_app.components.template_version_manager.models import TemplateVersionManager
 from core_main_app.components.template_version_manager import api as template_version_manager_api
 from core_main_app.utils import xml as main_xml_utils
+from core_main_app.commons import exceptions
 
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 
@@ -271,6 +272,8 @@ def save_template(request):
             template = Template(filename=template_name, content=xsd_string, dependencies=dependencies)
             # save template in database
             template_version_manager_api.insert(template_version_manager, template)
+        except exceptions.NotUniqueError:
+            return HttpResponseBadRequest("A template with the same name already exists. Please choose another name.")
         except Exception, e:
             return _error_response(e.message)
 
@@ -328,6 +331,8 @@ def save_type(request):
             type_object = Type(filename=type_name, content=xsd_string, dependencies=dependencies)
             # save type in database
             template_version_manager_api.insert(type_version_manager, type_object)
+        except exceptions.NotUniqueError, e:
+            return HttpResponseBadRequest("A type with the same name already exists. Please choose another name.")
         except Exception, e:
             return _error_response(e.message)
 
