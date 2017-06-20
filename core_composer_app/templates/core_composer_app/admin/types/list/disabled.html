@@ -1,1 +1,37 @@
 {% extends 'core_main_app/admin/templates/list/disabled.html' %}
+
+{% block box_body %}
+<table class="table table-bordered table-striped table-hover">
+    <tr>
+        <th>{{ data.object_name }}</th>
+        <th width="30%">Buckets</th>
+        <th width="40%">Actions</th>
+    </tr>
+
+    {% for object in data.disabled %}
+        <tr>
+            <td>{{ object.title }}</td>
+            <td>
+                {% for bucket in data.buckets %}
+                    {% if object in bucket.types %}
+                        <span class="bucket" style="background:{{ bucket.color}};" bucketid="{{bucket.id}}">
+                            {{ bucket.label }}
+                        </span>
+                    {% endif %}
+                {% endfor %}
+            </td>
+            <td>
+                <span class="icon legend retrieve" objectid="{{ object.id }}">
+                    <a class="btn btn-default" href="#"><i class="fa fa-undo"></i> Restore </a>
+                </span>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td class="empty" colspan="3">
+                No {{ data.object_name }} disabled.
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
