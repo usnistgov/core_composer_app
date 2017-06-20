@@ -14,9 +14,9 @@ from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager import api as type_version_manager_api
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_composer_app.views.admin.forms import BucketForm, UploadTypeForm, EditTypeBucketsForm
+from core_composer_app.views.user.views import get_context_manage_type_version
 from core_main_app.commons import exceptions
 from core_main_app.components.version_manager import api as version_manager_api
-from core_main_app.settings import INSTALLED_APPS
 from core_main_app.utils.rendering import admin_render
 from core_main_app.utils.xml import get_imports_and_includes
 from core_main_app.views.admin.forms import UploadVersionForm
@@ -89,43 +89,7 @@ def manage_type_versions(request, version_manager_id):
     Returns:
 
     """
-    # get the version manager
-    version_manager = None
-
-    try:
-        version_manager = version_manager_api.get(version_manager_id)
-    except:
-        # TODO: catch good exception, redirect to error page
-        pass
-
-    # Use categorized version for easier manipulation in template
-    versions = version_manager.versions
-    categorized_versions = {
-        "available": [],
-        "disabled": []
-    }
-
-    for index, version in enumerate(versions, 1):
-        indexed_version = {
-            "index": index,
-            "object": version
-        }
-
-        if version not in version_manager.disabled_versions:
-            categorized_versions["available"].append(indexed_version)
-        else:
-            categorized_versions["disabled"].append(indexed_version)
-
-    version_manager.versions = categorized_versions
-
-    context = {
-        'object_name': 'Type',
-        "version_manager": version_manager
-    }
-
-    # FIXME: make this more dynamic?
-    if 'core_parser_app' in INSTALLED_APPS:
-        context["core_parser_app_installed"] = True
+    context = get_context_manage_type_version(version_manager_id)
 
     assets = {
                 "js": [

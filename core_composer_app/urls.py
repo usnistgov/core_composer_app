@@ -10,6 +10,8 @@ urlpatterns = [
         name='core_composer_build_template'),
     url(r'^download-xsd$', user_views.download_xsd,
         name='core_composer_download_xsd'),
+    url(r'^type/versions/(?P<version_manager_id>\w+)', user_views.manage_type_versions,
+        name='core_composer_app_manage_type_versions'),
 
     url(r'^change-xsd-type$', user_ajax.change_xsd_type,
         name='core_composer_change_xsd_type'),

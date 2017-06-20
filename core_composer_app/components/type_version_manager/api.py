@@ -73,3 +73,12 @@ def get_no_buckets_types():
     no_bucket_types = [type_version_manager for type_version_manager in all_types
                        if type_version_manager not in bucket_types]
     return no_bucket_types
+
+
+def get_all_version_manager_except_user_id(user_id):
+    """ Return all Type Version Managers of all users except user with given user id.
+
+    Returns:
+
+    """
+    return TypeVersionManager.get_all_type_version_manager_except_user_id(user_id)

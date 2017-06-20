@@ -1,23 +1,26 @@
 """Composer app user views
 """
-from django.contrib.staticfiles import finders
-from django.core.urlresolvers import reverse_lazy
 from os.path import join
 
-from core_main_app.utils import decorators as decorators
-from core_main_app.utils.file import read_file_content, get_file_http_response
-from core_main_app.utils.xml import xsl_transform
-from core_main_app.utils.rendering import render
+from django.contrib.staticfiles import finders
+from django.core.urlresolvers import reverse_lazy
+
+from core_composer_app.components.bucket import api as bucket_api
+from core_composer_app.components.type_version_manager import api as type_version_manager_api
+from core_composer_app.permissions import rights
 from core_main_app.components.template import api as template_api
 from core_main_app.components.template_version_manager import api as template_version_manager_api
-from core_composer_app.components.type_version_manager import api as type_version_manager_api
-from core_composer_app.components.bucket import api as bucket_api
-from core_composer_app.permissions import rights
-
+from core_main_app.components.version_manager import api as version_manager_api
+from core_main_app.settings import INSTALLED_APPS
+from core_main_app.utils import decorators as decorators
+from core_main_app.utils.file import read_file_content, get_file_http_response
+from core_main_app.utils.rendering import render
+from core_main_app.utils.xml import xsl_transform
 from xml_utils.commons.constants import LXML_SCHEMA_NAMESPACE
 from xml_utils.xsd_tree.operations.annotation import remove_annotations
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 from xml_utils.xsd_types.xsd_types import get_xsd_types
+
 
 # TODO: see if sessions are problematic
 
@@ -196,3 +199,89 @@ def download_xsd(request):
                                   file_name="schema.xsd",
                                   content_type="application/xsd",
                                   extension=".xsd")
+
+
+def manage_type_versions(request, version_manager_id):
+    """View that allows type versions management.
+
+    Args:
+        request:
+        version_manager_id:
+
+    Returns:
+
+    """
+    context = get_context_manage_type_version(version_manager_id)
+
+    assets = {
+                "js": [
+                    {
+                        "path": 'core_main_app/common/js/templates/versions/set_current.js',
+                        "is_raw": False
+                    },
+                    {
+                        "path": 'core_main_app/common/js/templates/versions/restore.js',
+                        "is_raw": False
+                    },
+                    {
+                        "path": 'core_main_app/common/js/templates/versions/modals/disable.js',
+                        "is_raw": False
+                    },
+                    {
+                        "path": 'core_main_app/common/js/backtoprevious.js',
+                        "is_raw": True
+                    }
+                ]
+            }
+
+    modals = ["core_main_app/admin/templates/versions/modals/disable.html"]
+
+    return render(request,
+                  'core_composer_app/user/types/versions.html',
+                  assets=assets,
+                  modals=modals,
+                  context=context)
+
+
+def get_context_manage_type_version(version_manager_id):
+    """ Get the context to manage type version.
+
+    Args:
+        version_manager_id:
+
+    Returns:
+
+    """
+    # get the version manager
+    version_manager = None
+    try:
+        version_manager = version_manager_api.get(version_manager_id)
+    except:
+        # TODO: catch good exception, redirect to error page
+        pass
+
+    # Use categorized version for easier manipulation in template
+    versions = version_manager.versions
+    categorized_versions = {
+        "available": [],
+        "disabled": []
+    }
+    for index, version in enumerate(versions, 1):
+        indexed_version = {
+            "index": index,
+            "object": version
+        }
+
+        if version not in version_manager.disabled_versions:
+            categorized_versions["available"].append(indexed_version)
+        else:
+            categorized_versions["disabled"].append(indexed_version)
+    version_manager.versions = categorized_versions
+    context = {
+        'object_name': 'Type',
+        "version_manager": version_manager
+    }
+    # FIXME: make this more dynamic?
+    if 'core_parser_app' in INSTALLED_APPS:
+        context["core_parser_app_installed"] = True
+    return context

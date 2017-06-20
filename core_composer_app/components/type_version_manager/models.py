@@ -2,6 +2,7 @@
 Type Version Manager model
 """
 from core_main_app.components.template_version_manager.models import TemplateVersionManager
+from core_main_app.components.version_manager.models import VersionManager
 
 
 class TypeVersionManager(TemplateVersionManager):
@@ -28,3 +29,17 @@ class TypeVersionManager(TemplateVersionManager):
 
         """
         return [vm for vm in TypeVersionManager.objects().all() if vm.user == str(user_id)]
+
+    @staticmethod
+    def get_all_type_version_manager_except_user_id(user_id):
+        """ Return all Version Managers of all users except user with given user id.
+
+        Args:
+            user_id:
+
+        Returns:
+
+        """
+        # FIXME: construct the cls with super in VersionManager TemplateVersionManager TypeVersionManager
+        cls = ".".join((VersionManager.__name__, TemplateVersionManager.__name__, TypeVersionManager.__name__))
+        return VersionManager.objects(_cls=cls, user__nin=str(user_id)).all()
