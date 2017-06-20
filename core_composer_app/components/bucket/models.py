@@ -5,6 +5,7 @@ from mongoengine import errors as mongoengine_errors
 
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_main_app.commons import exceptions
+from mongoengine.errors import NotUniqueError
 
 
 class Bucket(Document):
@@ -48,3 +49,16 @@ class Bucket(Document):
 
         """
         return Bucket.objects.values_list('color')
+
+    def save_object(self):
+        """Custom save
+
+        Returns:
+
+        """
+        try:
+            return self.save()
+        except mongoengine_errors.NotUniqueError as e:
+            raise exceptions.NotUniqueError(e.message)
+        except Exception as ex:
+            raise exceptions.ModelError(ex.message)

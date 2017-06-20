@@ -38,7 +38,7 @@ def upsert(bucket):
 
         bucket.color = color
 
-    return bucket.save()
+    return bucket.save_object()
 
 
 def get_all():

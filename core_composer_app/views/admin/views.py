@@ -1,6 +1,5 @@
 """Composer admin views
 """
-
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
@@ -22,6 +21,7 @@ from core_main_app.utils.rendering import admin_render
 from core_main_app.utils.xml import get_imports_and_includes
 from core_main_app.views.admin.forms import UploadVersionForm
 from core_main_app.views.common.views import read_xsd_file
+from core_main_app.commons.exceptions import NotUniqueError
 
 
 @staff_member_required
@@ -477,6 +477,8 @@ def upload_bucket(request):
             try:
                 bucket_api.upsert(bucket)
                 return redirect(reverse('admin:core_composer_app_buckets'))
+            except NotUniqueError:
+                context['errors'] = "A bucket with the same name already exists."
             except Exception, e:
                 context['errors'] = e.message
 
