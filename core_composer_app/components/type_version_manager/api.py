@@ -49,6 +49,15 @@ def get_global_version_managers():
     return TypeVersionManager.get_global_version_managers()
 
 
+def get_active_global_version_manager():
+    """ Return all active Version Managers with user set to None.
+
+    Returns:
+
+    """
+    return TypeVersionManager.get_active_global_version_manager()
+
+
 def get_version_managers_by_user(user_id):
     """Get all global version managers of a user.
 
@@ -56,6 +65,15 @@ def get_version_managers_by_user(user_id):
 
     """
     return TypeVersionManager.get_version_managers_by_user(user_id)
+
+
+def get_active_version_manager_by_user_id(user_id):
+    """ Return all active Version Managers with given user id.
+
+    Returns:
+
+    """
+    return TypeVersionManager.get_active_version_manager_by_user_id(user_id)
 
 
 def get_no_buckets_types():

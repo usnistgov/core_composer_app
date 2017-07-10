@@ -19,6 +19,15 @@ class TypeVersionManager(TemplateVersionManager):
         return [vm for vm in TypeVersionManager.objects().all() if vm.user is None]
 
     @staticmethod
+    def get_active_global_version_manager(_cls=True):
+        """Return all active Type Version Managers with user set to None.
+
+        Returns:
+
+        """
+        return [vm for vm in TypeVersionManager.objects(is_disabled=False).all() if vm.user is None]
+
+    @staticmethod
     def get_version_managers_by_user(user_id):
         """Return Type Version Managers with user set to user_id.
 
@@ -29,6 +38,19 @@ class TypeVersionManager(TemplateVersionManager):
 
         """
         return [vm for vm in TypeVersionManager.objects().all() if vm.user == str(user_id)]
+
+    @staticmethod
+    def get_active_version_manager_by_user_id(user_id):
+        """Return active Type Version Managers with user set to user_id.
+
+        Args:
+            user_id:
+
+        Returns:
+
+        """
+        return [vm for vm in TypeVersionManager.objects(is_disabled=False).all()
+                if vm.user == str(user_id)]
 
     @staticmethod
     def get_all_type_version_manager_except_user_id(user_id):
