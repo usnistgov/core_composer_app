@@ -45,12 +45,6 @@ def index(request):
     user_active_template_list = template_version_manager_api.get_active_version_manager_by_user_id(request.user.id,
                                                                                                    _cls=False)
 
-    # Add new template option to global templates
-    global_active_template_list.insert(0, {
-        'title': 'New Template',
-        'current': 'new'
-    })
-
     context = {
         'global_templates': global_active_template_list,
         'user_templates': user_active_template_list,
