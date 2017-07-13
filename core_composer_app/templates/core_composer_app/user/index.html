@@ -1,19 +1,20 @@
 <a href="{% url 'core_composer_build_template' 'new' %}"
        class="btn btn-success pull-right" role="button">Start Template from scratch</a>
 
-<div class="title-page">Select Template</div>
+<h2>Select Template</h2>
 
 Start composing a new template or customize an existing template. It will automatically load the appropriate
 form and display it on the next page.
 <!-- FIXME: HTML below common with core_curate_app/curate.html -->
 
 <div id="template_selection">
-    <div class="center-text"><h1 class="title-text">Global Templates</h1></div>
+
+    <h3 class="text-center">Global Templates</h3>
 
 <table class="table table-bordered">
     <tr>
-        <th class="title-table">Template name</th>
-        <th class="title-table" style="width: 150px;">Actions</th>
+        <th><b>Template name</b></th>
+        <th style="width: 150px;"><b>Actions</b></th>
     </tr>
     {% for template in data.global_templates %}
         <tr>
@@ -28,13 +29,13 @@ form and display it on the next page.
 
 {% if user.is_authenticated %}
 
-    <div class="center-text"><h3 class="title-text">User Defined Templates</h3></div>
+    <h3 class="text-center">User Defined Templates</h3>
 
     {% if data.user_templates %}
     <table class="table table-bordered">
         <tr>
-            <th class="title-table">Template name</th>
-            <th class="title-table" style="width: 150px;">Actions</th>
+            <th><b>Template name</b></th>
+            <th style="width: 150px;"><b>Actions</b></th>
         </tr>
         {% for template in data.user_templates %}
             <tr>

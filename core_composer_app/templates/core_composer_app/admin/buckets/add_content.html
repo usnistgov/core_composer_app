@@ -15,7 +15,7 @@
         <form id="form_start" action="{% url 'admin:core_composer_app_upload_bucket' %}" method="post">
             {% csrf_token %}
             {{ data.form }}
-            <div id="upload_errors" class="error">
+            <div id="upload_errors" class="text-danger">
                 {{ data.errors | safe}}
             </div>
             <input type="submit" class="btn btn-default pull-right" value="Add {{data.object_name}}"/>

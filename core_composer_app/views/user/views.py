@@ -38,7 +38,6 @@ def index(request):
     """
     assets = {
         "js": [],
-        "css": ['core_curate_app/user/css/style.css']
     }
 
     global_active_template_list = template_version_manager_api.get_active_global_version_manager(_cls=False)

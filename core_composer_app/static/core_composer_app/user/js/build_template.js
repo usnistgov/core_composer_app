@@ -36,7 +36,7 @@ var save_template = function(){
                 displaySaveSuccess();
             },
             error: function(data){
-                $("#new-template-error").html("Not a valid XML schema." + data.responseText);
+                $("#new-template-error").html(data.responseText);
             }
         });
     }else{
