@@ -7,16 +7,22 @@ from xml_utils.xsd_tree.operations.namespaces import get_namespaces, get_default
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 from lxml.etree import Element
 
+COMPLEX_TYPE = 'complexType'
+SIMPLE_TYPE = 'simpleType'
+
 
 def check_type_core_support(xsd_string):
     """Check that the format of the the type is supported by the current version of the Core.
+    Return the type definition (simpleType or complexType).
 
     Args:
         xsd_string:
 
     Returns:
+        type_definition: simpleType or complexType.
 
     """
+    type_definition = ""
     error_message = "A type should be a valid XML schema containing only one type definition " \
                     "(Allowed tags are: simpleType or complexType and include)."
 
@@ -45,8 +51,11 @@ def check_type_core_support(xsd_string):
                 cpt_type += 1
                 if cpt_type > 1:
                     raise CoreError(error_message)
+                type_definition = COMPLEX_TYPE if 'complexType' in element.tag else SIMPLE_TYPE
     else:
         raise CoreError(error_message)
+
+    return type_definition
 
 
 def remove_single_root_element(xsd_string):

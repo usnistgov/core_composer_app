@@ -8,6 +8,7 @@ import json
 
 from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_composer_app.components.type_version_manager import api as type_version_manager_api
 from core_composer_app.components.type import api as type_api
 from core_composer_app.utils import xml as composer_xml_utils
 from core_composer_app.permissions import rights
@@ -330,7 +331,7 @@ def save_type(request):
             # create type
             type_object = Type(filename=type_name, content=xsd_string, dependencies=dependencies)
             # save type in database
-            template_version_manager_api.insert(type_version_manager, type_object)
+            type_version_manager_api.insert(type_version_manager, type_object)
         except exceptions.NotUniqueError, e:
             return HttpResponseBadRequest("A type with the same name already exists. Please choose another name.")
         except Exception, e:

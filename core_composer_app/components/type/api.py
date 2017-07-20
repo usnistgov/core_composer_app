@@ -1,7 +1,7 @@
 """
 Type API
 """
-from core_composer_app.utils.xml import check_type_core_support
+from core_composer_app.utils.xml import check_type_core_support, COMPLEX_TYPE
 from core_main_app.components.template import api as template_api
 from core_composer_app.components.type.models import Type
 
@@ -16,7 +16,8 @@ def upsert(type_object):
 
     """
     # Check that the type is supported by the core
-    check_type_core_support(type_object.content)
+    type_definition = check_type_core_support(type_object.content)
+    type_object.is_complex = type_definition == COMPLEX_TYPE
     # Save type
     return template_api.upsert(type_object)
 

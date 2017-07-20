@@ -2,9 +2,10 @@
 """
 # TODO: add tests for other xml utils
 
-from unittest import TestCase
+from unittest.case import TestCase
 from os.path import join, dirname, abspath
-from core_composer_app.utils.xml import _insert_element_type
+from core_composer_app.utils.xml import _insert_element_type, check_type_core_support, \
+    COMPLEX_TYPE, SIMPLE_TYPE
 from core_main_app.commons.exceptions import CoreError
 from core_main_app.utils.xml import validate_xml_schema
 
@@ -155,3 +156,25 @@ class TestInsertElementType(TestCase):
 
         errors = validate_xml_schema(result_tree)
         self.assertTrue(errors is None)
+
+
+class TestTypeDefinition(TestCase):
+    def test_simple_type(self):
+        type_filename = 'type.xsd'
+        # load test resources
+        with open(join(RESOURCES_PATH, type_filename), 'r') as type_file:
+            type_content = type_file.read()
+
+        type_content = check_type_core_support(type_content)
+
+        self.assertEqual(type_content, SIMPLE_TYPE)
+
+    def test_complex_type(self):
+        type_filename = 'type_complex.xsd'
+        # load test resources
+        with open(join(RESOURCES_PATH, type_filename), 'r') as type_file:
+            type_content = type_file.read()
+
+        type_content = check_type_core_support(type_content)
+
+        self.assertEqual(type_content, COMPLEX_TYPE)

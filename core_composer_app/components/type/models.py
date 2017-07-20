@@ -1,15 +1,16 @@
 """
 Type models
 """
-
-from core_main_app.components.template.models import Template
-from mongoengine import errors as mongoengine_errors
 from core_main_app.commons import exceptions
+from core_main_app.components.template.models import Template
+from django_mongoengine import fields
+from mongoengine import errors as mongoengine_errors
 
 
 class Type(Template):
     """Type class.
     """
+    is_complex = fields.BooleanField(blank=False)
 
     @staticmethod
     def get_by_id(type_id):
