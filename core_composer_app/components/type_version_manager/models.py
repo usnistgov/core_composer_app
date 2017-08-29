@@ -9,6 +9,9 @@ class TypeVersionManager(TemplateVersionManager):
     """Manage versions of types.
     """
 
+    # TODO: see if better way to find _cls
+    class_name = 'VersionManager.TemplateVersionManager.TypeVersionManager'
+
     @staticmethod
     def get_global_version_managers(_cls=True):
         """Return all Type Version Managers with user set to None.
@@ -16,7 +19,7 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        return [vm for vm in TypeVersionManager.objects().all() if vm.user is None]
+        return TypeVersionManager.objects(user=None).all()
 
     @staticmethod
     def get_active_global_version_manager(_cls=True):
@@ -25,7 +28,7 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        return [vm for vm in TypeVersionManager.objects(is_disabled=False).all() if vm.user is None]
+        return TypeVersionManager.objects(is_disabled=False, user=None).all()
 
     @staticmethod
     def get_version_managers_by_user(user_id):
@@ -37,7 +40,7 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        return [vm for vm in TypeVersionManager.objects().all() if vm.user == str(user_id)]
+        return TypeVersionManager.objects(user=str(user_id)).all()
 
     @staticmethod
     def get_active_version_manager_by_user_id(user_id):
@@ -49,8 +52,7 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        return [vm for vm in TypeVersionManager.objects(is_disabled=False).all()
-                if vm.user == str(user_id)]
+        return TypeVersionManager.objects(is_disabled=False, user=str(user_id)).all()
 
     @staticmethod
     def get_all_type_version_manager_except_user_id(user_id):
@@ -62,6 +64,4 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        # FIXME: construct the cls with super in VersionManager TemplateVersionManager TypeVersionManager
-        cls = ".".join((VersionManager.__name__, TemplateVersionManager.__name__, TypeVersionManager.__name__))
-        return VersionManager.objects(_cls=cls, user__nin=str(user_id)).all()
+        return VersionManager.objects(_cls=TypeVersionManager.class_name, user__nin=str(user_id)).all()
