@@ -52,6 +52,21 @@ class TestTypeGetAll(TestCase):
         self.assertTrue(all(isinstance(item, Type) for item in result))
 
 
+class TestTypeGetAllComplexType(TestCase):
+    @patch.object(Type, 'get_all_complex_type')
+    def test_get_all_types_returns_types(self, mock_get_all_complex_type):
+        # Arrange
+        mock_type1 = _create_mock_type()
+        mock_type2 = _create_mock_type()
+
+        mock_get_all_complex_type.return_value = [mock_type1, mock_type2]
+
+        # Act
+        result = type_api.get_all_complex_type()
+
+        # Assert
+        self.assertTrue(all(isinstance(item, Type) for item in result))
+
 class TestTypeUpsert(TestCase):
     @patch.object(Type, 'save')
     def test_type_upsert_valid_returns_type(self, mock_save):

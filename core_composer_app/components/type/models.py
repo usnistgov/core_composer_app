@@ -37,3 +37,12 @@ class Type(Template):
 
         """
         return Type.objects().all()
+
+    @staticmethod
+    def get_all_complex_type():
+        """List all complex types.
+
+        Returns:
+
+        """
+        return Type.objects(is_complex=True).all()

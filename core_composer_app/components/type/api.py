@@ -43,6 +43,15 @@ def get_all():
     return Type.get_all()
 
 
+def get_all_complex_type():
+    """List all complex types.
+
+    Returns:
+
+    """
+    return Type.get_all_complex_type()
+
+
 def delete(type_object):
     """Delete the type.
 
