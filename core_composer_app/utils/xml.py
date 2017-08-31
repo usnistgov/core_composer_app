@@ -350,13 +350,20 @@ def _insert_element_type(xsd_string, xpath, type_content, element_type_name, inc
     dependency_element = _create_xsd_element(dependency_tag, dependency_attrib)
     # create xsd element
     xsd_element = _create_xsd_element('element', attrib={'name': element_type_name, 'type': ns_type_name})
-    # add dependency element (include/import)
-    xsd_tree.getroot().insert(0, dependency_element)
+    # check if dependency element (include/import) is already present
+    dependency_tag = "{0}[@schemaLocation='{1}']".format(dependency_element.tag,
+                                                         dependency_element.attrib['schemaLocation'])
+    dependency_present = xsd_tree.find(dependency_tag) is not None
+
+    if not dependency_present:
+        # add dependency element (include/import)
+        xsd_tree.getroot().insert(0, dependency_element)
+
     # add xsd element
     xsd_tree.find(xpath).append(xsd_element)
 
     # if namespace map of the schema needs to be updated
-    if update_ns_map:
+    if not dependency_present and update_ns_map:
         root = xsd_tree.getroot()
         root_ns_map = root.nsmap
 
