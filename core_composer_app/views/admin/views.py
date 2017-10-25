@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.template import loader
-from django.template.context import Context
 from django.utils.html import escape as html_escape
 
 from core_composer_app.components.bucket import api as bucket_api
@@ -16,12 +15,12 @@ from core_composer_app.components.type_version_manager.models import TypeVersion
 from core_composer_app.views.admin.forms import BucketForm, UploadTypeForm, EditTypeBucketsForm
 from core_composer_app.views.user.views import get_context_manage_type_version
 from core_main_app.commons import exceptions
+from core_main_app.commons.exceptions import NotUniqueError
 from core_main_app.components.version_manager import api as version_manager_api
 from core_main_app.utils.rendering import admin_render
 from core_main_app.utils.xml import get_imports_and_includes
 from core_main_app.views.admin.forms import UploadVersionForm
 from core_main_app.views.common.views import read_xsd_file
-from core_main_app.commons.exceptions import NotUniqueError
 
 
 @staff_member_required
@@ -247,20 +246,18 @@ def _get_dependency_resolver_html(imports, includes, xsd_data, filename):
     # build the list of dependencies
     current_types = type_version_manager_api.get_global_version_managers()
     list_dependencies_template = loader.get_template('core_main_app/admin/list_dependencies.html')
-    context = Context({
-        'templates': [template for template in current_types if not template.is_disabled],
-    })
+    context = {'templates': [template for template in current_types if not template.is_disabled]}
     list_dependencies_html = list_dependencies_template.render(context)
 
     # build the dependency resolver form
     dependency_resolver_template = loader.get_template('core_main_app/admin/dependency_resolver.html')
-    context = Context({
+    context = {
         'imports': imports,
         'includes': includes,
         'xsd_content': html_escape(xsd_data),
         'filename': filename,
         'dependencies': list_dependencies_html,
-    })
+    }
     return dependency_resolver_template.render(context)
 
 

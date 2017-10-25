@@ -1,25 +1,23 @@
 """AJAX user views of composer application
 """
-from django.http.response import HttpResponse, HttpResponseBadRequest
-from django.template.context import Context
-from django.template import loader
-from urlparse import urlparse
 import json
+from urlparse import urlparse
 
-from core_composer_app.components.type.models import Type
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
-from core_composer_app.components.type_version_manager import api as type_version_manager_api
+from django.http.response import HttpResponse, HttpResponseBadRequest
+from django.template import loader
+
 from core_composer_app.components.type import api as type_api
-from core_composer_app.utils import xml as composer_xml_utils
+from core_composer_app.components.type.models import Type
+from core_composer_app.components.type_version_manager import api as type_version_manager_api
+from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_composer_app.permissions import rights
-
-from core_main_app.utils import decorators as decorators
-from core_main_app.components.template.models import Template
-from core_main_app.components.template_version_manager.models import TemplateVersionManager
-from core_main_app.components.template_version_manager import api as template_version_manager_api
-from core_main_app.utils import xml as main_xml_utils
+from core_composer_app.utils import xml as composer_xml_utils
 from core_main_app.commons import exceptions
-
+from core_main_app.components.template.models import Template
+from core_main_app.components.template_version_manager import api as template_version_manager_api
+from core_main_app.components.template_version_manager.models import TemplateVersionManager
+from core_main_app.utils import decorators as decorators
+from core_main_app.utils import xml as main_xml_utils
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 
 
@@ -63,9 +61,9 @@ def insert_element_sequence(request):
         request.session['newXmlTemplateCompose'] = new_xsd_str
 
         template = loader.get_template('core_composer_app/user/builder/new_element.html')
-        context = Context({'namespace': namespace,
-                           'path': path,
-                           'type_name': type_name})
+        context = {'namespace': namespace,
+                   'path': path,
+                   'type_name': type_name}
         new_element_html = template.render(context)
         return HttpResponse(json.dumps({'new_element': new_element_html}), content_type='application/json')
     except Exception, e:
