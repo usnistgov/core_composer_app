@@ -3,7 +3,7 @@
 from django.contrib import admin
 from django.conf.urls import url
 
-from views.admin import views as admin_views, ajax as admin_ajax
+from core_composer_app.views.admin import views as admin_views, ajax as admin_ajax
 
 
 admin_urls = [
