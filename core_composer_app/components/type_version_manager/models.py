@@ -65,3 +65,14 @@ class TypeVersionManager(TemplateVersionManager):
 
         """
         return VersionManager.objects(_cls=TypeVersionManager.class_name, user__nin=str(user_id)).all()
+
+    @staticmethod
+    def get_all_type_version_manager():
+        """ Return all Version Managers of all users.
+
+        Args:
+
+        Returns:
+
+        """
+        return VersionManager.objects(_cls=TypeVersionManager.class_name).all()

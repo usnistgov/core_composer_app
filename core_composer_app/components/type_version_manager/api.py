@@ -100,3 +100,12 @@ def get_all_version_manager_except_user_id(user_id):
 
     """
     return TypeVersionManager.get_all_type_version_manager_except_user_id(user_id)
+
+
+def get_all_version_manager():
+    """ Return all Type Version Managers of all users.
+
+    Returns:
+
+    """
+    return TypeVersionManager.get_all_type_version_manager()
