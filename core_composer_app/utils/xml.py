@@ -2,10 +2,10 @@
 """
 from core_main_app.commons.exceptions import CoreError, XMLError
 from core_main_app.utils.xml import is_well_formed_xml, validate_xml_schema
+
 from xml_utils.commons.constants import LXML_SCHEMA_NAMESPACE
 from xml_utils.xsd_tree.operations.namespaces import get_namespaces, get_default_prefix, get_target_namespace
 from xml_utils.xsd_tree.xsd_tree import XSDTree
-from lxml.etree import Element
 
 COMPLEX_TYPE = 'complexType'
 SIMPLE_TYPE = 'simpleType'
@@ -372,7 +372,7 @@ def _insert_element_type(xsd_string, xpath, type_content, element_type_name, inc
             raise CoreError('The namespace prefix is already declared for a different namespace.')
         else:
             root_ns_map[type_target_namespace_prefix] = type_target_namespace
-            new_root = Element(root.tag, nsmap=root_ns_map, attrib=root.attrib)
+            new_root = XSDTree.create_element(root.tag, nsmap=root_ns_map, attrib=root.attrib)
             new_root[:] = root[:]
 
             # return result tree
@@ -431,9 +431,9 @@ def insert_element_built_in_type(xsd_string, xpath, element_type_name):
     xpath = xpath.replace(default_prefix + ":", LXML_SCHEMA_NAMESPACE)
 
     type_name = default_prefix + ':' + element_type_name
-    xsd_tree.find(xpath).append(Element("{}element".format(LXML_SCHEMA_NAMESPACE),
-                                        attrib={'type': type_name,
-                                                'name': element_type_name}))
+    xsd_tree.find(xpath).append(XSDTree.create_element("{}element".format(LXML_SCHEMA_NAMESPACE),
+                                                       attrib={'type': type_name,
+                                                               'name': element_type_name}))
     # validate XML schema
     error = validate_xml_schema(xsd_tree)
 
@@ -510,6 +510,6 @@ def _create_xsd_element(tag, attrib):
     if tag not in ['element', 'include', 'import']:
         raise CoreError('Unable to create XSD element: invalid tag')
 
-    xsd_element = Element("{0}{1}".format(LXML_SCHEMA_NAMESPACE, tag), attrib=attrib)
+    xsd_element = XSDTree.create_element("{0}{1}".format(LXML_SCHEMA_NAMESPACE, tag), attrib=attrib)
 
     return xsd_element
