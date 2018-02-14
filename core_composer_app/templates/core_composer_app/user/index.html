@@ -1,5 +1,5 @@
 <a href="{% url 'core_composer_build_template' 'new' %}"
-       class="btn btn-success pull-right" role="button">Start Template from scratch</a>
+       class="btn btn-success pull-right" role="button">Start Template or Type from scratch</a>
 
 <h2>Select Template</h2>
 
@@ -11,46 +11,90 @@ form and display it on the next page.
 
     <h3 class="text-center">Global Templates</h3>
 
-<table class="table table-bordered">
-    <tr>
-        <th><b>Template name</b></th>
-        <th style="width: 150px;"><b>Actions</b></th>
-    </tr>
-    {% for template in data.global_templates %}
-        <tr>
-            <td templateID='{{template.current}}'>{{ template.title }}</td>
-            <td>
-                <a href="{% url 'core_composer_build_template' template.current %}"
-                   class="btn btn-primary" role="button">Select Template</a>
-            </td>
-        </tr>
-    {% endfor %}
-</table>
-
-{% if user.is_authenticated %}
-
-    <h3 class="text-center">User Defined Templates</h3>
-
-    {% if data.user_templates %}
     <table class="table table-bordered">
         <tr>
             <th><b>Template name</b></th>
             <th style="width: 150px;"><b>Actions</b></th>
         </tr>
-        {% for template in data.user_templates %}
+        {% for template in data.global_templates %}
             <tr>
-                <td templateID='{{template.id}}'>{{ template.title }}</td>
+                <td templateID='{{template.current}}'>{{ template.title }}</td>
                 <td>
                     <a href="{% url 'core_composer_build_template' template.current %}"
-                        class="btn btn-primary" role="button">Select Template</a>
+                       class="btn btn-primary" role="button">Select Template</a>
                 </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="2">No template uploaded yet.</td>
             </tr>
         {% endfor %}
     </table>
-    {% else %}
-        <div class="unavailable">
-            No user templates available.
-        </div>
+
+    <h3 class="text-center">Global Types</h3>
+
+
+    <table class="table table-bordered">
+        <tr>
+            <th><b>Type name</b></th>
+            <th style="width: 150px;"><b>Actions</b></th>
+        </tr>
+        {% for type in data.global_types %}
+            <tr>
+                <td templateID='{{template.current}}'>{{ type.title }}</td>
+                <td>
+                    <a href="{% url 'core_composer_build_template' type.current %}"
+                       class="btn btn-primary" role="button">Select Type</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="2">No type uploaded yet.</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% if user.is_authenticated %}
+
+    {% if data.user_templates or data.user_types %}
+
+        {% if data.user_templates %}
+        <h3 class="text-center">User Defined Templates</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th><b>Template name</b></th>
+                <th style="width: 150px;"><b>Actions</b></th>
+            </tr>
+            {% for template in data.user_templates %}
+                <tr>
+                    <td templateID='{{template.id}}'>{{ template.title }}</td>
+                    <td>
+                        <a href="{% url 'core_composer_build_template' template.current %}"
+                            class="btn btn-primary" role="button">Select Template</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        {% if data.user_types %}
+        <h3 class="text-center">User Defined Types</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th><b>Type name</b></th>
+                <th style="width: 150px;"><b>Actions</b></th>
+            </tr>
+            {% for type in data.user_types %}
+                <tr>
+                    <td templateID='{{template.id}}'>{{ type.title }}</td>
+                    <td>
+                        <a href="{% url 'core_composer_build_template' type.current %}"
+                            class="btn btn-primary" role="button">Select Type</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
     {% endif %}
 {% endif %}
 </div>

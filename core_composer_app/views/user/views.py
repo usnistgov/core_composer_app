@@ -11,7 +11,6 @@ from core_composer_app.permissions import rights
 from core_main_app.components.template import api as template_api
 from core_main_app.components.template_version_manager import api as template_version_manager_api
 from core_main_app.components.version_manager import api as version_manager_api
-from core_main_app.settings import INSTALLED_APPS
 from core_main_app.utils import decorators as decorators
 from core_main_app.utils.file import read_file_content, get_file_http_response
 from core_main_app.utils.rendering import render
@@ -40,13 +39,18 @@ def index(request):
         "js": [],
     }
 
-    global_active_template_list = template_version_manager_api.get_active_global_version_manager(_cls=False)
+    global_active_template_list = template_version_manager_api.get_active_global_version_manager(_cls=True)
     user_active_template_list = template_version_manager_api.get_active_version_manager_by_user_id(request.user.id,
-                                                                                                   _cls=False)
+                                                                                                   _cls=True)
+
+    global_active_type_list = type_version_manager_api.get_active_global_version_manager()
+    user_active_type_list = type_version_manager_api.get_active_version_manager_by_user_id(request.user.id)
 
     context = {
         'global_templates': global_active_template_list,
+        'global_types': global_active_type_list,
         'user_templates': user_active_template_list,
+        'user_types': user_active_type_list,
     }
 
     return render(request,
