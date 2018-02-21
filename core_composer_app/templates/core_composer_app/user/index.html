@@ -5,96 +5,28 @@
 
 Start composing a new template or customize an existing template. It will automatically load the appropriate
 form and display it on the next page.
-<!-- FIXME: HTML below common with core_curate_app/curate.html -->
+
 
 <div id="template_selection">
-
-    <h3 class="text-center">Global Templates</h3>
-
-    <table class="table table-bordered">
-        <tr>
-            <th><b>Template name</b></th>
-            <th style="width: 150px;"><b>Actions</b></th>
-        </tr>
-        {% for template in data.global_templates %}
-            <tr>
-                <td templateID='{{template.current}}'>{{ template.title }}</td>
-                <td>
-                    <a href="{% url 'core_composer_build_template' template.current %}"
-                       class="btn btn-primary" role="button">Select Template</a>
-                </td>
-            </tr>
-        {% empty %}
-            <tr>
-                <td colspan="2">No template uploaded yet.</td>
-            </tr>
-        {% endfor %}
-    </table>
-
-    <h3 class="text-center">Global Types</h3>
-
-
-    <table class="table table-bordered">
-        <tr>
-            <th><b>Type name</b></th>
-            <th style="width: 150px;"><b>Actions</b></th>
-        </tr>
-        {% for type in data.global_types %}
-            <tr>
-                <td templateID='{{template.current}}'>{{ type.title }}</td>
-                <td>
-                    <a href="{% url 'core_composer_build_template' type.current %}"
-                       class="btn btn-primary" role="button">Select Type</a>
-                </td>
-            </tr>
-        {% empty %}
-            <tr>
-                <td colspan="2">No type uploaded yet.</td>
-            </tr>
-        {% endfor %}
-    </table>
-
-{% if user.is_authenticated %}
-
-    {% if data.user_templates or data.user_types %}
-
-        {% if data.user_templates %}
-        <h3 class="text-center">User Defined Templates</h3>
-        <table class="table table-bordered">
-            <tr>
-                <th><b>Template name</b></th>
-                <th style="width: 150px;"><b>Actions</b></th>
-            </tr>
-            {% for template in data.user_templates %}
-                <tr>
-                    <td templateID='{{template.id}}'>{{ template.title }}</td>
-                    <td>
-                        <a href="{% url 'core_composer_build_template' template.current %}"
-                            class="btn btn-primary" role="button">Select Template</a>
-                    </td>
-                </tr>
-            {% endfor %}
+    <h3 class="text-center">Templates</h3>
+    {% if data.global_templates or data.user_templates %}
+        <table class="table">
+            {% include 'core_main_app/user/template/list_header.html' with object_type='Template' %}
+            {% include 'core_composer_app/user/list/list.html' with object_list=data.global_templates owner='Global' object_type='Template' %}
+            {% include 'core_composer_app/user/list/list.html' with object_list=data.user_templates owner=request.user object_type='Template' %}
         </table>
-        {% endif %}
-
-        {% if data.user_types %}
-        <h3 class="text-center">User Defined Types</h3>
-        <table class="table table-bordered">
-            <tr>
-                <th><b>Type name</b></th>
-                <th style="width: 150px;"><b>Actions</b></th>
-            </tr>
-            {% for type in data.user_types %}
-                <tr>
-                    <td templateID='{{template.id}}'>{{ type.title }}</td>
-                    <td>
-                        <a href="{% url 'core_composer_build_template' type.current %}"
-                            class="btn btn-primary" role="button">Select Type</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-        {% endif %}
+    {% else %}
+        <p class="text-center">No template uploaded yet.</p>
     {% endif %}
-{% endif %}
+
+    <h3 class="text-center">Types</h3>
+    {% if data.global_types or data.user_types %}
+        <table class="table">
+            {% include 'core_main_app/user/template/list_header.html' with object_type='Type' %}
+            {% include 'core_composer_app/user/list/list.html' with object_list=data.global_types owner='Global' object_type='Type' %}
+            {% include 'core_composer_app/user/list/list.html' with object_list=data.user_types owner=request.user object_type='Type' %}
+        </table>
+    {% else %}
+        <p class="text-center">No type uploaded yet.</p>
+    {% endif %}
 </div>

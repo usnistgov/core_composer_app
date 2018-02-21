@@ -1,0 +1,6 @@
+{% extends 'core_main_app/user/template/list_body.html' %}
+
+{% block actions %}
+<a href="{% url 'core_composer_build_template' template.current %}"
+           class="btn btn-primary" role="button">Select {{ object_type }}</a>
+{% endblock %}
