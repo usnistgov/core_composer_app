@@ -1,4 +1,5 @@
-core_composer_app
+=================
+Core Composer App
 =================
 
 Template and type composer for the curator core project.
