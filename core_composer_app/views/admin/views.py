@@ -20,6 +20,7 @@ from core_main_app.components.version_manager import api as version_manager_api
 from core_main_app.utils.rendering import admin_render
 from core_main_app.utils.xml import get_imports_and_includes
 from core_main_app.views.admin.forms import UploadVersionForm
+from core_main_app.views.common.ajax import EditTemplateVersionManagerView
 from core_main_app.views.common.views import read_xsd_file
 
 
@@ -54,20 +55,17 @@ def manage_types(request):
                         "is_raw": False
                     },
                     {
-                        "path": 'core_main_app/common/js/templates/list/modals/edit.js',
-                        "is_raw": False
-                    },
-                    {
                         "path": 'core_main_app/common/js/templates/list/modals/disable.js',
                         "is_raw": False
-                    }
+                    },
+                    EditTemplateVersionManagerView.get_modal_js_path()
                 ],
                 "css": ['core_composer_app/common/css/bucket.css']
             }
 
     modals = [
-        "core_main_app/admin/templates/list/modals/edit.html",
-        "core_main_app/admin/templates/list/modals/disable.html"
+        "core_main_app/admin/templates/list/modals/disable.html",
+        EditTemplateVersionManagerView.get_modal_html_path()
     ]
 
     return admin_render(request,

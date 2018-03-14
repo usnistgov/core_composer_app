@@ -1,14 +1,20 @@
 """Url router for the administration site
 """
-from django.contrib import admin
 from django.conf.urls import url
+from django.contrib import admin
 
 from core_composer_app.views.admin import views as admin_views, ajax as admin_ajax
+from core_main_app.views.common.ajax import EditTemplateVersionManagerView
+from django.core.urlresolvers import reverse_lazy
 
 
 admin_urls = [
     url(r'^types$', admin_views.manage_types,
         name='core_composer_app_types'),
+    url(r'^type/(?P<pk>[\w-]+)/edit/$',
+        EditTemplateVersionManagerView.as_view(success_url=reverse_lazy(
+            "admin:core_composer_app_types")),
+        name='core_composer_app_edit_type'),
     url(r'^type/upload$', admin_views.upload_type,
         name='core_composer_app_upload_type'),
     url(r'^type/upload/(?P<version_manager_id>\w+)', admin_views.upload_type_version,
