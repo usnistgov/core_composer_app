@@ -18,6 +18,7 @@ from core_main_app.components.template_version_manager import api as template_ve
 from core_main_app.components.template_version_manager.models import TemplateVersionManager
 from core_main_app.utils import decorators as decorators
 from core_main_app.utils import xml as main_xml_utils
+from core_main_app.utils.urls import get_template_download_pattern
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 
 
@@ -351,15 +352,17 @@ def _get_dependencies_ids(list_dependencies):
     """
     # declare list of dependencies
     dependencies = []
+    # get pattern to match a template download
+    pattern = get_template_download_pattern()
     # get all type ids
     for uri in list_dependencies:
         # parse dependency url
         url = urlparse(uri)
-        # get id from url
-        type_id = url.query.split("=")[1]
         try:
+            # get object id from url
+            object_id = pattern.match(url.path).group('pk')
             # get type by id, exception raised if not found
-            type_object = type_api.get(type_id)
+            type_object = type_api.get(object_id)
             # add id to list of internal dependencies
             dependencies.append(type_object)
         except:

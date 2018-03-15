@@ -2,6 +2,7 @@
 """
 from unittest.case import TestCase
 from bson.objectid import ObjectId
+from django.test import override_settings
 from mock.mock import Mock, patch
 from django.core import exceptions as django_exceptions
 
@@ -67,7 +68,9 @@ class TestTypeGetAllComplexType(TestCase):
         # Assert
         self.assertTrue(all(isinstance(item, Type) for item in result))
 
+
 class TestTypeUpsert(TestCase):
+    @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, 'save')
     def test_type_upsert_valid_returns_type(self, mock_save):
         type_object = _create_type()
@@ -76,6 +79,7 @@ class TestTypeUpsert(TestCase):
         result = type_api.upsert(type_object)
         self.assertIsInstance(result, Type)
 
+    @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, 'save')
     def test_type_upsert_invalid_filename_raises_validation_error(self, mock_save):
         type_object = _create_type(filename=1)

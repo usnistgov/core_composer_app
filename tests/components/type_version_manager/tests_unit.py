@@ -2,6 +2,7 @@
 """
 from unittest.case import TestCase
 from bson.objectid import ObjectId
+from django.test import override_settings
 from mock.mock import Mock, patch
 
 from core_composer_app.components.bucket.models import Bucket
@@ -34,6 +35,7 @@ class TestTypeVersionManagerInsert(TestCase):
         with self.assertRaises(CoreError):
             version_manager_api.insert(version_manager, type_object)
 
+    @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(TypeVersionManager, 'save')
     @patch.object(Type, 'save')
     def test_create_version_manager_returns_version_manager(self, mock_save_type,
@@ -56,6 +58,7 @@ class TestTypeVersionManagerInsert(TestCase):
         # Assert
         self.assertIsInstance(result, TypeVersionManager)
 
+    @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, 'delete')
     @patch.object(Type, 'save')
     @patch.object(TypeVersionManager, 'save')
@@ -75,6 +78,7 @@ class TestTypeVersionManagerInsert(TestCase):
         with self.assertRaises(NotUniqueError):
             version_manager_api.insert(mock_version_manager, type_object)
 
+    @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, 'save')
     def test_create_version_manager_raises_exception_if_error_in_create_type(self, mock_save):
         # Arrange
@@ -88,6 +92,7 @@ class TestTypeVersionManagerInsert(TestCase):
         with self.assertRaises(django_exceptions.ValidationError):
             version_manager_api.insert(mock_version_manager, type_object)
 
+    @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, 'delete')
     @patch.object(TypeVersionManager, 'save')
     @patch.object(Type, 'save')

@@ -5,7 +5,6 @@ from mongoengine import errors as mongoengine_errors
 
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_main_app.commons import exceptions
-from mongoengine.errors import NotUniqueError
 
 
 class Bucket(Document):
