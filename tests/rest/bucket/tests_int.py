@@ -6,7 +6,7 @@ from rest_framework import status
 from core_composer_app.rest.bucket import views
 from core_main_app.utils.integration_tests.integration_base_test_case import \
     MongoIntegrationBaseTestCase
-from core_main_app.utils.tests_tools.MockUser import MockUser
+from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import RequestMock
 from tests.components.bucket.fixtures.fixtures import BucketFixtures
 
@@ -22,7 +22,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_get_returns_http_200(self):
         # Arrange
-        user = MockUser('1')
+        user = create_mock_user('1')
 
         # Act
         response = RequestMock.do_request_get(views.BucketList.as_view(), user)
@@ -32,7 +32,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_get_returns_all_buckets(self):
         # Arrange
-        user = MockUser('1')
+        user = create_mock_user('1')
 
         # Act
         response = RequestMock.do_request_get(views.BucketList.as_view(), user)
@@ -42,7 +42,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_get_by_correct_label_returns_one_bucket(self):
         # Arrange
-        user = MockUser('1')
+        user = create_mock_user('1')
 
         # Act
         response = RequestMock.do_request_get(views.BucketList.as_view(),
@@ -54,7 +54,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_get_by_correct_label_returns_correct_bucket(self):
         # Arrange
-        user = MockUser('1')
+        user = create_mock_user('1')
 
         # Act
         response = RequestMock.do_request_get(views.BucketList.as_view(),
@@ -66,7 +66,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_get_by_incorrect_label_returns_no_bucket(self):
         # Arrange
-        user = MockUser('1')
+        user = create_mock_user('1')
 
         # Act
         response = RequestMock.do_request_get(views.BucketList.as_view(),
@@ -78,7 +78,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_post_returns_http_201(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
 
         # Act
         response = RequestMock.do_request_post(views.BucketList.as_view(),
@@ -90,7 +90,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_post_as_user_returns_http_403(self):
         # Arrange
-        user = MockUser('1')
+        user = create_mock_user('1')
 
         # Act
         response = RequestMock.do_request_post(views.BucketList.as_view(),
@@ -102,7 +102,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_post_empty_types_returns_http_201(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
         self.data['types'] = []
 
         # Act
@@ -115,7 +115,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_post_with_one_correct_type_returns_http_201(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
         self.data['types'] = [self.fixture.type_vm_1.id]
 
         # Act
@@ -128,7 +128,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_post_with_one_correct_type_returns_response_containing_one_type(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
         self.data['types'] = [self.fixture.type_vm_1.id]
 
         # Act
@@ -141,7 +141,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_post_with_two_correct_type_returns_http_201(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
         self.data['types'] = [self.fixture.type_vm_1.id, self.fixture.type_vm_2.id]
 
         # Act
@@ -154,7 +154,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_post_with_one_correct_type_returns_response_containing_two_types(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
         self.data['types'] = [self.fixture.type_vm_1.id, self.fixture.type_vm_2.id]
 
         # Act
@@ -167,7 +167,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
 
     def test_post_with_one_incorrect_type_returns_http_400(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
         self.data['types'] = ['wrong_type_id']
 
         # Act
@@ -188,7 +188,7 @@ class TestBucketDetail(MongoIntegrationBaseTestCase):
 
     def test_get_returns_http_200(self):
         # Arrange
-        user = MockUser('1')
+        user = create_mock_user('1')
 
         # Act
         response = RequestMock.do_request_get(views.BucketDetail.as_view(),
@@ -200,7 +200,7 @@ class TestBucketDetail(MongoIntegrationBaseTestCase):
 
     def test_get_returns_bucket(self):
         # Arrange
-        user = MockUser('1')
+        user = create_mock_user('1')
 
         # Act
         response = RequestMock.do_request_get(views.BucketDetail.as_view(),
@@ -212,7 +212,7 @@ class TestBucketDetail(MongoIntegrationBaseTestCase):
 
     def test_get_wrong_id_returns_http_404(self):
         # Arrange
-        user = MockUser('1')
+        user = create_mock_user('1')
 
         # Act
         response = RequestMock.do_request_get(views.BucketDetail.as_view(),
@@ -224,7 +224,7 @@ class TestBucketDetail(MongoIntegrationBaseTestCase):
 
     def test_delete_returns_http_204(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
 
         # Act
         response = RequestMock.do_request_delete(views.BucketDetail.as_view(),
@@ -236,7 +236,7 @@ class TestBucketDetail(MongoIntegrationBaseTestCase):
 
     def test_delete_wrong_id_returns_http_404(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
 
         # Act
         response = RequestMock.do_request_delete(views.BucketDetail.as_view(),
@@ -248,7 +248,7 @@ class TestBucketDetail(MongoIntegrationBaseTestCase):
 
     def test_patch_returns_http_200(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
 
         # Act
         response = RequestMock.do_request_patch(views.BucketDetail.as_view(),
@@ -261,7 +261,7 @@ class TestBucketDetail(MongoIntegrationBaseTestCase):
 
     def test_patch_returns_updated_label(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
 
         # Act
         response = RequestMock.do_request_patch(views.BucketDetail.as_view(),
@@ -274,7 +274,7 @@ class TestBucketDetail(MongoIntegrationBaseTestCase):
 
     def test_patch_wrong_id_returns_http_404(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
 
         # Act
         response = RequestMock.do_request_patch(views.BucketDetail.as_view(),
@@ -293,7 +293,7 @@ class TestTypeVersionManagerBuckets(MongoIntegrationBaseTestCase):
 
     def test_patch_returns_http_200(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
         self.data = [{'id': str(self.fixture.bucket_1.id)}]
 
         # Act
@@ -307,7 +307,7 @@ class TestTypeVersionManagerBuckets(MongoIntegrationBaseTestCase):
 
     def test_patch_two_correct_bucket_id_returns_http_200(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
         self.data = [{'id': str(self.fixture.bucket_1.id)},
                      {'id': str(self.fixture.bucket_2.id)}]
 
@@ -322,7 +322,7 @@ class TestTypeVersionManagerBuckets(MongoIntegrationBaseTestCase):
 
     def test_patch_no_bucket_id_returns_http_200(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
         self.data = []
 
         # Act
@@ -336,7 +336,7 @@ class TestTypeVersionManagerBuckets(MongoIntegrationBaseTestCase):
 
     def test_patch_wrong_bucket_id_returns_http_404(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
         self.data = [{'id': '507f1f77bcf86cd799439011'}]
 
         # Act
@@ -350,7 +350,7 @@ class TestTypeVersionManagerBuckets(MongoIntegrationBaseTestCase):
 
     def test_patch_wrong_template_version_manager_id_returns_http_404(self):
         # Arrange
-        user = MockUser('1', is_staff=True)
+        user = create_mock_user('1', is_staff=True)
         self.data = [{'id': str(self.fixture.bucket_1.id)}]
 
         # Act
@@ -364,7 +364,7 @@ class TestTypeVersionManagerBuckets(MongoIntegrationBaseTestCase):
 
     def test_patch_other_user_type_version_manager_returns_http_403(self):
         # Arrange
-        user = MockUser('2')
+        user = create_mock_user('2')
         self.data = [{'id': str(self.fixture.bucket_1.id)}]
 
         # Act
