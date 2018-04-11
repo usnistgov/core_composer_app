@@ -2,6 +2,9 @@
 
 {% block list_includes %}
 {% include 'core_composer_app/admin/types/versions/available.html' %}
-{% include 'core_composer_app/admin/types/versions/disabled.html' %}
+<!--FIXME: remove the control when versioning is available -->
+{% if not data.version_manager.user %}
+    {% include 'core_composer_app/admin/types/versions/disabled.html' %}
+{% endif %}
 {% endblock %}
 
