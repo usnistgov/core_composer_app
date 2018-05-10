@@ -1,16 +1,21 @@
 """Composer AJAX admin views
 """
-from django.http.response import HttpResponse, HttpResponseBadRequest
-from core_composer_app.components.bucket import api as bucket_api
-
 import json
 
+from django.core.urlresolvers import reverse_lazy
+from django.http.response import HttpResponse, HttpResponseBadRequest
+
+from core_composer_app.components.bucket import api as bucket_api
+from core_composer_app.components.bucket.models import Bucket
 from core_composer_app.components.type.models import Type
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_composer_app.components.type_version_manager import api as type_version_manager_api
+from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_composer_app.views.admin.forms import EditBucketForm
+from core_main_app.commons import exceptions
 from core_main_app.components.template.api import init_template_with_dependencies
 from core_main_app.components.version_manager import api as version_manager_api
 from core_main_app.views.admin.ajax import _get_xsd_content_from_html, _get_dependencies_dict
+from core_main_app.views.common.ajax import EditObjectModalView
 
 
 def delete_bucket(request):
@@ -66,3 +71,20 @@ def resolve_dependencies(request):
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
     return HttpResponse(json.dumps({}), content_type='application/javascript')
+
+
+class EditBucketView(EditObjectModalView):
+    form_class = EditBucketForm
+    model = Bucket
+    success_url = reverse_lazy("admin:core_composer_app_buckets")
+    success_message = 'Label edited with success.'
+
+    def _save(self, form):
+        # Save treatment.
+        try:
+            self.object.label = form.cleaned_data.get('label')
+            bucket_api.upsert(self.object)
+        except exceptions.NotUniqueError:
+            form.add_error(None, "A bucket with the same label already exists. Please choose another label.")
+        except Exception, e:
+            form.add_error(None, e.message)

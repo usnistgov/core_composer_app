@@ -1,7 +1,10 @@
 """Composer Admin Forms
 """
 from django import forms
+from mongodbforms import DocumentForm
+
 from core_composer_app.components.bucket import api as bucket_api
+from core_composer_app.components.bucket.models import Bucket
 
 
 class BucketForm(forms.Form):
@@ -38,3 +41,13 @@ class EditTypeBucketsForm(forms.Form):
     """
     buckets = BucketDataModelChoiceField(label='Select new buckets', queryset=bucket_api.get_all(), required=False,
                                          widget=forms.SelectMultiple(attrs={'class': 'form-control'}))
+
+
+class EditBucketForm(DocumentForm):
+    label = forms.CharField(label='Label',
+                            widget=forms.TextInput(attrs={'class': 'form-control',
+                                                          'placeholder': 'Enter the new label'}))
+
+    class Meta:
+        document = Bucket
+        fields = ['label']

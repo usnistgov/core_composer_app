@@ -12,6 +12,7 @@ from core_composer_app.components.bucket.models import Bucket
 from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager import api as type_version_manager_api
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_composer_app.views.admin.ajax import EditBucketView
 from core_composer_app.views.admin.forms import BucketForm, UploadTypeForm, EditTypeBucketsForm
 from core_composer_app.views.user.views import get_context_manage_type_version
 from core_main_app.commons import exceptions
@@ -49,19 +50,19 @@ def manage_types(request):
     }
 
     assets = {
-                "js": [
-                    {
-                        "path": 'core_main_app/common/js/templates/list/restore.js',
-                        "is_raw": False
-                    },
-                    {
-                        "path": 'core_main_app/common/js/templates/list/modals/disable.js',
-                        "is_raw": False
-                    },
-                    EditTemplateVersionManagerView.get_modal_js_path()
-                ],
-                "css": ['core_composer_app/common/css/bucket.css']
-            }
+        "js": [
+            {
+                "path": 'core_main_app/common/js/templates/list/restore.js',
+                "is_raw": False
+            },
+            {
+                "path": 'core_main_app/common/js/templates/list/modals/disable.js',
+                "is_raw": False
+            },
+            EditTemplateVersionManagerView.get_modal_js_path()
+        ],
+        "css": ['core_composer_app/common/css/bucket.css']
+    }
 
     modals = [
         "core_main_app/admin/templates/list/modals/disable.html",
@@ -89,25 +90,25 @@ def manage_type_versions(request, version_manager_id):
     context = get_context_manage_type_version(version_manager_id)
 
     assets = {
-                "js": [
-                    {
-                        "path": 'core_main_app/common/js/templates/versions/set_current.js',
-                        "is_raw": False
-                    },
-                    {
-                        "path": 'core_main_app/common/js/templates/versions/restore.js',
-                        "is_raw": False
-                    },
-                    {
-                        "path": 'core_main_app/common/js/templates/versions/modals/disable.js',
-                        "is_raw": False
-                    },
-                    {
-                        "path": 'core_main_app/common/js/backtoprevious.js',
-                        "is_raw": True
-                    }
-                ]
+        "js": [
+            {
+                "path": 'core_main_app/common/js/templates/versions/set_current.js',
+                "is_raw": False
+            },
+            {
+                "path": 'core_main_app/common/js/templates/versions/restore.js',
+                "is_raw": False
+            },
+            {
+                "path": 'core_main_app/common/js/templates/versions/modals/disable.js',
+                "is_raw": False
+            },
+            {
+                "path": 'core_main_app/common/js/backtoprevious.js',
+                "is_raw": True
             }
+        ]
+    }
 
     modals = ["core_main_app/admin/templates/versions/modals/disable.html"]
 
@@ -319,7 +320,7 @@ def upload_type_version(request, version_manager_id):
 
     # method is POST
     if request.method == 'POST':
-        form = UploadVersionForm(request.POST,  request.FILES)
+        form = UploadVersionForm(request.POST, request.FILES)
         context['upload_form'] = form
 
         if form.is_valid():
@@ -392,12 +393,14 @@ def manage_buckets(request):
             {
                 "path": 'core_main_app/common/js/backtoprevious.js',
                 "is_raw": True
-            }
+            },
+            EditBucketView.get_modal_js_path(),
         ],
         "css": ['core_composer_app/common/css/bucket.css']
     }
 
-    modals = ['core_composer_app/admin/buckets/modals/delete.html']
+    modals = ['core_composer_app/admin/buckets/modals/delete.html',
+              EditBucketView.get_modal_html_path()]
 
     return admin_render(request,
                         'core_composer_app/admin/buckets/list.html',

@@ -4,6 +4,7 @@ from django.conf.urls import url
 from django.contrib import admin
 
 from core_composer_app.views.admin import views as admin_views, ajax as admin_ajax
+from core_composer_app.views.admin.ajax import EditBucketView
 from core_main_app.views.common.ajax import EditTemplateVersionManagerView
 from django.core.urlresolvers import reverse_lazy
 
@@ -32,6 +33,9 @@ admin_urls = [
         name='core_composer_app_delete_bucket'),
     url(r'^type/resolve-dependencies', admin_ajax.resolve_dependencies,
         name='core_composer_app_resolve_dependencies'),
+    url(r'^bucket/(?P<pk>[\w-]+)/edit/$',
+        EditBucketView.as_view(),
+        name='core_composer_app_edit_bucket'),
 ]
 
 urls = admin.site.get_urls()
