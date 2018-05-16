@@ -4,9 +4,8 @@
 {% block box_title %}Add {{ data.object_name }}{% endblock %}
 
 {% block box_tools %}
-<a href="#" class="btn btn-default back-to-previous">
-     <i class="fa fa-arrow-left"></i> Previous page
-</a>
+{% url 'admin:core_composer_app_buckets' as bucket_list_url %}
+{% include 'core_main_app/common/buttons/go_to.html' with url=bucket_list_url label='Back to Buckets' %}
 {% endblock %}
 
 {% block box_body %}

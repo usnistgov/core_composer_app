@@ -1,9 +1,9 @@
 {% extends 'core_main_app/admin/templates/versions/available.html' %}
 
 {% block box_tools %}
-<a href="#" class="btn btn-default back-to-previous">
-     <i class="fa fa-arrow-left"></i> Previous page
-</a>
+
+{% url 'admin:core_composer_app_types' as type_list_url %}
+{% include 'core_main_app/common/buttons/go_to.html' with url=type_list_url label='Back to Types' %}
 
 {% if not data.version_manager.user %}
 <a href="{% url 'admin:core_composer_app_upload_type_version' data.version_manager.id %}"
