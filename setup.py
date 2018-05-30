@@ -8,6 +8,7 @@ def req_link(external_url):
     egg_link = sub(r'https://[^=]+=', '', external_url)
     return "==".join(egg_link.rsplit("-", 1))
 
+
 reqs_default = join(dirname(__file__), "requirements.txt")
 reqs_core = join(dirname(__file__), "requirements.core.txt")
 required = []
@@ -31,7 +32,7 @@ chdir(normpath(join(abspath(__file__), pardir)))
 
 setup(
     name="core_composer_app",
-    version="1.0.0-beta2",
+    version="1.0.0-beta3",
     description="Template and type composer for the curator core project",
     long_description=long_desc,
     author="NIST IT Lab",
