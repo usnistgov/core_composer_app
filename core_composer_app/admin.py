@@ -2,12 +2,23 @@
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.conf import settings
 
 from core_composer_app.views.admin import views as admin_views, ajax as admin_ajax
 from core_composer_app.views.admin.ajax import EditBucketView
 from core_main_app.views.common.ajax import EditTemplateVersionManagerView
 from django.core.urlresolvers import reverse_lazy
 
+parser_url = []
+if 'core_parser_app' in settings.INSTALLED_APPS:
+    from core_parser_app.views.admin import views as admin_parser_views
+    parser_url = [
+        url(r'^type/modules/(?P<pk>\w+)',
+            admin_parser_views.ManageModulesAdminView.as_view(
+                back_to_previous_url="admin:core_composer_app_manage_type_versions"
+            ),
+            name='core_composer_app_type_modules'),
+    ]
 
 admin_urls = [
     url(r'^types$', admin_views.manage_types,
@@ -24,7 +35,6 @@ admin_urls = [
         name='core_composer_app_manage_type_versions'),
     url(r'^type/buckets/(?P<version_manager_id>\w+)', admin_views.manage_type_buckets,
         name='core_composer_app_type_buckets'),
-
     url(r'^buckets$', admin_views.manage_buckets,
         name='core_composer_app_buckets'),
     url(r'^bucket/upload$', admin_views.upload_bucket,
@@ -39,4 +49,4 @@ admin_urls = [
 ]
 
 urls = admin.site.get_urls()
-admin.site.get_urls = lambda: admin_urls + urls
+admin.site.get_urls = lambda: admin_urls + urls + parser_url

@@ -2,6 +2,7 @@
 """
 from os.path import join
 
+from django.conf import settings
 from django.contrib.staticfiles import finders
 from django.core.urlresolvers import reverse_lazy
 
@@ -15,6 +16,7 @@ from core_main_app.utils import decorators as decorators
 from core_main_app.utils.file import read_file_content, get_file_http_response
 from core_main_app.utils.rendering import render
 from core_main_app.utils.xml import xsl_transform
+from core_main_app.views.user.views import get_context_manage_template_versions
 from xml_utils.commons.constants import LXML_SCHEMA_NAMESPACE
 from xml_utils.xsd_tree.operations.annotation import remove_annotations
 from xml_utils.xsd_tree.xsd_tree import XSDTree
@@ -208,75 +210,38 @@ def manage_type_versions(request, version_manager_id):
     Returns:
 
     """
-    context = get_context_manage_type_version(version_manager_id)
-
-    assets = {
-                "js": [
-                    {
-                        "path": 'core_main_app/common/js/templates/versions/set_current.js',
-                        "is_raw": False
-                    },
-                    {
-                        "path": 'core_main_app/common/js/templates/versions/restore.js',
-                        "is_raw": False
-                    },
-                    {
-                        "path": 'core_main_app/common/js/templates/versions/modals/disable.js',
-                        "is_raw": False
-                    },
-                    {
-                        "path": 'core_main_app/common/js/backtoprevious.js',
-                        "is_raw": True
-                    }
-                ]
-            }
-
-    modals = ["core_main_app/admin/templates/versions/modals/disable.html"]
-
-    return render(request,
-                  'core_composer_app/user/types/versions.html',
-                  assets=assets,
-                  modals=modals,
-                  context=context)
-
-
-def get_context_manage_type_version(version_manager_id):
-    """ Get the context to manage type version.
-
-    Args:
-        version_manager_id:
-
-    Returns:
-
-    """
-    # get the version manager
-    version_manager = None
     try:
+        # get the version manager
         version_manager = version_manager_api.get(version_manager_id)
-    except:
-        # TODO: catch good exception, redirect to error page
-        pass
+        context = get_context_manage_template_versions(version_manager)
+        if 'core_parser_app' in settings.INSTALLED_APPS:
+            context.update({"module_url": "core_composer_app_type_modules"})
 
-    # Use categorized version for easier manipulation in template
-    versions = version_manager.versions
-    categorized_versions = {
-        "available": [],
-        "disabled": []
-    }
-    for index, version in enumerate(versions, 1):
-        indexed_version = {
-            "index": index,
-            "object": version
-        }
+        assets = {
+                    "js": [
+                        {
+                            "path": 'core_main_app/common/js/templates/versions/set_current.js',
+                            "is_raw": False
+                        },
+                        {
+                            "path": 'core_main_app/common/js/templates/versions/restore.js',
+                            "is_raw": False
+                        },
+                        {
+                            "path": 'core_main_app/common/js/templates/versions/modals/disable.js',
+                            "is_raw": False
+                        }
+                    ]
+                }
 
-        if version not in version_manager.disabled_versions:
-            categorized_versions["available"].append(indexed_version)
-        else:
-            categorized_versions["disabled"].append(indexed_version)
-    version_manager.versions = categorized_versions
-    context = {
-        'object_name': 'Type',
-        "version_manager": version_manager
-    }
+        modals = ["core_main_app/admin/templates/versions/modals/disable.html"]
 
-    return context
+        return render(request,
+                      'core_composer_app/user/types/versions.html',
+                      assets=assets,
+                      modals=modals,
+                      context=context)
+    except Exception, e:
+        return render(request,
+                      'core_main_app/common/commons/error.html',
+                      context={'error': e.message})

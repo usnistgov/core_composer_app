@@ -1,5 +1,6 @@
 """Composer admin views
 """
+from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
@@ -14,7 +15,6 @@ from core_composer_app.components.type_version_manager import api as type_versio
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_composer_app.views.admin.ajax import EditBucketView
 from core_composer_app.views.admin.forms import BucketForm, UploadTypeForm, EditTypeBucketsForm
-from core_composer_app.views.user.views import get_context_manage_type_version
 from core_main_app.commons import exceptions
 from core_main_app.commons.exceptions import NotUniqueError
 from core_main_app.components.version_manager import api as version_manager_api
@@ -23,6 +23,7 @@ from core_main_app.utils.xml import get_imports_and_includes
 from core_main_app.views.admin.forms import UploadVersionForm
 from core_main_app.views.common.ajax import EditTemplateVersionManagerView
 from core_main_app.views.common.views import read_xsd_file
+from core_main_app.views.user.views import get_context_manage_template_versions
 
 
 @staff_member_required
@@ -87,36 +88,41 @@ def manage_type_versions(request, version_manager_id):
     Returns:
 
     """
-    context = get_context_manage_type_version(version_manager_id)
+    try:
+        # get the version manager
+        version_manager = version_manager_api.get(version_manager_id)
+        context = get_context_manage_template_versions(version_manager)
+        if 'core_parser_app' in settings.INSTALLED_APPS:
+            context.update({"module_url": "admin:core_composer_app_type_modules"})
 
-    assets = {
-        "js": [
-            {
-                "path": 'core_main_app/common/js/templates/versions/set_current.js',
-                "is_raw": False
-            },
-            {
-                "path": 'core_main_app/common/js/templates/versions/restore.js',
-                "is_raw": False
-            },
-            {
-                "path": 'core_main_app/common/js/templates/versions/modals/disable.js',
-                "is_raw": False
-            },
-            {
-                "path": 'core_main_app/common/js/backtoprevious.js',
-                "is_raw": True
-            }
-        ]
-    }
+        assets = {
+            "js": [
+                {
+                    "path": 'core_main_app/common/js/templates/versions/set_current.js',
+                    "is_raw": False
+                },
+                {
+                    "path": 'core_main_app/common/js/templates/versions/restore.js',
+                    "is_raw": False
+                },
+                {
+                    "path": 'core_main_app/common/js/templates/versions/modals/disable.js',
+                    "is_raw": False
+                }
+            ]
+        }
 
-    modals = ["core_main_app/admin/templates/versions/modals/disable.html"]
+        modals = ["core_main_app/admin/templates/versions/modals/disable.html"]
 
-    return admin_render(request,
-                        'core_composer_app/admin/types/versions.html',
-                        assets=assets,
-                        modals=modals,
-                        context=context)
+        return admin_render(request,
+                            'core_composer_app/admin/types/versions.html',
+                            assets=assets,
+                            modals=modals,
+                            context=context)
+    except Exception, e:
+        return admin_render(request,
+                            'core_main_app/common/commons/error.html',
+                            context={'error': e.message})
 
 
 @staff_member_required

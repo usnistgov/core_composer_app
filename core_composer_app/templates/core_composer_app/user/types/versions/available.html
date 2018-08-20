@@ -3,7 +3,7 @@
 {% block box_actions %}
    {% if 'core_parser_app' in INSTALLED_APPS %}
     <a class="btn btn-default modules"
-        href="{% url 'core_parser_app_template_modules' version.object %}">
+        href="{% url data.module_url version.object %}">
         <i class="fa fa-cubes"></i> Modules
     </a>
    {% endif %}
