@@ -2,13 +2,14 @@
 
 {% block box_tools %}
 
-{% url 'admin:core_composer_app_types' as type_list_url %}
+{% if not data.version_manager.user %}
+	<a href="{% url 'admin:core_composer_app_upload_type_version' data.version_manager.id %}"
+	   class="pull-right btn btn-default">
+		<i class="fa fa-upload"></i> Upload New Version
+	</a>
+{% endif %}
+
+{% url data.back_url as type_list_url %}
 {% include 'core_main_app/common/buttons/go_to.html' with url=type_list_url label='Back to Types' %}
 
-{% if not data.version_manager.user %}
-<a href="{% url 'admin:core_composer_app_upload_type_version' data.version_manager.id %}"
-   class="pull-right btn btn-default">
-	<i class="fa fa-upload"></i> Upload New Version
-</a>
-{% endif %}
 {% endblock %}

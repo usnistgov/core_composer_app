@@ -92,8 +92,17 @@ def manage_type_versions(request, version_manager_id):
         # get the version manager
         version_manager = version_manager_api.get(version_manager_id)
         context = get_context_manage_template_versions(version_manager)
+
+        # updating context regarding the installed apps
+        # default back_url initialization
+        context.update({"back_url": "admin:core_composer_app_types"})
         if 'core_parser_app' in settings.INSTALLED_APPS:
             context.update({"module_url": "admin:core_composer_app_type_modules"})
+        if 'core_dashboard_app' in settings.INSTALLED_APPS:
+            # the dashboard exposes the user's version managers
+            # in this view, we come from the dashboard
+            if version_manager.user:
+                context.update({"back_url": "admin:core_dashboard_types"})
 
         assets = {
             "js": [
