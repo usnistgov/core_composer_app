@@ -32,7 +32,7 @@ chdir(normpath(join(abspath(__file__), pardir)))
 
 setup(
     name="core_composer_app",
-    version="1.0.0-rc1",
+    version="1.0.0-rc2",
     description="Template and type composer for the curator core project",
     long_description=long_desc,
     author="NIST IT Lab",
