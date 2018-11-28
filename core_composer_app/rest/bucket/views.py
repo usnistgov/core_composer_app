@@ -16,21 +16,31 @@ from core_main_app.utils.decorators import api_staff_member_required
 
 
 class BucketList(APIView):
+    """ List all buckets, or create a new one.
+    """
 
     def get(self, request):
-        """ Get buckets.
+        """ Get all buckets
 
-        /rest/bucket/
-        /rest/bucket/?label=<label>
+        Url Parameters:
 
-        Query Params:
             label: label
 
+        Examples:
+
+            ../bucket/
+            ../bucket?label=[label]
+
         Args:
-            request:
+
+            request: HTTP request
 
         Returns:
 
+            - code: 200
+              content: List of buckets
+            - code: 500
+              content: Internal server error
         """
         try:
             # Get objects
@@ -50,21 +60,27 @@ class BucketList(APIView):
 
     @method_decorator(api_staff_member_required())
     def post(self, request):
-        """ Create bucket
+        """ Create a bucket
 
-        /rest/bucket/
+        Parameters:
 
-        Data:
             {
-            "label": "label",
-            "types": ["<type_version_manager_id>"]
+                "label": "label",
+                "types": ["<type_version_manager_id>"]
             }
 
         Args:
-            request:
+
+            request: HTTP request
 
         Returns:
 
+            - code: 201
+              content: Created bucket
+            - code: 400
+              content: Validation error
+            - code: 500
+              content: Internal server error
         """
         try:
             # Build serializer
@@ -86,18 +102,19 @@ class BucketList(APIView):
 
 
 class BucketDetail(APIView):
-    """
-    Retrieve, update or delete a bucket.
+    """ Retrieve, update or delete a bucket
     """
 
     def get_object(self, pk):
-        """ Get data from db
+        """ Get bucket from db
 
         Args:
-            pk:
+
+            pk: ObjectId
 
         Returns:
 
+            Bucket
         """
         try:
             return bucket_api.get_by_id(pk)
@@ -105,14 +122,21 @@ class BucketDetail(APIView):
             raise Http404
 
     def get(self, request, pk):
-        """ Retrieve bucket
+        """ Retrieve a bucket
 
         Args:
-            request:
-            pk:
+
+            request: HTTP request
+            pk: ObjectId
 
         Returns:
 
+            - code: 200
+              content: Bucket
+            - code: 404
+              content: Object was not found
+            - code: 500
+              content: Internal server error
         """
         try:
             # Get object
@@ -135,11 +159,18 @@ class BucketDetail(APIView):
         """ Delete a bucket
 
         Args:
-            request:
-            pk:
+
+            request: HTTP request
+            pk: ObjectId
 
         Returns:
 
+            - code: 204
+              content: Deletion succeed
+            - code: 404
+              content: Object was not found
+            - code: 500
+              content: Internal server error
         """
         try:
             # Get object
@@ -161,15 +192,27 @@ class BucketDetail(APIView):
     def patch(self, request, pk):
         """ Update bucket
 
-        Data:
-            {"label": "<label>"}
+        Parameters:
+
+            {
+                "label": "<label>"
+            }
 
         Args:
-            request:
-            pk:
+
+            request: HTTP request
+            pk: ObjectId
 
         Returns:
 
+            - code: 200
+              content: Updated bucket
+            - code: 400
+              content: Validation error
+            - code: 404
+              content: Object was not found
+            - code: 500
+              content: Internal server error
         """
         try:
             # Get object
@@ -198,21 +241,41 @@ class BucketDetail(APIView):
 
 
 class TypeVersionManagerBuckets(AbstractTemplateVersionManagerDetail):
+    """ Set new list of buckets for a type version manager
+    """
+
     @method_decorator(api_staff_member_required())
     def patch(self, request, pk):
-        """ Set new list of buckets for a type version manager.
+        """ Set new list of buckets for a type version manager
 
-        /rest/buckets/type-version-manager/<tvm_id>/
+        Parameters:
 
-        Data:
-        [{"id":"<bucket_id>"},{"id":"<bucket_id>"}]
+            [
+                {
+                    "id":"<bucket_id>"
+                },
+                {
+                    "id":"<bucket_id>"
+                }
+            ]
 
         Args:
-            request:
-            pk:
+
+            request: HTTP request
+            pk: ObjectId
 
         Returns:
 
+            - code: 200
+              content: None
+            - code: 400
+              content: Validation error
+            - code: 403
+              content: Authentication error
+            - code: 404
+              content: Object was not found
+            - code: 500
+              content: Internal server error
         """
         try:
             # Get object

@@ -14,29 +14,38 @@ from core_main_app.rest.template_version_manager.abstract_views import AbstractT
 
 
 class AbstractTypeList(APIView):
-    """
-    Create a template.
+    """ Create a type & type version manager
     """
 
     __metaclass__ = ABCMeta
 
     def post(self, request):
-        """ Create a template.
+        """ Create a type & type version manager
 
-        POST data
-        {
-        "title": "title",
-        "filename": "filename",
-        "content": "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'><xs:simpleType name='root'/></xs:schema>"
-        }
+        Parameters:
 
-        Note: "dependencies"= json.dumps({"schemaLocation1": "id1" ,"schemaLocation2":"id2"})
+            {
+                "title": "title",
+                "filename": "filename",
+                "content": "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'><xs:simpleType name='root'/></xs:schema>"
+            }
+
+        Note:
+
+            "dependencies" = json.dumps({"schemaLocation1": "id1" ,"schemaLocation2":"id2"})
 
         Args:
-            request:
+
+            request: HTTP request
 
         Returns:
 
+            - code: 201
+              content: Type
+            - code: 400
+              content: Validation error / bad request
+            - code: 500
+              content: Internal server error
         """
         try:
             # Build serializers
@@ -67,28 +76,43 @@ class AbstractTypeList(APIView):
 
     @abstractmethod
     def get_user(self):
+        """ Get a user
+        """
         raise NotImplementedError("get_user method is not implemented.")
 
 
 class TypeVersion(AbstractTemplateVersionManagerDetail):
-    """ Create a version.
+    """ Create a type version
     """
+
     def post(self, request, pk):
-        """ Create a type.
+        """ Create a type version
 
-        POST data
-        {
-        "filename": "filename",
-        "content": "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'><xs:simpleType name='root'/></xs:schema>"
-        }
+        Parameters:
 
-        Note: "dependencies"= json.dumps({"schemaLocation1": "id1" ,"schemaLocation2":"id2"})
+            {
+                "filename": "filename",
+                "content": "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'><xs:simpleType name='root'/></xs:schema>"
+            }
+
+        Note:
+
+            "dependencies"= json.dumps({"schemaLocation1": "id1" ,"schemaLocation2":"id2"})
 
         Args:
-            request:
+
+            request: HTTP request
 
         Returns:
 
+            - code: 201
+              content: Type
+            - code: 400
+              content: Validation error / bad request
+            - code: 404
+              content: Object was not found
+            - code: 500
+              content: Internal server error
         """
         try:
             # Get object
