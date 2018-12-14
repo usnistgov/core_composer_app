@@ -32,7 +32,7 @@ class AbstractTypeList(APIView):
 
         Note:
 
-            "dependencies" = json.dumps({"schemaLocation1": "id1" ,"schemaLocation2":"id2"})
+            "dependencies_dict": json.dumps({"schemaLocation1": "id1" ,"schemaLocation2":"id2"})
 
         Args:
 
@@ -97,7 +97,7 @@ class TypeVersion(AbstractTemplateVersionManagerDetail):
 
         Note:
 
-            "dependencies"= json.dumps({"schemaLocation1": "id1" ,"schemaLocation2":"id2"})
+            "dependencies_dict": json.dumps({"schemaLocation1": "id1" ,"schemaLocation2":"id2"})
 
         Args:
 
