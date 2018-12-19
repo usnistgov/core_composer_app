@@ -4,6 +4,7 @@ from django.http import Http404
 from django.utils.decorators import method_decorator
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -18,6 +19,8 @@ from core_main_app.utils.decorators import api_staff_member_required
 class BucketList(APIView):
     """ List all buckets, or create a new one.
     """
+
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         """ Get all buckets
@@ -104,6 +107,8 @@ class BucketList(APIView):
 class BucketDetail(APIView):
     """ Retrieve, update or delete a bucket
     """
+
+    permission_classes = (IsAuthenticated,)
 
     def get_object(self, pk):
         """ Get bucket from db

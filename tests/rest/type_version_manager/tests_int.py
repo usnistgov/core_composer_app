@@ -340,7 +340,7 @@ class TestGlobalTypeList(MongoIntegrationBaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
-    def test_post_returns_http_201_if_user_is_superuser(self):
+    def test_post_returns_http_403_if_user_is_superuser(self):
         # Arrange
         user = create_mock_user('1', is_superuser=True)
 
@@ -350,7 +350,7 @@ class TestGlobalTypeList(MongoIntegrationBaseTestCase):
                                                data=self.data)
 
         # Assert
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     def test_post_returns_http_403_if_user_does_not_have_permission(self):
