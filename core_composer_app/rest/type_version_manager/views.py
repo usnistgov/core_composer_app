@@ -1,6 +1,7 @@
 """ REST views for the type version manager API
 """
 from django.utils.decorators import method_decorator
+from rest_framework.permissions import IsAuthenticated
 
 from core_composer_app.components.type_version_manager import api as type_version_manager_api
 from core_composer_app.rest.type_version_manager.abstract_views import AbstractTypeList
@@ -26,6 +27,8 @@ class UserTypeVersionManagerList(AbstractTemplateVersionManagerList):
     """ List all user type version managers
     """
 
+    permission_classes = (IsAuthenticated, )
+
     def get_template_version_managers(self):
         """ Get all user type version managers
 
@@ -39,6 +42,8 @@ class UserTypeVersionManagerList(AbstractTemplateVersionManagerList):
 class UserTypeList(AbstractTypeList):
     """ Create a user type
     """
+
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         """ Create a user type & type version manager
