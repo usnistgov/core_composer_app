@@ -91,7 +91,7 @@ def manage_type_versions(request, version_manager_id):
     try:
         # get the version manager
         version_manager = version_manager_api.get(version_manager_id)
-        context = get_context_manage_template_versions(version_manager)
+        context = get_context_manage_template_versions(version_manager, "Type")
 
         # updating context regarding the installed apps
         # default back_url initialization

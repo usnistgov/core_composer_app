@@ -13,3 +13,13 @@
 {% include 'core_main_app/common/buttons/go_to.html' with url=type_list_url label='Back to Types' %}
 
 {% endblock %}
+
+<!-- TODO: This code is duplicated from core_main_app -->
+{% block box_actions %}
+	{% if 'core_parser_app' in INSTALLED_APPS %}
+		<a class="btn btn-default modules"
+			href="{% url data.module_url version.object %}">
+			<i class="fa fa-cubes"></i> Modules
+		</a>
+	{% endif %}
+{% endblock %}

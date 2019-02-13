@@ -1,13 +1,13 @@
 """Url router for the administration site
 """
+from django.conf import settings
 from django.conf.urls import url
 from django.contrib import admin
-from django.conf import settings
+from django.core.urlresolvers import reverse_lazy
 
 from core_composer_app.views.admin import views as admin_views, ajax as admin_ajax
 from core_composer_app.views.admin.ajax import EditBucketView
 from core_main_app.views.common.ajax import EditTemplateVersionManagerView
-from django.core.urlresolvers import reverse_lazy
 
 parser_url = []
 if 'core_parser_app' in settings.INSTALLED_APPS:
