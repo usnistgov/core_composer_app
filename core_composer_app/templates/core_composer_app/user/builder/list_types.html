@@ -4,7 +4,9 @@
         {% if not type.is_disabled %}
         <tr>
             <td templateID='{{type.current}}'>{{ type.title }}</td>
-            <td><button class="btn insert">Insert</button>
+            <td>
+                <button class="btn btn-default insert">
+                    <i class="fa fa-plus-square"></i> Insert</button>
             </td>
         </tr>
         {% endif %}

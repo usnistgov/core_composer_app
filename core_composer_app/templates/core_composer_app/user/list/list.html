@@ -2,5 +2,7 @@
 
 {% block actions %}
 <a href="{% url 'core_composer_build_template' template.current %}"
-           class="btn btn-primary" role="button">Select {{ object_type }}</a>
+           class="btn btn-primary" role="button">
+    <i class="fa fa-play"></i> Select {{ object_type }}
+</a>
 {% endblock %}
