@@ -22,4 +22,12 @@
 			<i class="fa fa-cubes"></i> Modules
 		</a>
 	{% endif %}
+	{% if version.object != data.version_manager.current %}
+		<span class='icon legend long current' objectid='{{ version.object }}'>
+		   <a class="btn btn-default" href="#"><i class="fa fa-bookmark"></i> Set Current</a>
+		</span>
+		<span class='icon legend delete' objectid='{{ version.object }}'>
+		   <a class="btn btn-danger" href="#"><i class="fa fa-trash"></i> Disable</a>
+		</span>
+	{% endif %}
 {% endblock %}
