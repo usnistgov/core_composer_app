@@ -116,7 +116,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
     def test_post_with_one_correct_type_returns_http_201(self):
         # Arrange
         user = create_mock_user('1', is_staff=True)
-        self.data['types'] = [self.fixture.type_vm_1.id]
+        self.data['types'] = [str(self.fixture.type_vm_1.id)]
 
         # Act
         response = RequestMock.do_request_post(views.BucketList.as_view(),
@@ -129,7 +129,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
     def test_post_with_one_correct_type_returns_response_containing_one_type(self):
         # Arrange
         user = create_mock_user('1', is_staff=True)
-        self.data['types'] = [self.fixture.type_vm_1.id]
+        self.data['types'] = [str(self.fixture.type_vm_1.id)]
 
         # Act
         response = RequestMock.do_request_post(views.BucketList.as_view(),
@@ -142,7 +142,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
     def test_post_with_two_correct_type_returns_http_201(self):
         # Arrange
         user = create_mock_user('1', is_staff=True)
-        self.data['types'] = [self.fixture.type_vm_1.id, self.fixture.type_vm_2.id]
+        self.data['types'] = [str(self.fixture.type_vm_1.id), str(self.fixture.type_vm_2.id)]
 
         # Act
         response = RequestMock.do_request_post(views.BucketList.as_view(),
@@ -155,7 +155,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
     def test_post_with_one_correct_type_returns_response_containing_two_types(self):
         # Arrange
         user = create_mock_user('1', is_staff=True)
-        self.data['types'] = [self.fixture.type_vm_1.id, self.fixture.type_vm_2.id]
+        self.data['types'] = [str(self.fixture.type_vm_1.id), str(self.fixture.type_vm_2.id)]
 
         # Act
         response = RequestMock.do_request_post(views.BucketList.as_view(),
