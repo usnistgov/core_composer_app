@@ -35,7 +35,7 @@ def insert(type_version_manager, type_object, list_bucket_ids=None):
         template_api.set_display_name(type_object, display_name)
         # update saved type
         return type_version_manager
-    except Exception, e:
+    except Exception as e:
         type_api.delete(type_object)
         raise e
 

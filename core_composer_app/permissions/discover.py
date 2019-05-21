@@ -1,5 +1,6 @@
 """ Initialize permissions for core composer app
 """
+from __future__ import print_function
 from django.contrib.auth.models import Permission, Group
 from core_main_app.permissions import rights as main_rights
 from core_composer_app.permissions import rights as composer_rights
@@ -24,5 +25,5 @@ def init_permissions():
         default_group.permissions.add(composer_access_perm,
                                       composer_save_template_perm,
                                       composer_save_type_perm)
-    except Exception, e:
+    except Exception as e:
         print('ERROR : Impossible to init the rules : ' + e.message)

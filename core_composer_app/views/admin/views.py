@@ -128,7 +128,7 @@ def manage_type_versions(request, version_manager_id):
                             assets=assets,
                             modals=modals,
                             context=context)
-    except Exception, e:
+    except Exception as e:
         return admin_render(request,
                             'core_main_app/common/commons/error.html',
                             context={'error': e.message})
@@ -213,9 +213,9 @@ def _save_type(request, assets, context):
         type_version_manager = TypeVersionManager(title=name)
         type_version_manager_api.insert(type_version_manager, type_object, buckets)
         return HttpResponseRedirect(reverse("admin:core_composer_app_types"))
-    except exceptions.XSDError, xsd_error:
+    except exceptions.XSDError as xsd_error:
         return _handle_xsd_errors(request, assets, context, xsd_error, xsd_data, xsd_file.name)
-    except Exception, e:
+    except Exception as e:
         context['errors'] = html_escape(e.message)
         return _upload_type_response(request, assets, context)
 
@@ -372,9 +372,9 @@ def _save_type_version(request, assets, context, type_version_manager):
         type_version_manager_api.insert(type_version_manager, type_object)
         return HttpResponseRedirect(reverse("admin:core_composer_app_manage_type_versions",
                                             kwargs={'version_manager_id': str(type_version_manager.id)}))
-    except exceptions.XSDError, xsd_error:
+    except exceptions.XSDError as xsd_error:
         return _handle_xsd_errors(request, assets, context, xsd_error, xsd_data, xsd_file.name)
-    except Exception, e:
+    except Exception as e:
         context['errors'] = html_escape(e.message)
         return _upload_type_response(request, assets, context)
 
@@ -456,7 +456,7 @@ def upload_bucket(request):
                 return redirect(reverse('admin:core_composer_app_buckets'))
             except NotUniqueError:
                 context['errors'] = "A bucket with the same name already exists."
-            except Exception, e:
+            except Exception as e:
                 context['errors'] = e.message
 
     else:

@@ -32,7 +32,7 @@ def delete_bucket(request):
 
         bucket = bucket_api.get_by_id(bucket_id)
         bucket_api.delete(bucket)
-    except Exception, e:
+    except Exception as e:
         return HttpResponseBadRequest(e.message)
 
     return HttpResponse(json.dumps({}), content_type='application/javascript')
@@ -67,7 +67,7 @@ def resolve_dependencies(request):
         else:
             type_version_manager = TypeVersionManager(title=name)
         type_version_manager_api.insert(type_version_manager, type_object, buckets)
-    except Exception, e:
+    except Exception as e:
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
     return HttpResponse(json.dumps({}), content_type='application/javascript')
@@ -86,5 +86,5 @@ class EditBucketView(EditObjectModalView):
             bucket_api.upsert(self.object)
         except exceptions.NotUniqueError:
             form.add_error(None, "A bucket with the same label already exists. Please choose another label.")
-        except Exception, e:
+        except Exception as e:
             form.add_error(None, e.message)

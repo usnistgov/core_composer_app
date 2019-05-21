@@ -67,7 +67,7 @@ def insert_element_sequence(request):
                    'type_name': type_name}
         new_element_html = template.render(context)
         return HttpResponse(json.dumps({'new_element': new_element_html}), content_type='application/json')
-    except Exception, e:
+    except Exception as e:
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
@@ -93,7 +93,7 @@ def change_xsd_type(request):
         # save the tree in the session
         request.session['newXmlTemplateCompose'] = xsd_string
         return HttpResponse(json.dumps({}), content_type='application/javascript')
-    except Exception, e:
+    except Exception as e:
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
@@ -117,7 +117,7 @@ def change_root_type_name(request):
 
         request.session['newXmlTemplateCompose'] = xsd_string
         return HttpResponse(json.dumps({}), content_type='application/javascript')
-    except Exception, e:
+    except Exception as e:
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
@@ -152,7 +152,7 @@ def rename_element(request):
         request.session['newXmlTemplateCompose'] = xsd_string
 
         return HttpResponse(json.dumps({}), content_type='application/javascript')
-    except Exception, e:
+    except Exception as e:
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
@@ -178,7 +178,7 @@ def delete_element(request):
         request.session['newXmlTemplateCompose'] = xsd_string
 
         return HttpResponse(json.dumps({}), content_type='application/javascript')
-    except Exception, e:
+    except Exception as e:
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
@@ -202,7 +202,7 @@ def get_element_occurrences(request):
 
         response_dict = {'minOccurs': min_occurs, 'maxOccurs': max_occurs}
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
-    except Exception, e:
+    except Exception as e:
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
@@ -229,7 +229,7 @@ def set_element_occurrences(request):
         # save the tree in the session
         request.session['newXmlTemplateCompose'] = xsd_string
         return HttpResponse(json.dumps({}), content_type='application/javascript')
-    except Exception, e:
+    except Exception as e:
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
@@ -259,7 +259,7 @@ def save_template(request):
 
             if error is not None:
                 return _error_response('This is not a valid XML schema. ' + error)
-        except Exception, e:
+        except Exception as e:
             return _error_response('This is not a valid XML schema. ' + e.message)
 
         # get list of dependencies
@@ -274,11 +274,11 @@ def save_template(request):
             template_version_manager_api.insert(template_version_manager, template)
         except exceptions.NotUniqueError:
             return HttpResponseBadRequest("A template with the same name already exists. Please choose another name.")
-        except Exception, e:
+        except Exception as e:
             return _error_response(e.message)
 
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
-    except Exception, e:
+    except Exception as e:
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 
@@ -319,7 +319,7 @@ def save_type(request):
 
             if error is not None:
                 return _error_response('This is not a valid XML schema. ' + error)
-        except Exception, e:
+        except Exception as e:
             return _error_response('This is not a valid XML schema. ' + e.message)
 
         dependencies = _get_dependencies_ids(request.session["includedTypesCompose"])
@@ -331,13 +331,13 @@ def save_type(request):
             type_object = Type(filename=type_name, content=xsd_string, dependencies=dependencies)
             # save type in database
             type_version_manager_api.insert(type_version_manager, type_object)
-        except exceptions.NotUniqueError, e:
+        except exceptions.NotUniqueError as e:
             return HttpResponseBadRequest("A type with the same name already exists. Please choose another name.")
-        except Exception, e:
+        except Exception as e:
             return _error_response(e.message)
 
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
-    except Exception, e:
+    except Exception as e:
         return HttpResponseBadRequest(e.message, content_type='application/javascript')
 
 

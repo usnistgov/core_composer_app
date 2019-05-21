@@ -241,7 +241,7 @@ def manage_type_versions(request, version_manager_id):
                       assets=assets,
                       modals=modals,
                       context=context)
-    except Exception, e:
+    except Exception as e:
         return render(request,
                       'core_main_app/common/commons/error.html',
                       context={'error': e.message})
