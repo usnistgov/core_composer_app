@@ -1,5 +1,6 @@
 """Bucket model
 """
+from builtins import str
 from django_mongoengine import fields, Document
 from mongoengine import errors as mongoengine_errors
 
@@ -27,9 +28,9 @@ class Bucket(Document):
         try:
             return Bucket.objects.get(pk=str(bucket_id))
         except mongoengine_errors.DoesNotExist as e:
-            raise exceptions.DoesNotExist(e.message)
+            raise exceptions.DoesNotExist(str(e))
         except Exception as ex:
-            raise exceptions.ModelError(ex.message)
+            raise exceptions.ModelError(str(ex))
 
     @staticmethod
     def get_all():
@@ -58,6 +59,6 @@ class Bucket(Document):
         try:
             return self.save()
         except mongoengine_errors.NotUniqueError as e:
-            raise exceptions.NotUniqueError(e.message)
+            raise exceptions.NotUniqueError(str(e))
         except Exception as ex:
-            raise exceptions.ModelError(ex.message)
+            raise exceptions.ModelError(str(ex))

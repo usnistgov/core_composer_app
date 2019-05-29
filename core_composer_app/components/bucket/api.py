@@ -1,5 +1,6 @@
 """Bucket api
 """
+from builtins import range
 from core_composer_app.components.bucket.models import Bucket
 from core_main_app.commons.exceptions import ApiError
 

@@ -1,6 +1,7 @@
 """
 Type models
 """
+from builtins import str
 from core_main_app.commons import exceptions
 from core_main_app.components.template.models import Template
 from django_mongoengine import fields
@@ -25,9 +26,9 @@ class Type(Template):
         try:
             return Type.objects().get(pk=str(type_id))
         except mongoengine_errors.DoesNotExist as e:
-            raise exceptions.DoesNotExist(e.message)
+            raise exceptions.DoesNotExist(str(e))
         except Exception as e:
-            raise exceptions.ModelError(e.message)
+            raise exceptions.ModelError(str(e))
 
     @staticmethod
     def get_all():

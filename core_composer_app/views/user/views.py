@@ -1,5 +1,6 @@
 """Composer app user views
 """
+from builtins import str
 from os.path import join
 
 from django.conf import settings
@@ -244,4 +245,4 @@ def manage_type_versions(request, version_manager_id):
     except Exception as e:
         return render(request,
                       'core_main_app/common/commons/error.html',
-                      context={'error': e.message})
+                      context={'error': str(e)})

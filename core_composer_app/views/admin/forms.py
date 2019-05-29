@@ -1,5 +1,6 @@
 """Composer Admin Forms
 """
+from builtins import object
 from django import forms
 from mongodbforms import DocumentForm
 
@@ -48,6 +49,6 @@ class EditBucketForm(DocumentForm):
                             widget=forms.TextInput(attrs={'class': 'form-control',
                                                           'placeholder': 'Enter the new label'}))
 
-    class Meta:
+    class Meta(object):
         document = Bucket
         fields = ['label']

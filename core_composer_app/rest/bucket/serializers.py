@@ -1,5 +1,6 @@
 """Serializers used throughout the bucket Rest API
 """
+from builtins import object
 from django.http import Http404
 from rest_framework_mongoengine.serializers import DocumentSerializer
 
@@ -13,7 +14,7 @@ from core_main_app.commons.exceptions import DoesNotExist
 class BucketSerializer(DocumentSerializer):
     """ Bucket serializer
     """
-    class Meta:
+    class Meta(object):
         """ Meta
         """
         model = Bucket
@@ -43,7 +44,7 @@ class BucketsSerializer(DocumentSerializer):
     """
     id = CharField()
 
-    class Meta:
+    class Meta(object):
         model = Bucket
         fields = ('id', )
 

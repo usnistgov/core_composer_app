@@ -1,5 +1,6 @@
 """ Integration Test for Type Version Manager Rest API
 """
+from builtins import str
 import json
 
 from django.core.urlresolvers import reverse

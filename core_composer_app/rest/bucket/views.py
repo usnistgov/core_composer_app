@@ -58,7 +58,7 @@ class BucketList(APIView):
             serializer = BucketSerializer(object_list, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as api_exception:
-            content = {'message': api_exception.message}
+            content = {'message': str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @method_decorator(api_staff_member_required())
@@ -100,7 +100,7 @@ class BucketList(APIView):
             content = {'message': validation_exception.detail}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
-            content = {'message': api_exception.message}
+            content = {'message': str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -156,7 +156,7 @@ class BucketDetail(APIView):
             content = {'message': 'Bucket not found.'}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except Exception as api_exception:
-            content = {'message': api_exception.message}
+            content = {'message': str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @method_decorator(api_staff_member_required())
@@ -190,7 +190,7 @@ class BucketDetail(APIView):
             content = {'message': 'Bucket not found.'}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except Exception as api_exception:
-            content = {'message': api_exception.message}
+            content = {'message': str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @method_decorator(api_staff_member_required())
@@ -241,7 +241,7 @@ class BucketDetail(APIView):
             content = {'message': 'Bucket not found.'}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except Exception as api_exception:
-            content = {'message': api_exception.message}
+            content = {'message': str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -303,12 +303,12 @@ class TypeVersionManagerBuckets(AbstractTemplateVersionManagerDetail):
             content = {'message': 'Object not found.'}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except AccessControlError as access_error:
-            content = {'message': access_error.message}
+            content = {'message': str(access_error)}
             return Response(content, status=status.HTTP_403_FORBIDDEN)
         except ValidationError as validation_exception:
             content = {'message': validation_exception.detail}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
-            content = {'message': api_exception.message}
+            content = {'message': str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

@@ -26,4 +26,4 @@ def init_permissions():
                                       composer_save_template_perm,
                                       composer_save_type_perm)
     except Exception as e:
-        print('ERROR : Impossible to init the rules : ' + e.message)
+        print('ERROR : Impossible to init the rules : ' + str(e))

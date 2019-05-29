@@ -11,13 +11,12 @@ from rest_framework.views import APIView
 from core_composer_app.rest.type_version_manager.serializers import CreateTypeSerializer, TypeVersionManagerSerializer
 from core_main_app.commons.exceptions import NotUniqueError, XSDError
 from core_main_app.rest.template_version_manager.abstract_views import AbstractTemplateVersionManagerDetail
+from future.utils import with_metaclass
 
 
-class AbstractTypeList(APIView):
+class AbstractTypeList(with_metaclass(ABCMeta, APIView)):
     """ Create a type & type version manager
     """
-
-    __metaclass__ = ABCMeta
 
     def post(self, request):
         """ Create a type & type version manager
@@ -68,10 +67,10 @@ class AbstractTypeList(APIView):
             content = {'message': "A type with the same title already exists."}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except XSDError as xsd_error:
-            content = {'message': "XSD Error: " + xsd_error.message}
+            content = {'message': "XSD Error: " + str(xsd_error)}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
-            content = {'message': api_exception.message}
+            content = {'message': str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @abstractmethod
@@ -135,5 +134,5 @@ class TypeVersion(AbstractTemplateVersionManagerDetail):
             content = {'message': validation_exception.detail}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
-            content = {'message': api_exception.message}
+            content = {'message': str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

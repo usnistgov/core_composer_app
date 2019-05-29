@@ -367,7 +367,7 @@ def _insert_element_type(xsd_string, xpath, type_content, element_type_name, inc
         root = xsd_tree.getroot()
         root_ns_map = root.nsmap
 
-        if type_target_namespace_prefix in root_ns_map.keys() and \
+        if type_target_namespace_prefix in list(root_ns_map.keys()) and \
                         root_ns_map[type_target_namespace_prefix] != type_target_namespace:
             raise CoreError('The namespace prefix is already declared for a different namespace.')
         else:

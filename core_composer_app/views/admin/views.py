@@ -1,5 +1,6 @@
 """Composer admin views
 """
+from builtins import str
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse
@@ -131,7 +132,7 @@ def manage_type_versions(request, version_manager_id):
     except Exception as e:
         return admin_render(request,
                             'core_main_app/common/commons/error.html',
-                            context={'error': e.message})
+                            context={'error': str(e)})
 
 
 @staff_member_required
@@ -216,7 +217,7 @@ def _save_type(request, assets, context):
     except exceptions.XSDError as xsd_error:
         return _handle_xsd_errors(request, assets, context, xsd_error, xsd_data, xsd_file.name)
     except Exception as e:
-        context['errors'] = html_escape(e.message)
+        context['errors'] = html_escape(str(e))
         return _upload_type_response(request, assets, context)
 
 
@@ -241,7 +242,7 @@ def _handle_xsd_errors(request, assets, context, xsd_error, xsd_content, filenam
                                                                        filename)
         return _upload_type_response(request, assets, context)
     else:
-        context['errors'] = html_escape(xsd_error.message)
+        context['errors'] = html_escape(str(xsd_error))
         return _upload_type_response(request, assets, context)
 
 
@@ -375,7 +376,7 @@ def _save_type_version(request, assets, context, type_version_manager):
     except exceptions.XSDError as xsd_error:
         return _handle_xsd_errors(request, assets, context, xsd_error, xsd_data, xsd_file.name)
     except Exception as e:
-        context['errors'] = html_escape(e.message)
+        context['errors'] = html_escape(str(e))
         return _upload_type_response(request, assets, context)
 
 
@@ -457,7 +458,7 @@ def upload_bucket(request):
             except NotUniqueError:
                 context['errors'] = "A bucket with the same name already exists."
             except Exception as e:
-                context['errors'] = e.message
+                context['errors'] = str(e)
 
     else:
         form = BucketForm()

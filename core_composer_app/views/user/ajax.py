@@ -1,7 +1,10 @@
 """AJAX user views of composer application
 """
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 import json
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.template import loader
@@ -68,7 +71,7 @@ def insert_element_sequence(request):
         new_element_html = template.render(context)
         return HttpResponse(json.dumps({'new_element': new_element_html}), content_type='application/json')
     except Exception as e:
-        return HttpResponseBadRequest(e.message, content_type='application/javascript')
+        return HttpResponseBadRequest(str(e), content_type='application/javascript')
 
 
 @decorators.permission_required(content_type=rights.composer_content_type,
@@ -94,7 +97,7 @@ def change_xsd_type(request):
         request.session['newXmlTemplateCompose'] = xsd_string
         return HttpResponse(json.dumps({}), content_type='application/javascript')
     except Exception as e:
-        return HttpResponseBadRequest(e.message, content_type='application/javascript')
+        return HttpResponseBadRequest(str(e), content_type='application/javascript')
 
 
 @decorators.permission_required(content_type=rights.composer_content_type,
@@ -118,7 +121,7 @@ def change_root_type_name(request):
         request.session['newXmlTemplateCompose'] = xsd_string
         return HttpResponse(json.dumps({}), content_type='application/javascript')
     except Exception as e:
-        return HttpResponseBadRequest(e.message, content_type='application/javascript')
+        return HttpResponseBadRequest(str(e), content_type='application/javascript')
 
 
 @decorators.permission_required(content_type=rights.composer_content_type,
@@ -153,7 +156,7 @@ def rename_element(request):
 
         return HttpResponse(json.dumps({}), content_type='application/javascript')
     except Exception as e:
-        return HttpResponseBadRequest(e.message, content_type='application/javascript')
+        return HttpResponseBadRequest(str(e), content_type='application/javascript')
 
 
 @decorators.permission_required(content_type=rights.composer_content_type,
@@ -179,7 +182,7 @@ def delete_element(request):
 
         return HttpResponse(json.dumps({}), content_type='application/javascript')
     except Exception as e:
-        return HttpResponseBadRequest(e.message, content_type='application/javascript')
+        return HttpResponseBadRequest(str(e), content_type='application/javascript')
 
 
 @decorators.permission_required(content_type=rights.composer_content_type,
@@ -203,7 +206,7 @@ def get_element_occurrences(request):
         response_dict = {'minOccurs': min_occurs, 'maxOccurs': max_occurs}
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
     except Exception as e:
-        return HttpResponseBadRequest(e.message, content_type='application/javascript')
+        return HttpResponseBadRequest(str(e), content_type='application/javascript')
 
 
 @decorators.permission_required(content_type=rights.composer_content_type,
@@ -230,7 +233,7 @@ def set_element_occurrences(request):
         request.session['newXmlTemplateCompose'] = xsd_string
         return HttpResponse(json.dumps({}), content_type='application/javascript')
     except Exception as e:
-        return HttpResponseBadRequest(e.message, content_type='application/javascript')
+        return HttpResponseBadRequest(str(e), content_type='application/javascript')
 
 
 @decorators.permission_required(content_type=rights.composer_content_type,
@@ -260,7 +263,7 @@ def save_template(request):
             if error is not None:
                 return _error_response('This is not a valid XML schema. ' + error)
         except Exception as e:
-            return _error_response('This is not a valid XML schema. ' + e.message)
+            return _error_response('This is not a valid XML schema. ' + str(e))
 
         # get list of dependencies
         dependencies = _get_dependencies_ids(request.session["includedTypesCompose"])
@@ -275,11 +278,11 @@ def save_template(request):
         except exceptions.NotUniqueError:
             return HttpResponseBadRequest("A template with the same name already exists. Please choose another name.")
         except Exception as e:
-            return _error_response(e.message)
+            return _error_response(str(e))
 
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
     except Exception as e:
-        return HttpResponseBadRequest(e.message, content_type='application/javascript')
+        return HttpResponseBadRequest(str(e), content_type='application/javascript')
 
 
 @decorators.permission_required(content_type=rights.composer_content_type,
@@ -320,7 +323,7 @@ def save_type(request):
             if error is not None:
                 return _error_response('This is not a valid XML schema. ' + error)
         except Exception as e:
-            return _error_response('This is not a valid XML schema. ' + e.message)
+            return _error_response('This is not a valid XML schema. ' + str(e))
 
         dependencies = _get_dependencies_ids(request.session["includedTypesCompose"])
 
@@ -331,14 +334,14 @@ def save_type(request):
             type_object = Type(filename=type_name, content=xsd_string, dependencies=dependencies)
             # save type in database
             type_version_manager_api.insert(type_version_manager, type_object)
-        except exceptions.NotUniqueError as e:
+        except exceptions.NotUniqueError:
             return HttpResponseBadRequest("A type with the same name already exists. Please choose another name.")
         except Exception as e:
-            return _error_response(e.message)
+            return _error_response(str(e))
 
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
     except Exception as e:
-        return HttpResponseBadRequest(e.message, content_type='application/javascript')
+        return HttpResponseBadRequest(str(e), content_type='application/javascript')
 
 
 def _get_dependencies_ids(list_dependencies):
