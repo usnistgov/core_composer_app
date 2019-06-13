@@ -11,10 +11,9 @@ from rest_framework.views import APIView
 from core_composer_app.rest.type_version_manager.serializers import CreateTypeSerializer, TypeVersionManagerSerializer
 from core_main_app.commons.exceptions import NotUniqueError, XSDError
 from core_main_app.rest.template_version_manager.abstract_views import AbstractTemplateVersionManagerDetail
-from future.utils import with_metaclass
 
 
-class AbstractTypeList(with_metaclass(ABCMeta, APIView)):
+class AbstractTypeList(APIView, metaclass=ABCMeta,):
     """ Create a type & type version manager
     """
 

@@ -1,7 +1,6 @@
 """
 Type Version Manager model
 """
-from builtins import str
 from core_main_app.components.template_version_manager.models import TemplateVersionManager
 from core_main_app.components.version_manager.models import VersionManager
 

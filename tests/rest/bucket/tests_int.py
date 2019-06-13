@@ -1,7 +1,6 @@
 """ Integration Test for Bucket Rest API
 """
 
-from builtins import str
 from rest_framework import status
 
 from core_composer_app.rest.bucket import views

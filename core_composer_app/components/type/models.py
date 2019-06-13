@@ -1,7 +1,6 @@
 """
 Type models
 """
-from builtins import str
 from core_main_app.commons import exceptions
 from core_main_app.components.template.models import Template
 from django_mongoengine import fields

@@ -1,6 +1,5 @@
 """Composer admin views
 """
-from builtins import str
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse
