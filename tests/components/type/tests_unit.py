@@ -1,13 +1,14 @@
 """Type unit tests
 """
 from unittest.case import TestCase
+
 from bson.objectid import ObjectId
+from django.core import exceptions as django_exceptions
 from django.test import override_settings
 from mock.mock import Mock, patch
-from django.core import exceptions as django_exceptions
 
-from core_composer_app.components.type.models import Type
 from core_composer_app.components.type import api as type_api
+from core_composer_app.components.type.models import Type
 from core_main_app.commons import exceptions
 
 

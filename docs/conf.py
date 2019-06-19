@@ -17,10 +17,10 @@
 #
 import os
 import sys
+
 import django
 from django.conf import settings
 from mongoengine import connect
-
 
 # Configure mock connection
 MONGO_HOST = "localhost"

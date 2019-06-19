@@ -2,8 +2,9 @@
 """
 # TODO: add tests for other xml utils
 
-from unittest.case import TestCase
 from os.path import join, dirname, abspath
+from unittest.case import TestCase
+
 from core_composer_app.utils.xml import _insert_element_type, check_type_core_support, \
     COMPLEX_TYPE, SIMPLE_TYPE
 from core_main_app.commons.exceptions import CoreError

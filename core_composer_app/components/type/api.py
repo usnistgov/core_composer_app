@@ -1,9 +1,9 @@
 """
 Type API
 """
+from core_composer_app.components.type.models import Type
 from core_composer_app.utils.xml import check_type_core_support, COMPLEX_TYPE
 from core_main_app.components.template import api as template_api
-from core_composer_app.components.type.models import Type
 
 
 def upsert(type_object):

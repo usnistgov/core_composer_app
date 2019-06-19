@@ -1,19 +1,19 @@
 """Type Version Manager test cases
 """
 from unittest.case import TestCase
+
 from bson.objectid import ObjectId
+from django.core import exceptions as django_exceptions
 from django.test import override_settings
 from mock.mock import Mock, patch
+from mongoengine import errors as mongoengine_exceptions
 
 from core_composer_app.components.bucket.models import Bucket
 from core_composer_app.components.type.models import Type
+from core_composer_app.components.type_version_manager import api as version_manager_api
 from core_composer_app.components.type_version_manager.api import get_no_buckets_types
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
-from core_composer_app.components.type_version_manager import api as version_manager_api
 from core_main_app.commons.exceptions import CoreError, ModelError, NotUniqueError
-
-from django.core import exceptions as django_exceptions
-from mongoengine import errors as mongoengine_exceptions
 
 
 class TestTypeVersionManagerInsert(TestCase):

@@ -1,13 +1,14 @@
 """Bucket test cases
 """
 from unittest.case import TestCase
+
 from bson.objectid import ObjectId
 from mock.mock import Mock, patch
-from core_main_app.commons import exceptions
 
-from core_composer_app.components.bucket.models import Bucket
 from core_composer_app.components.bucket import api as bucket_api
+from core_composer_app.components.bucket.models import Bucket
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_main_app.commons import exceptions
 
 
 class TestBucketGetById(TestCase):

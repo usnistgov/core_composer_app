@@ -1,9 +1,9 @@
 """
 Type Version Manager API
 """
+from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.type import api as type_api
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
-from core_composer_app.components.bucket import api as bucket_api
 from core_main_app.components.template import api as template_api
 from core_main_app.components.version_manager import api as version_manager_api
 from core_main_app.components.version_manager.utils import get_latest_version_name

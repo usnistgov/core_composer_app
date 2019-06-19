@@ -1,12 +1,11 @@
 """Serializers used throughout the bucket Rest API
 """
 from django.http import Http404
+from rest_framework.fields import CharField
 from rest_framework_mongoengine.serializers import DocumentSerializer
 
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.bucket.models import Bucket
-from rest_framework.fields import CharField
-
 from core_main_app.commons.exceptions import DoesNotExist
 
 
