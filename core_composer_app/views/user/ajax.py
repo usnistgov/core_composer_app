@@ -1,6 +1,7 @@
 """AJAX user views of composer application
 """
 import json
+import logging
 from urllib.parse import urlparse
 
 from django.http.response import HttpResponse, HttpResponseBadRequest
@@ -20,6 +21,8 @@ from core_main_app.utils import decorators as decorators
 from core_main_app.utils import xml as main_xml_utils
 from core_main_app.utils.urls import get_template_download_pattern
 from xml_utils.xsd_tree.xsd_tree import XSDTree
+
+logger = logging.getLogger(__name__)
 
 
 @decorators.permission_required(content_type=rights.composer_content_type,
@@ -45,15 +48,18 @@ def insert_element_sequence(request):
 
         if type_id == 'built_in_type':
             # insert built-in type into xsd string
-            new_xsd_str = composer_xml_utils.insert_element_built_in_type(xsd_string, xpath, type_name)
+            new_xsd_str = composer_xml_utils.insert_element_built_in_type(
+                xsd_string, xpath, type_name
+            )
         else:
             # get type from database
             type_object = type_api.get(type_id)
             # generate include url
             include_url = main_xml_utils._get_schema_location_uri(str(type_id))
             # insert element in xsd string
-            new_xsd_str = composer_xml_utils.insert_element_type(xsd_string, xpath, type_object.content, type_name,
-                                                                 include_url)
+            new_xsd_str = composer_xml_utils.insert_element_type(
+                xsd_string, xpath, type_object.content, type_name, include_url
+            )
             # add the id of the type if not already present
             if include_url not in request.session['includedTypesCompose']:
                 request.session['includedTypesCompose'].append(include_url)
@@ -66,7 +72,9 @@ def insert_element_sequence(request):
                    'path': path,
                    'type_name': type_name}
         new_element_html = template.render(context)
-        return HttpResponse(json.dumps({'new_element': new_element_html}), content_type='application/json')
+        return HttpResponse(
+            json.dumps({'new_element': new_element_html}), content_type='application/json'
+        )
     except Exception as e:
         return HttpResponseBadRequest(str(e), content_type='application/javascript')
 
@@ -224,7 +232,9 @@ def set_element_occurrences(request):
         xsd_string = request.session['newXmlTemplateCompose']
 
         # set element occurrences
-        xsd_string = composer_xml_utils.set_xsd_element_occurrences(xsd_string, xpath, min_occurs, max_occurs)
+        xsd_string = composer_xml_utils.set_xsd_element_occurrences(
+            xsd_string, xpath, min_occurs, max_occurs
+        )
 
         # save the tree in the session
         request.session['newXmlTemplateCompose'] = xsd_string
@@ -267,13 +277,19 @@ def save_template(request):
 
         try:
             # create template version manager
-            template_version_manager = TemplateVersionManager(title=template_name, user=str(request.user.id))
+            template_version_manager = TemplateVersionManager(
+                title=template_name, user=str(request.user.id)
+            )
             # create template
-            template = Template(filename=template_name, content=xsd_string, dependencies=dependencies)
+            template = Template(
+                filename=template_name, content=xsd_string, dependencies=dependencies
+            )
             # save template in database
             template_version_manager_api.insert(template_version_manager, template)
         except exceptions.NotUniqueError:
-            return HttpResponseBadRequest("A template with the same name already exists. Please choose another name.")
+            return HttpResponseBadRequest(
+                "A template with the same name already exists. Please choose another name."
+            )
         except Exception as e:
             return _error_response(str(e))
 
@@ -305,8 +321,9 @@ def save_type(request):
             try:
                 # check if the type exists, raises exception otherise
                 type_api.get(template_id)
-            except:
+            except Exception as e:
                 # the type does not exist
+                logger.warning("save_type threw an exception: {0}".format(str(e)))
                 return _error_response("Unable to save an existing template as a type.")
 
         try:
@@ -332,7 +349,9 @@ def save_type(request):
             # save type in database
             type_version_manager_api.insert(type_version_manager, type_object)
         except exceptions.NotUniqueError:
-            return HttpResponseBadRequest("A type with the same name already exists. Please choose another name.")
+            return HttpResponseBadRequest(
+                "A type with the same name already exists. Please choose another name."
+            )
         except Exception as e:
             return _error_response(str(e))
 
@@ -365,9 +384,9 @@ def _get_dependencies_ids(list_dependencies):
             type_object = type_api.get(object_id)
             # add id to list of internal dependencies
             dependencies.append(type_object)
-        except:
+        except Exception as e:
             # id not found, don't add it to list of dependencies
-            pass
+            logger.warning("_get_dependencies_ids threw an exception: {0}".format(str(e)))
 
     return dependencies
 

@@ -1,5 +1,7 @@
 """Composer admin views
 """
+import logging
+
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.urlresolvers import reverse
@@ -16,7 +18,7 @@ from core_composer_app.components.type_version_manager.models import TypeVersion
 from core_composer_app.views.admin.ajax import EditBucketView
 from core_composer_app.views.admin.forms import BucketForm, UploadTypeForm, EditTypeBucketsForm
 from core_main_app.commons import exceptions
-from core_main_app.commons.exceptions import NotUniqueError
+from core_main_app.commons.exceptions import NotUniqueError, ModelError, DoesNotExist
 from core_main_app.components.version_manager import api as version_manager_api
 from core_main_app.utils.rendering import admin_render
 from core_main_app.utils.xml import get_imports_and_includes
@@ -24,6 +26,8 @@ from core_main_app.views.admin.forms import UploadVersionForm
 from core_main_app.views.common.ajax import EditTemplateVersionManagerView
 from core_main_app.views.common.views import read_xsd_file
 from core_main_app.views.user.views import get_context_manage_template_versions
+
+logger = logging.getLogger(__name__)
 
 
 @staff_member_required
@@ -237,8 +241,9 @@ def _handle_xsd_errors(request, assets, context, xsd_error, xsd_content, filenam
     # a problem with includes/imports has been detected
     if len(includes) > 0 or len(imports) > 0:
         # build dependency resolver
-        context['dependency_resolver'] = _get_dependency_resolver_html(imports, includes, xsd_content,
-                                                                       filename)
+        context['dependency_resolver'] = _get_dependency_resolver_html(
+            imports, includes, xsd_content, filename
+        )
         return _upload_type_response(request, assets, context)
     else:
         context['errors'] = html_escape(str(xsd_error))
@@ -264,7 +269,9 @@ def _get_dependency_resolver_html(imports, includes, xsd_data, filename):
     list_dependencies_html = list_dependencies_template.render(context)
 
     # build the dependency resolver form
-    dependency_resolver_template = loader.get_template('core_main_app/admin/dependency_resolver.html')
+    dependency_resolver_template = loader.get_template(
+        'core_main_app/admin/dependency_resolver.html'
+    )
     context = {
         'imports': imports,
         'includes': includes,
@@ -370,8 +377,10 @@ def _save_type_version(request, assets, context, type_version_manager):
     try:
         type_object = Type(filename=xsd_file.name, content=xsd_data)
         type_version_manager_api.insert(type_version_manager, type_object)
-        return HttpResponseRedirect(reverse("admin:core_composer_app_manage_type_versions",
-                                            kwargs={'version_manager_id': str(type_version_manager.id)}))
+        return HttpResponseRedirect(reverse(
+            "admin:core_composer_app_manage_type_versions",
+            kwargs={'version_manager_id': str(type_version_manager.id)}
+        ))
     except exceptions.XSDError as xsd_error:
         return _handle_xsd_errors(request, assets, context, xsd_error, xsd_data, xsd_file.name)
     except Exception as e:
@@ -484,9 +493,14 @@ def manage_type_buckets(request, version_manager_id):
 
     try:
         version_manager = version_manager_api.get(version_manager_id)
-    except:
-        # TODO: catch good exception, redirect to error page
-        pass
+    except ModelError as e:
+        logger.error("manage_type_buckets threw a ModelError: {0}".format(str(e)))
+        return admin_render(request,
+                            'core_main_app/common/commons/error.html',
+                            context={'error': str(e)})
+    except DoesNotExist as e:
+        # TODO: catch exception, redirect to error page
+        logger.warning("manage_type_buckets threw a DoesNotExist exception: {0}".format(str(e)))
 
     context = {
         'version_manager': version_manager,
