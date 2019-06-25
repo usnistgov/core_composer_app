@@ -2,9 +2,6 @@
 
 
 {% block box_tools %}
-{% url 'admin:core_composer_app_types' as type_list_url %}
-{% include 'core_main_app/common/buttons/go_to.html' with url=type_list_url label='Back to Types' %}
-
 <a href="{% url 'admin:core_composer_app_upload_bucket' %}" class="pull-right btn btn-default">
     <i class="fa fa-plus"></i> Add {{ data.object_name }}
 </a>
