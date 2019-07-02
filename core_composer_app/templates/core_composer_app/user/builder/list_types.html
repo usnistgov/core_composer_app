@@ -1,7 +1,8 @@
+{% load get_attribute %}
 <div>
     <table class="table table-bordered">
     {% for type in types %}
-        {% if not type.is_disabled %}
+        {% if not type|get_attribute:'is_disabled' %}
         <tr>
             <td templateID='{{type.current}}'>{{ type.title }}</td>
             <td>
