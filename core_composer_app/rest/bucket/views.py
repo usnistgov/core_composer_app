@@ -12,7 +12,7 @@ from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.rest.bucket.serializers import BucketSerializer, BucketsSerializer
 from core_main_app.commons.exceptions import DoesNotExist
 from core_main_app.rest.template_version_manager.abstract_views import AbstractTemplateVersionManagerDetail
-from core_main_app.utils.access_control.exceptions import AccessControlError
+from core_main_app.access_control.exceptions import AccessControlError
 from core_main_app.utils.decorators import api_staff_member_required
 
 
