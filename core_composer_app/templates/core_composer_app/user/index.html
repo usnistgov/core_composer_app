@@ -13,7 +13,11 @@
 <div id="template_selection">
     <h3 class="text-center">Templates</h3>
     {% if data.global_templates or data.user_templates %}
-        <table class="table">
+        <table class="table fixed-table">
+            <colgroup>
+                <col class="col-width-75">
+                <col class="col-width-25">
+            </colgroup>
             {% include 'core_main_app/user/template/list_header.html' with object_type='Template' %}
             {% include 'core_composer_app/user/list/list.html' with object_list=data.global_templates owner='Global' object_type='Template' %}
             {% include 'core_composer_app/user/list/list.html' with object_list=data.user_templates owner=request.user object_type='Template' %}
@@ -24,7 +28,11 @@
 
     <h3 class="text-center">Types</h3>
     {% if data.global_types or data.user_types %}
-        <table class="table">
+        <table class="table fixed-table">
+            <colgroup>
+                <col class="col-width-75">
+                <col class="col-width-25">
+            </colgroup>
             {% include 'core_main_app/user/template/list_header.html' with object_type='Type' %}
             {% include 'core_composer_app/user/list/list.html' with object_list=data.global_types owner='Global' object_type='Type' %}
             {% include 'core_composer_app/user/list/list.html' with object_list=data.user_types owner=request.user object_type='Type' %}
