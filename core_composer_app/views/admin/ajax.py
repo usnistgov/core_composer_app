@@ -2,7 +2,7 @@
 """
 import json
 
-from django.urls import reverse_lazy
+from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponse, HttpResponseBadRequest
 
 from core_composer_app.components.bucket import api as bucket_api
