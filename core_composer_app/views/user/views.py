@@ -4,7 +4,7 @@ from os.path import join
 
 from django.conf import settings
 from django.contrib.staticfiles import finders
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.type_version_manager import api as type_version_manager_api

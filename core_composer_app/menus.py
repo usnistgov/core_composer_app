@@ -1,6 +1,6 @@
 """ Add Composer in main menu
 """
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from menu import Menu, MenuItem
 
 Menu.add_item(
