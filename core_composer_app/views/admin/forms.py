@@ -1,10 +1,10 @@
 """Composer Admin Forms
 """
 from django import forms
-from mongodbforms import DocumentForm
 
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.bucket.models import Bucket
+from django_mongoengine.forms import DocumentForm
 
 
 class BucketForm(forms.Form):

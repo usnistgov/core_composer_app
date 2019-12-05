@@ -75,7 +75,7 @@ def resolve_dependencies(request):
 
 class EditBucketView(EditObjectModalView):
     form_class = EditBucketForm
-    model = Bucket
+    document = Bucket
     success_url = reverse_lazy("admin:core_composer_app_buckets")
     success_message = 'Label edited with success.'
 
