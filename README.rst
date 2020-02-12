@@ -17,8 +17,8 @@ Quick start
       'core_composer_app',
     ]
 
-2. Include the core_dashboard_app URLconf in your project urls.py
------------------------------------------------------------------
+2. Include the core_composer_app URLconf in your project urls.py
+----------------------------------------------------------------
 
 .. code:: python
 
