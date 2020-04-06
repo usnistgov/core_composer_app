@@ -2,7 +2,7 @@
 
 
 {% block box_tools %}
-<a href="{% url 'admin:core_composer_app_upload_bucket' %}" class="pull-right btn btn-default">
+<a href="{% url 'admin:core_composer_app_upload_bucket' %}" class="pull-right btn btn-secondary">
     <i class="fa fa-plus"></i> Add {{ data.object_name }}
 </a>
 {% endblock %}
@@ -25,8 +25,8 @@
                 {% url 'admin:core_composer_app_edit_bucket' bucket.id as edit_url %}
                 {% include 'core_main_app/common/buttons/edit.html' %}
                <span class='icon legend delete'>
-                   <a class="btn btn-danger delete" bucketid='{{ bucket.id }}' href="#">
-                       <i class="fa fa-trash"></i> Delete</a>
+                   <button class="btn btn-danger delete" bucketid='{{ bucket.id }}'>
+                       <i class="fa fa-trash"></i> Delete</button>
                </span>
             </td>
         </tr>
