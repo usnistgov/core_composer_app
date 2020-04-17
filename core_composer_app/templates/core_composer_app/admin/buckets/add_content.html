@@ -17,7 +17,9 @@
             <div id="upload_errors" class="text-danger">
                 {{ data.errors | safe}}
             </div>
-            <input type="submit" class="btn btn-secondary pull-right" value="Add {{data.object_name}}"/>
+            <button type="submit" class="btn btn-secondary float-right mt-3">
+                <i class="fa fa-plus"></i> Add {{data.object_name}}
+            </button>
         </form>
     </div>
 </div>

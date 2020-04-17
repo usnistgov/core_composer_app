@@ -4,7 +4,7 @@
 
 {% if not data.version_manager.user %}
 	<a href="{% url 'admin:core_composer_app_upload_type_version' data.version_manager.id %}"
-	   class="pull-right btn btn-secondary">
+	   class="float-right btn btn-secondary">
 		<i class="fa fa-upload"></i> Upload New Version
 	</a>
 {% endif %}
