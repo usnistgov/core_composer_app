@@ -7,7 +7,7 @@ var showhide = function(event){
 	var parent = $(event.target).parent();
 	$(parent.children()[3]).toggle("blind",500);
 	if ($(button).attr("class") == "expand"){
-		$(button).attr("class","collapse");
+		$(button).attr("class","collapse show");
 	}else{
 		$(button).attr("class","expand");
 	}
