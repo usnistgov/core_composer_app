@@ -13,7 +13,7 @@ from core_main_app.commons import exceptions
 
 
 class TestTypeGet(TestCase):
-    @patch.object(Type, 'get_by_id')
+    @patch.object(Type, "get_by_id")
     def test_type_get_returns_type(self, mock_get_by_id):
         # Arrange
         type_filename = "Schema"
@@ -27,11 +27,13 @@ class TestTypeGet(TestCase):
         # Assert
         self.assertIsInstance(result, Type)
 
-    @patch.object(Type, 'get_by_id')
-    def test_template_get_raises_exception_if_object_does_not_exist(self, mock_get_by_id):
+    @patch.object(Type, "get_by_id")
+    def test_template_get_raises_exception_if_object_does_not_exist(
+        self, mock_get_by_id
+    ):
         # Arrange
         mock_absent_id = ObjectId()
-        mock_get_by_id.side_effect = exceptions.DoesNotExist('')
+        mock_get_by_id.side_effect = exceptions.DoesNotExist("")
 
         # Act + Assert
         with self.assertRaises(exceptions.DoesNotExist):
@@ -39,7 +41,7 @@ class TestTypeGet(TestCase):
 
 
 class TestTypeGetAll(TestCase):
-    @patch.object(Type, 'get_all')
+    @patch.object(Type, "get_all")
     def test_get_all_types_returns_types(self, mock_get_all):
         # Arrange
         mock_type1 = _create_mock_type()
@@ -55,7 +57,7 @@ class TestTypeGetAll(TestCase):
 
 
 class TestTypeGetAllComplexType(TestCase):
-    @patch.object(Type, 'get_all_complex_type')
+    @patch.object(Type, "get_all_complex_type")
     def test_get_all_types_returns_types(self, mock_get_all_complex_type):
         # Arrange
         mock_type1 = _create_mock_type()
@@ -72,7 +74,7 @@ class TestTypeGetAllComplexType(TestCase):
 
 class TestTypeUpsert(TestCase):
     @override_settings(ROOT_URLCONF="core_main_app.urls")
-    @patch.object(Type, 'save')
+    @patch.object(Type, "save")
     def test_type_upsert_valid_returns_type(self, mock_save):
         type_object = _create_type()
 
@@ -81,14 +83,14 @@ class TestTypeUpsert(TestCase):
         self.assertIsInstance(result, Type)
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
-    @patch.object(Type, 'save')
+    @patch.object(Type, "save")
     def test_type_upsert_invalid_filename_raises_validation_error(self, mock_save):
         type_object = _create_type(filename=1)
         mock_save.side_effect = django_exceptions.ValidationError("")
         with self.assertRaises(django_exceptions.ValidationError):
             type_api.upsert(type_object)
 
-    @patch.object(Type, 'save')
+    @patch.object(Type, "save")
     def test_type_upsert_invalid_core_type_raises_core_error(self, mock_save):
         type_object = _create_type(content="<schema></schema>")
         mock_save.return_value = None
@@ -125,11 +127,9 @@ def _create_type(filename="", content=None):
     """
     if content is None:
         # set a valid content
-        content = "<schema xmlns='http://www.w3.org/2001/XMLSchema'><simpleType name='type'>" \
-                  "<restriction base='string'><enumeration value='test'/></restriction>" \
-                  "</simpleType></schema>"
-    return Type(
-        id=ObjectId(),
-        filename=filename,
-        content=content
-    )
+        content = (
+            "<schema xmlns='http://www.w3.org/2001/XMLSchema'><simpleType name='type'>"
+            "<restriction base='string'><enumeration value='test'/></restriction>"
+            "</simpleType></schema>"
+        )
+    return Type(id=ObjectId(), filename=filename, content=content)

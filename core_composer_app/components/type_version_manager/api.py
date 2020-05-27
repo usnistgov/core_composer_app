@@ -88,8 +88,11 @@ def get_no_buckets_types():
         bucket_types += bucket.types
 
     all_types = get_global_version_managers()
-    no_bucket_types = [type_version_manager for type_version_manager in all_types
-                       if type_version_manager not in bucket_types]
+    no_bucket_types = [
+        type_version_manager
+        for type_version_manager in all_types
+        if type_version_manager not in bucket_types
+    ]
     return no_bucket_types
 
 

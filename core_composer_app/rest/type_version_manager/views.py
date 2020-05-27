@@ -3,9 +3,13 @@
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import IsAuthenticated
 
-from core_composer_app.components.type_version_manager import api as type_version_manager_api
+from core_composer_app.components.type_version_manager import (
+    api as type_version_manager_api,
+)
 from core_composer_app.rest.type_version_manager.abstract_views import AbstractTypeList
-from core_main_app.rest.template_version_manager.views import AbstractTemplateVersionManagerList
+from core_main_app.rest.template_version_manager.views import (
+    AbstractTemplateVersionManagerList,
+)
 from core_main_app.utils.decorators import api_staff_member_required
 
 
@@ -27,7 +31,7 @@ class UserTypeVersionManagerList(AbstractTemplateVersionManagerList):
     """ List all user type version managers
     """
 
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def get_template_version_managers(self):
         """ Get all user type version managers
@@ -36,7 +40,9 @@ class UserTypeVersionManagerList(AbstractTemplateVersionManagerList):
 
             TypeVersionManager
         """
-        return type_version_manager_api.get_version_managers_by_user(user_id=self.request.user.id)
+        return type_version_manager_api.get_version_managers_by_user(
+            user_id=self.request.user.id
+        )
 
 
 class UserTypeList(AbstractTypeList):

@@ -15,10 +15,14 @@ def init_permissions():
     """
     try:
         # Get or Create the default group
-        default_group, created = Group.objects.get_or_create(name=main_rights.default_group)
+        default_group, created = Group.objects.get_or_create(
+            name=main_rights.default_group
+        )
 
         # Get composer permissions
-        composer_access_perm = Permission.objects.get(codename=composer_rights.composer_access)
+        composer_access_perm = Permission.objects.get(
+            codename=composer_rights.composer_access
+        )
         composer_save_template_perm = Permission.objects.get(
             codename=composer_rights.composer_save_template
         )
@@ -27,8 +31,8 @@ def init_permissions():
         )
 
         # Add permissions to default group
-        default_group.permissions.add(composer_access_perm,
-                                      composer_save_template_perm,
-                                      composer_save_type_perm)
+        default_group.permissions.add(
+            composer_access_perm, composer_save_template_perm, composer_save_type_perm
+        )
     except Exception as e:
         logger.error("Impossible to init composer permissions: %s" % str(e))

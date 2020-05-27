@@ -8,12 +8,19 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core_composer_app.rest.type_version_manager.serializers import CreateTypeSerializer, TypeVersionManagerSerializer
+from core_composer_app.rest.type_version_manager.serializers import (
+    CreateTypeSerializer,
+    TypeVersionManagerSerializer,
+)
 from core_main_app.commons.exceptions import NotUniqueError, XSDError
-from core_main_app.rest.template_version_manager.abstract_views import AbstractTemplateVersionManagerDetail
+from core_main_app.rest.template_version_manager.abstract_views import (
+    AbstractTemplateVersionManagerDetail,
+)
 
 
-class AbstractTypeList(APIView, metaclass=ABCMeta,):
+class AbstractTypeList(
+    APIView, metaclass=ABCMeta,
+):
     """ Create a type & type version manager
     """
 
@@ -48,28 +55,32 @@ class AbstractTypeList(APIView, metaclass=ABCMeta,):
         try:
             # Build serializers
             type_serializer = CreateTypeSerializer(data=request.data)
-            type_version_manager_serializer = TypeVersionManagerSerializer(data=request.data)
+            type_version_manager_serializer = TypeVersionManagerSerializer(
+                data=request.data
+            )
 
             # Validate data
             type_serializer.is_valid(True)
             type_version_manager_serializer.is_valid(True)
 
             # Save data
-            type_version_manager_object = type_version_manager_serializer.save(user=self.get_user())
+            type_version_manager_object = type_version_manager_serializer.save(
+                user=self.get_user()
+            )
             type_serializer.save(type_version_manager=type_version_manager_object)
 
             return Response(type_serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as validation_exception:
-            content = {'message': validation_exception.detail}
+            content = {"message": validation_exception.detail}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except NotUniqueError:
-            content = {'message': "A type with the same title already exists."}
+            content = {"message": "A type with the same title already exists."}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except XSDError as xsd_error:
-            content = {'message': "XSD Error: " + str(xsd_error)}
+            content = {"message": "XSD Error: " + str(xsd_error)}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
-            content = {'message': str(api_exception)}
+            content = {"message": str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @abstractmethod
@@ -127,11 +138,11 @@ class TypeVersion(AbstractTemplateVersionManagerDetail):
 
             return Response(type_serializer.data, status=status.HTTP_201_CREATED)
         except Http404:
-            content = {'message': 'Type Version Manager not found.'}
+            content = {"message": "Type Version Manager not found."}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except ValidationError as validation_exception:
-            content = {'message': validation_exception.detail}
+            content = {"message": validation_exception.detail}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
-            content = {'message': str(api_exception)}
+            content = {"message": str(api_exception)}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

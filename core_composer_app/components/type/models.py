@@ -11,6 +11,7 @@ from core_main_app.components.template.models import Template
 class Type(Template):
     """Type class.
     """
+
     is_complex = fields.BooleanField(blank=False)
 
     @staticmethod

@@ -12,20 +12,26 @@ from core_main_app.commons.exceptions import DoesNotExist
 class BucketSerializer(DocumentSerializer):
     """ Bucket serializer
     """
+
     class Meta(object):
         """ Meta
         """
+
         model = Bucket
-        fields = '__all__'
-        read_only_fields = ('id', 'color', )
+        fields = "__all__"
+        read_only_fields = (
+            "id",
+            "color",
+        )
 
     def create(self, validated_data):
         """
         Create and return a new `Bucket` instance, given the validated data.
         """
         # Create data
-        bucket = Bucket(label=validated_data['label'],
-                        types=validated_data.get('types', None))
+        bucket = Bucket(
+            label=validated_data["label"], types=validated_data.get("types", None)
+        )
         # Save the data
         return bucket_api.upsert(bucket)
 
@@ -33,18 +39,19 @@ class BucketSerializer(DocumentSerializer):
         """
         Update and return an existing `Bucket` instance, given the validated data.
         """
-        instance.label = validated_data.get('label', instance.label)
+        instance.label = validated_data.get("label", instance.label)
         return bucket_api.upsert(instance)
 
 
 class BucketsSerializer(DocumentSerializer):
     """ Buckets serializer.
     """
+
     id = CharField()
 
     class Meta(object):
         model = Bucket
-        fields = ('id', )
+        fields = ("id",)
 
     def validate_id(self, id):
         """ Validate id field

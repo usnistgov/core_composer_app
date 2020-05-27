@@ -4,11 +4,15 @@ from core_main_app.commons.exceptions import CoreError, XMLError
 from core_main_app.utils.xml import is_well_formed_xml, validate_xml_schema
 
 from xml_utils.commons.constants import LXML_SCHEMA_NAMESPACE
-from xml_utils.xsd_tree.operations.namespaces import get_namespaces, get_default_prefix, get_target_namespace
+from xml_utils.xsd_tree.operations.namespaces import (
+    get_namespaces,
+    get_default_prefix,
+    get_target_namespace,
+)
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 
-COMPLEX_TYPE = 'complexType'
-SIMPLE_TYPE = 'simpleType'
+COMPLEX_TYPE = "complexType"
+SIMPLE_TYPE = "simpleType"
 
 
 def check_type_core_support(xsd_string):
@@ -23,12 +27,14 @@ def check_type_core_support(xsd_string):
 
     """
     type_definition = ""
-    error_message = "A type should be a valid XML schema containing only one type definition " \
-                    "(Allowed tags are: simpleType or complexType and include)."
+    error_message = (
+        "A type should be a valid XML schema containing only one type definition "
+        "(Allowed tags are: simpleType or complexType and include)."
+    )
 
     # check that well formatted first
     if not is_well_formed_xml(xsd_string):
-        raise XMLError('Uploaded file is not well formatted XML.')
+        raise XMLError("Uploaded file is not well formatted XML.")
 
     # build the tree
     xsd_tree = XSDTree.build_tree(xsd_string)
@@ -39,19 +45,23 @@ def check_type_core_support(xsd_string):
     if len(elements) > 0:
         # only simpleType, complexType or include
         for element in elements:
-            if 'complexType' not in element.tag \
-                    and 'simpleType' not in element.tag \
-                    and 'include' not in element.tag:
+            if (
+                "complexType" not in element.tag
+                and "simpleType" not in element.tag
+                and "include" not in element.tag
+            ):
                 raise CoreError(error_message)
 
         # only one type
         cpt_type = 0
         for element in elements:
-            if 'complexType' in element.tag or 'simpleType' in element.tag:
+            if "complexType" in element.tag or "simpleType" in element.tag:
                 cpt_type += 1
                 if cpt_type > 1:
                     raise CoreError(error_message)
-                type_definition = COMPLEX_TYPE if 'complexType' in element.tag else SIMPLE_TYPE
+                type_definition = (
+                    COMPLEX_TYPE if "complexType" in element.tag else SIMPLE_TYPE
+                )
     else:
         raise CoreError(error_message)
 
@@ -97,8 +107,8 @@ def rename_single_root_type(xsd_string, type_name):
     # xpath to the single root type
     xpath_root_type = LXML_SCHEMA_NAMESPACE + "complexType"
     # change the root type name in the xsd tree
-    xsd_tree.find(xpath_root).attrib['type'] = type_name
-    xsd_tree.find(xpath_root_type).attrib['name'] = type_name
+    xsd_tree.find(xpath_root).attrib["type"] = type_name
+    xsd_tree.find(xpath_root_type).attrib["name"] = type_name
     # rebuild xsd string
     xsd_string = XSDTree.tostring(xsd_tree)
     # return xsd string
@@ -183,8 +193,8 @@ def set_xsd_element_occurrences(xsd_string, xpath, min_occurs, max_occurs):
     xpath = xpath.replace(default_prefix + ":", LXML_SCHEMA_NAMESPACE)
     # add the element to the sequence
     element = xsd_tree.find(xpath)
-    element.attrib['minOccurs'] = min_occurs
-    element.attrib['maxOccurs'] = max_occurs
+    element.attrib["minOccurs"] = min_occurs
+    element.attrib["maxOccurs"] = max_occurs
 
     # save the tree in the session
     xsd_string = XSDTree.tostring(xsd_tree)
@@ -215,12 +225,12 @@ def get_xsd_element_occurrences(xsd_string, xpath):
     # add the element to the sequence
     element = xsd_tree.find(xpath)
 
-    if 'minOccurs' in element.attrib:
-        min_occurs = element.attrib['minOccurs']
+    if "minOccurs" in element.attrib:
+        min_occurs = element.attrib["minOccurs"]
     else:
         min_occurs = "1"
-    if 'maxOccurs' in element.attrib:
-        max_occurs = element.attrib['maxOccurs']
+    if "maxOccurs" in element.attrib:
+        max_occurs = element.attrib["maxOccurs"]
     else:
         max_occurs = "1"
 
@@ -248,7 +258,7 @@ def rename_xsd_element(xsd_string, xpath, new_name):
     # set the element namespace
     xpath = xpath.replace(default_prefix + ":", LXML_SCHEMA_NAMESPACE)
     # rename element
-    xsd_tree.find(xpath).attrib['name'] = new_name
+    xsd_tree.find(xpath).attrib["name"] = new_name
 
     # rebuild xsd string
     xsd_string = XSDTree.tostring(xsd_tree)
@@ -257,7 +267,9 @@ def rename_xsd_element(xsd_string, xpath, new_name):
 
 
 # TODO: refactor more
-def _insert_element_type(xsd_string, xpath, type_content, element_type_name, include_url):
+def _insert_element_type(
+    xsd_string, xpath, type_content, element_type_name, include_url
+):
     """Insert an element of given type in xsd string.
 
     Args:
@@ -277,7 +289,9 @@ def _insert_element_type(xsd_string, xpath, type_content, element_type_name, inc
     # get the default namespace
     default_prefix = get_default_prefix(namespaces)
     # get target namespace information
-    target_namespace, target_namespace_prefix = get_target_namespace(xsd_tree, namespaces)
+    target_namespace, target_namespace_prefix = get_target_namespace(
+        xsd_tree, namespaces
+    )
     # build xpath to element
     xpath = xpath.replace(default_prefix + ":", LXML_SCHEMA_NAMESPACE)
     # build xsd tree
@@ -285,7 +299,9 @@ def _insert_element_type(xsd_string, xpath, type_content, element_type_name, inc
     # get namespaces information for the type
     type_namespaces = get_namespaces(type_content)
     # get target namespace information
-    type_target_namespace, type_target_namespace_prefix = get_target_namespace(type_xsd_tree, type_namespaces)
+    type_target_namespace, type_target_namespace_prefix = get_target_namespace(
+        type_xsd_tree, type_namespaces
+    )
 
     # get the type from the included/imported file
     # If there is a complex type
@@ -308,15 +324,20 @@ def _insert_element_type(xsd_string, xpath, type_content, element_type_name, inc
             # create type name with namespace
             ns_type_name = type_name
             # create include element
-            dependency_tag = 'include'
-            dependency_attrib = {'schemaLocation': include_url}
+            dependency_tag = "include"
+            dependency_attrib = {"schemaLocation": include_url}
         # Type with target namespace
         else:
             # create type name with namespace
-            ns_type_name = _get_ns_type_name(type_target_namespace_prefix, type_name, prefix_required=True)
+            ns_type_name = _get_ns_type_name(
+                type_target_namespace_prefix, type_name, prefix_required=True
+            )
             # create import element
-            dependency_tag = 'import'
-            dependency_attrib = {'schemaLocation': include_url, 'namespace': type_target_namespace}
+            dependency_tag = "import"
+            dependency_attrib = {
+                "schemaLocation": include_url,
+                "namespace": type_target_namespace,
+            }
             update_ns_map = True
 
     # Schema with target namespace
@@ -326,8 +347,8 @@ def _insert_element_type(xsd_string, xpath, type_content, element_type_name, inc
             # create type name with namespace
             ns_type_name = _get_ns_type_name(target_namespace_prefix, type_name)
             # create include element
-            dependency_tag = 'include'
-            dependency_attrib = {'schemaLocation': include_url}
+            dependency_tag = "include"
+            dependency_attrib = {"schemaLocation": include_url}
         # Type with target namespace
         else:
             # Same target namespace as base template
@@ -335,24 +356,32 @@ def _insert_element_type(xsd_string, xpath, type_content, element_type_name, inc
                 # create type name with namespace
                 ns_type_name = _get_ns_type_name(target_namespace_prefix, type_name)
                 # create include element
-                dependency_tag = 'include'
-                dependency_attrib = {'schemaLocation': include_url}
+                dependency_tag = "include"
+                dependency_attrib = {"schemaLocation": include_url}
             # Different target namespace as base template
             else:
                 # create type name with namespace
-                ns_type_name = _get_ns_type_name(type_target_namespace_prefix, type_name, prefix_required=True)
+                ns_type_name = _get_ns_type_name(
+                    type_target_namespace_prefix, type_name, prefix_required=True
+                )
                 # create import element
-                dependency_tag = 'import'
-                dependency_attrib = {'schemaLocation': include_url, 'namespace': type_target_namespace}
+                dependency_tag = "import"
+                dependency_attrib = {
+                    "schemaLocation": include_url,
+                    "namespace": type_target_namespace,
+                }
                 update_ns_map = True
 
     # create dependency element
     dependency_element = _create_xsd_element(dependency_tag, dependency_attrib)
     # create xsd element
-    xsd_element = _create_xsd_element('element', attrib={'name': element_type_name, 'type': ns_type_name})
+    xsd_element = _create_xsd_element(
+        "element", attrib={"name": element_type_name, "type": ns_type_name}
+    )
     # check if dependency element (include/import) is already present
-    dependency_tag = "{0}[@schemaLocation='{1}']".format(dependency_element.tag,
-                                                         dependency_element.attrib['schemaLocation'])
+    dependency_tag = "{0}[@schemaLocation='{1}']".format(
+        dependency_element.tag, dependency_element.attrib["schemaLocation"]
+    )
     dependency_present = xsd_tree.find(dependency_tag) is not None
 
     if not dependency_present:
@@ -367,12 +396,18 @@ def _insert_element_type(xsd_string, xpath, type_content, element_type_name, inc
         root = xsd_tree.getroot()
         root_ns_map = root.nsmap
 
-        if type_target_namespace_prefix in list(root_ns_map.keys()) and \
-                        root_ns_map[type_target_namespace_prefix] != type_target_namespace:
-            raise CoreError('The namespace prefix is already declared for a different namespace.')
+        if (
+            type_target_namespace_prefix in list(root_ns_map.keys())
+            and root_ns_map[type_target_namespace_prefix] != type_target_namespace
+        ):
+            raise CoreError(
+                "The namespace prefix is already declared for a different namespace."
+            )
         else:
             root_ns_map[type_target_namespace_prefix] = type_target_namespace
-            new_root = XSDTree.create_element(root.tag, nsmap=root_ns_map, attrib=root.attrib)
+            new_root = XSDTree.create_element(
+                root.tag, nsmap=root_ns_map, attrib=root.attrib
+            )
             new_root[:] = root[:]
 
             # return result tree
@@ -383,7 +418,9 @@ def _insert_element_type(xsd_string, xpath, type_content, element_type_name, inc
         return xsd_tree
 
 
-def insert_element_type(xsd_string, xpath, type_content, element_type_name, include_url):
+def insert_element_type(
+    xsd_string, xpath, type_content, element_type_name, include_url
+):
     """Insert an element of given type in xsd string, and validates result.
 
     Args:
@@ -397,7 +434,9 @@ def insert_element_type(xsd_string, xpath, type_content, element_type_name, incl
 
     """
 
-    new_xsd_tree = _insert_element_type(xsd_string, xpath, type_content, element_type_name, include_url)
+    new_xsd_tree = _insert_element_type(
+        xsd_string, xpath, type_content, element_type_name, include_url
+    )
 
     error = validate_xml_schema(new_xsd_tree)
 
@@ -430,10 +469,13 @@ def insert_element_built_in_type(xsd_string, xpath, element_type_name):
     # build xpath to element
     xpath = xpath.replace(default_prefix + ":", LXML_SCHEMA_NAMESPACE)
 
-    type_name = default_prefix + ':' + element_type_name
-    xsd_tree.find(xpath).append(XSDTree.create_element("{}element".format(LXML_SCHEMA_NAMESPACE),
-                                                       attrib={'type': type_name,
-                                                               'name': element_type_name}))
+    type_name = default_prefix + ":" + element_type_name
+    xsd_tree.find(xpath).append(
+        XSDTree.create_element(
+            "{}element".format(LXML_SCHEMA_NAMESPACE),
+            attrib={"type": type_name, "name": element_type_name},
+        )
+    )
     # validate XML schema
     error = validate_xml_schema(xsd_tree)
 
@@ -454,13 +496,15 @@ def _get_ns_type_name(prefix, type_name, prefix_required=False):
     Returns:
 
     """
-    if prefix != '':
+    if prefix != "":
         ns_type_name = "{0}:{1}".format(prefix, type_name)
     else:
         if not prefix_required:
             ns_type_name = type_name
         else:
-            raise CoreError("Unable to add the type because no prefix is defined for the target namespace.")
+            raise CoreError(
+                "Unable to add the type because no prefix is defined for the target namespace."
+            )
 
     return ns_type_name
 
@@ -475,15 +519,15 @@ def _get_valid_xml_name(name):
 
     """
 
-    default_name = 'default_name'
+    default_name = "default_name"
     try:
         # not allowed to start with XML
-        if name.upper().startswith('XML'):
-            name = '_{}'.format(name)
+        if name.upper().startswith("XML"):
+            name = "_{}".format(name)
 
         # not allowed to start with something other than letter or underscore
-        if not name[0].isalpha() or name[0] == '_':
-            name = '_{}'.format(name)
+        if not name[0].isalpha() or name[0] == "_":
+            name = "_{}".format(name)
 
         # not allowed to have spaces
         name = name.replace(" ", "")
@@ -507,9 +551,11 @@ def _create_xsd_element(tag, attrib):
 
     """
 
-    if tag not in ['element', 'include', 'import']:
-        raise CoreError('Unable to create XSD element: invalid tag')
+    if tag not in ["element", "include", "import"]:
+        raise CoreError("Unable to create XSD element: invalid tag")
 
-    xsd_element = XSDTree.create_element("{0}{1}".format(LXML_SCHEMA_NAMESPACE, tag), attrib=attrib)
+    xsd_element = XSDTree.create_element(
+        "{0}{1}".format(LXML_SCHEMA_NAMESPACE, tag), attrib=attrib
+    )
 
     return xsd_element

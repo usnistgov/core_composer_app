@@ -68,7 +68,7 @@ def _get_random_hex_color():
     Returns:
 
     """
-    return '#' + ''.join([random.choice('0123456789ABCDEF') for x in range(6)])
+    return "#" + "".join([random.choice("0123456789ABCDEF") for x in range(6)])
 
 
 def add_type_to_buckets(version_manager, list_bucket_ids):

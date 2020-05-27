@@ -10,6 +10,7 @@ from core_main_app.commons import exceptions
 class Bucket(Document):
     """Bucket class to store types by domain.
     """
+
     label = fields.StringField(unique=True)
     color = fields.StringField(unique=True)
     types = fields.ListField(fields.ReferenceField(TypeVersionManager), blank=True)
@@ -47,7 +48,7 @@ class Bucket(Document):
         Returns:
 
         """
-        return Bucket.objects.values_list('color')
+        return Bucket.objects.values_list("color")
 
     def save_object(self):
         """Custom save

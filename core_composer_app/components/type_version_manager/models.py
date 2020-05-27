@@ -1,7 +1,9 @@
 """
 Type Version Manager model
 """
-from core_main_app.components.template_version_manager.models import TemplateVersionManager
+from core_main_app.components.template_version_manager.models import (
+    TemplateVersionManager,
+)
 from core_main_app.components.version_manager.models import VersionManager
 
 
@@ -10,7 +12,7 @@ class TypeVersionManager(TemplateVersionManager):
     """
 
     # TODO: see if better way to find _cls
-    class_name = 'VersionManager.TemplateVersionManager.TypeVersionManager'
+    class_name = "VersionManager.TemplateVersionManager.TypeVersionManager"
 
     @staticmethod
     def get_global_version_managers(_cls=True):
@@ -64,7 +66,9 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        return VersionManager.objects(_cls=TypeVersionManager.class_name, user__nin=str(user_id)).all()
+        return VersionManager.objects(
+            _cls=TypeVersionManager.class_name, user__nin=str(user_id)
+        ).all()
 
     @staticmethod
     def get_all_type_version_manager():
