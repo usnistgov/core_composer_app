@@ -2,8 +2,9 @@
 """
 import json
 
-from django.urls import reverse_lazy
 from django.http.response import HttpResponse, HttpResponseBadRequest
+from django.urls import reverse_lazy
+from django.utils.html import escape
 
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.bucket.models import Bucket
@@ -38,7 +39,7 @@ def delete_bucket(request):
         bucket = bucket_api.get_by_id(bucket_id)
         bucket_api.delete(bucket)
     except Exception as e:
-        return HttpResponseBadRequest(str(e))
+        return HttpResponseBadRequest(escape(str(e)))
 
     return HttpResponse(json.dumps({}), content_type="application/javascript")
 
@@ -77,7 +78,9 @@ def resolve_dependencies(request):
             type_version_manager = TypeVersionManager(title=name)
         type_version_manager_api.insert(type_version_manager, type_object, buckets)
     except Exception as e:
-        return HttpResponseBadRequest(str(e), content_type="application/javascript")
+        return HttpResponseBadRequest(
+            escape(str(e)), content_type="application/javascript"
+        )
 
     return HttpResponse(json.dumps({}), content_type="application/javascript")
 
