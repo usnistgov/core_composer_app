@@ -2,6 +2,7 @@
 """
 import json
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.urls import reverse_lazy
 from django.utils.html import escape
@@ -24,6 +25,7 @@ from core_main_app.views.admin.ajax import (
 from core_main_app.views.common.ajax import EditObjectModalView
 
 
+@staff_member_required
 def delete_bucket(request):
     """Delete a bucket.
 
@@ -44,6 +46,7 @@ def delete_bucket(request):
     return HttpResponse(json.dumps({}), content_type="application/javascript")
 
 
+@staff_member_required
 def resolve_dependencies(request):
     """Resolve import/includes to avoid local references.
 

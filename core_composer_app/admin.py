@@ -2,6 +2,7 @@
 """
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import re_path, reverse_lazy
 
 from core_composer_app.views.admin import views as admin_views, ajax as admin_ajax
@@ -67,7 +68,7 @@ admin_urls = [
     ),
     re_path(
         r"^bucket/(?P<pk>[\w-]+)/edit/$",
-        EditBucketView.as_view(),
+        staff_member_required(EditBucketView.as_view()),
         name="core_composer_app_edit_bucket",
     ),
 ]
