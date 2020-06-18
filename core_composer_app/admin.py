@@ -16,8 +16,10 @@ if "core_parser_app" in settings.INSTALLED_APPS:
     parser_url = [
         re_path(
             r"^type/modules/(?P<pk>\w+)",
-            admin_parser_views.ManageModulesAdminView.as_view(
-                back_to_previous_url="admin:core_composer_app_manage_type_versions"
+            staff_member_required(
+                admin_parser_views.ManageModulesAdminView.as_view(
+                    back_to_previous_url="admin:core_composer_app_manage_type_versions"
+                )
             ),
             name="core_composer_app_type_modules",
         ),
@@ -27,8 +29,10 @@ admin_urls = [
     re_path(r"^types$", admin_views.manage_types, name="core_composer_app_types"),
     re_path(
         r"^type/(?P<pk>[\w-]+)/edit/$",
-        EditTemplateVersionManagerView.as_view(
-            success_url=reverse_lazy("admin:core_composer_app_types")
+        staff_member_required(
+            EditTemplateVersionManagerView.as_view(
+                success_url=reverse_lazy("admin:core_composer_app_types")
+            )
         ),
         name="core_composer_app_edit_type",
     ),
