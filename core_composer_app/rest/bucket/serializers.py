@@ -10,12 +10,10 @@ from core_main_app.commons.exceptions import DoesNotExist
 
 
 class BucketSerializer(DocumentSerializer):
-    """ Bucket serializer
-    """
+    """Bucket serializer"""
 
     class Meta(object):
-        """ Meta
-        """
+        """Meta"""
 
         model = Bucket
         fields = "__all__"
@@ -44,8 +42,7 @@ class BucketSerializer(DocumentSerializer):
 
 
 class BucketsSerializer(DocumentSerializer):
-    """ Buckets serializer.
-    """
+    """Buckets serializer."""
 
     id = CharField()
 
@@ -54,7 +51,7 @@ class BucketsSerializer(DocumentSerializer):
         fields = ("id",)
 
     def validate_id(self, id):
-        """ Validate id field
+        """Validate id field
 
         Args:
             id:

@@ -22,13 +22,12 @@ from core_main_app.utils.decorators import api_staff_member_required
 
 
 class BucketList(APIView):
-    """ List all buckets, or create a new one.
-    """
+    """List all buckets, or create a new one."""
 
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        """ Get all buckets
+        """Get all buckets
 
         Url Parameters:
 
@@ -68,7 +67,7 @@ class BucketList(APIView):
 
     @method_decorator(api_staff_member_required())
     def post(self, request):
-        """ Create a bucket
+        """Create a bucket
 
         Parameters:
 
@@ -110,13 +109,12 @@ class BucketList(APIView):
 
 
 class BucketDetail(APIView):
-    """ Retrieve, update or delete a bucket
-    """
+    """Retrieve, update or delete a bucket"""
 
     permission_classes = (IsAuthenticated,)
 
     def get_object(self, pk):
-        """ Get bucket from db
+        """Get bucket from db
 
         Args:
 
@@ -132,7 +130,7 @@ class BucketDetail(APIView):
             raise Http404
 
     def get(self, request, pk):
-        """ Retrieve a bucket
+        """Retrieve a bucket
 
         Args:
 
@@ -166,7 +164,7 @@ class BucketDetail(APIView):
 
     @method_decorator(api_staff_member_required())
     def delete(self, request, pk):
-        """ Delete a bucket
+        """Delete a bucket
 
         Args:
 
@@ -200,7 +198,7 @@ class BucketDetail(APIView):
 
     @method_decorator(api_staff_member_required())
     def patch(self, request, pk):
-        """ Update bucket
+        """Update bucket
 
         Parameters:
 
@@ -251,12 +249,11 @@ class BucketDetail(APIView):
 
 
 class TypeVersionManagerBuckets(AbstractTemplateVersionManagerDetail):
-    """ Set new list of buckets for a type version manager
-    """
+    """Set new list of buckets for a type version manager"""
 
     @method_decorator(api_staff_member_required())
     def patch(self, request, pk):
-        """ Set new list of buckets for a type version manager
+        """Set new list of buckets for a type version manager
 
         Parameters:
 

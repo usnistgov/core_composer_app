@@ -15,11 +15,11 @@ from core_main_app.rest.template_version_manager.utils import load_dependencies
 
 class TypeVersionManagerSerializer(TemplateVersionManagerSerializer):
     """
-        Type Version Manager serializer
+    Type Version Manager serializer
     """
 
     def create(self, validated_data):
-        """ Create.
+        """Create.
 
         Args:
             validated_data:
@@ -32,7 +32,7 @@ class TypeVersionManagerSerializer(TemplateVersionManagerSerializer):
 
 class CreateTypeSerializer(TemplateSerializer):
     """
-        Create Type Version Manager serializer
+    Create Type Version Manager serializer
     """
 
     def create(self, validated_data):

@@ -36,7 +36,7 @@ from xml_utils.xsd_types.xsd_types import get_xsd_types
     login_url=reverse_lazy("core_main_app_login"),
 )
 def index(request):
-    """ Page that allows to select a template to start composing.
+    """Page that allows to select a template to start composing.
 
     Args:
         request:
@@ -46,18 +46,20 @@ def index(request):
     """
     assets = {"js": [], "css": []}
 
-    global_active_template_list = template_version_manager_api.get_active_global_version_manager(
-        _cls=True
+    global_active_template_list = (
+        template_version_manager_api.get_active_global_version_manager(_cls=True)
     )
-    user_active_template_list = template_version_manager_api.get_active_version_manager_by_user_id(
-        request.user.id, _cls=True
+    user_active_template_list = (
+        template_version_manager_api.get_active_version_manager_by_user_id(
+            request.user.id, _cls=True
+        )
     )
 
     global_active_type_list = (
         type_version_manager_api.get_active_global_version_manager()
     )
-    user_active_type_list = type_version_manager_api.get_active_version_manager_by_user_id(
-        request.user.id
+    user_active_type_list = (
+        type_version_manager_api.get_active_version_manager_by_user_id(request.user.id)
     )
 
     context = {

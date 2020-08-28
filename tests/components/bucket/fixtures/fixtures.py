@@ -7,8 +7,7 @@ from tests.components.type_version_manager.fixtures.fixtures import (
 
 
 class BucketFixtures(TypeVersionManagerFixtures):
-    """ Bucket fixtures
-    """
+    """Bucket fixtures"""
 
     bucket_empty = None
     bucket_1 = None
@@ -16,7 +15,7 @@ class BucketFixtures(TypeVersionManagerFixtures):
     bucket_collection = None
 
     def insert_data(self):
-        """ Insert a set of Buckets.
+        """Insert a set of Buckets.
 
         Returns:
 

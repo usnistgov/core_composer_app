@@ -6,8 +6,7 @@ from core_main_app.utils.integration_tests.fixture_interface import FixtureInter
 
 
 class TypeVersionManagerFixtures(FixtureInterface):
-    """ Type Version Manager fixtures
-    """
+    """Type Version Manager fixtures"""
 
     type_1_1 = None
     type_1_2 = None
@@ -18,7 +17,7 @@ class TypeVersionManagerFixtures(FixtureInterface):
     type_vm_collection = None
 
     def insert_data(self):
-        """ Insert a set of Types and Type Version Managers.
+        """Insert a set of Types and Type Version Managers.
 
         Returns:
 

@@ -6,13 +6,12 @@ from django.apps import AppConfig
 
 
 class ComposerAppConfig(AppConfig):
-    """ Core composer application settings
-    """
+    """Core composer application settings"""
 
     name = "core_composer_app"
 
     def ready(self):
-        """ Run when the app is ready.
+        """Run when the app is ready.
 
         Returns:
 

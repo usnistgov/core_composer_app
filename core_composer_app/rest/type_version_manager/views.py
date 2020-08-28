@@ -14,11 +14,10 @@ from core_main_app.utils.decorators import api_staff_member_required
 
 
 class GlobalTypeVersionManagerList(AbstractTemplateVersionManagerList):
-    """ List all global type version managers
-    """
+    """List all global type version managers"""
 
     def get_template_version_managers(self):
-        """ Get global type version managers
+        """Get global type version managers
 
         Returns:
 
@@ -28,13 +27,12 @@ class GlobalTypeVersionManagerList(AbstractTemplateVersionManagerList):
 
 
 class UserTypeVersionManagerList(AbstractTemplateVersionManagerList):
-    """ List all user type version managers
-    """
+    """List all user type version managers"""
 
     permission_classes = (IsAuthenticated,)
 
     def get_template_version_managers(self):
-        """ Get all user type version managers
+        """Get all user type version managers
 
         Returns:
 
@@ -46,13 +44,12 @@ class UserTypeVersionManagerList(AbstractTemplateVersionManagerList):
 
 
 class UserTypeList(AbstractTypeList):
-    """ Create a user type
-    """
+    """Create a user type"""
 
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
-        """ Create a user type & type version manager
+        """Create a user type & type version manager
 
         Parameters:
 
@@ -82,18 +79,16 @@ class UserTypeList(AbstractTypeList):
         return super(UserTypeList, self).post(request)
 
     def get_user(self):
-        """ Retrieve user from the request
-        """
+        """Retrieve user from the request"""
         return str(self.request.user.id)
 
 
 class GlobalTypeList(AbstractTypeList):
-    """ Create a global type
-    """
+    """Create a global type"""
 
     @method_decorator(api_staff_member_required())
     def post(self, request):
-        """ Create a global type & type version manager
+        """Create a global type & type version manager
 
         Parameters:
 
@@ -123,6 +118,5 @@ class GlobalTypeList(AbstractTypeList):
         return super(GlobalTypeList, self).post(request)
 
     def get_user(self):
-        """ None for global type
-        """
+        """None for global type"""
         return None

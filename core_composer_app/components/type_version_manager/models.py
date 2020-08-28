@@ -8,8 +8,7 @@ from core_main_app.components.version_manager.models import VersionManager
 
 
 class TypeVersionManager(TemplateVersionManager):
-    """Manage versions of types.
-    """
+    """Manage versions of types."""
 
     # TODO: see if better way to find _cls
     class_name = "VersionManager.TemplateVersionManager.TypeVersionManager"
@@ -58,7 +57,7 @@ class TypeVersionManager(TemplateVersionManager):
 
     @staticmethod
     def get_all_type_version_manager_except_user_id(user_id):
-        """ Return all Version Managers of all users except user with given user id.
+        """Return all Version Managers of all users except user with given user id.
 
         Args:
             user_id:
@@ -72,7 +71,7 @@ class TypeVersionManager(TemplateVersionManager):
 
     @staticmethod
     def get_all_type_version_manager():
-        """ Return all Version Managers of all users.
+        """Return all Version Managers of all users.
 
         Args:
 

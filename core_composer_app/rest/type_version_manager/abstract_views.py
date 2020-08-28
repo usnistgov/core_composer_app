@@ -19,13 +19,13 @@ from core_main_app.rest.template_version_manager.abstract_views import (
 
 
 class AbstractTypeList(
-    APIView, metaclass=ABCMeta,
+    APIView,
+    metaclass=ABCMeta,
 ):
-    """ Create a type & type version manager
-    """
+    """Create a type & type version manager"""
 
     def post(self, request):
-        """ Create a type & type version manager
+        """Create a type & type version manager
 
         Parameters:
 
@@ -85,17 +85,15 @@ class AbstractTypeList(
 
     @abstractmethod
     def get_user(self):
-        """ Get a user
-        """
+        """Get a user"""
         raise NotImplementedError("get_user method is not implemented.")
 
 
 class TypeVersion(AbstractTemplateVersionManagerDetail):
-    """ Create a type version
-    """
+    """Create a type version"""
 
     def post(self, request, pk):
-        """ Create a type version
+        """Create a type version
 
         Parameters:
 

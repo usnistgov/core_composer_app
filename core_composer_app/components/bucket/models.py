@@ -8,8 +8,7 @@ from core_main_app.commons import exceptions
 
 
 class Bucket(Document):
-    """Bucket class to store types by domain.
-    """
+    """Bucket class to store types by domain."""
 
     label = fields.StringField(unique=True)
     color = fields.StringField(unique=True)
