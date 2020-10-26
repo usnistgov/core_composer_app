@@ -3,6 +3,7 @@
 from os.path import join
 
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.contrib.staticfiles import finders
 from django.urls import reverse_lazy
 
@@ -217,6 +218,7 @@ def download_xsd(request):
     )
 
 
+@login_required
 def manage_type_versions(request, version_manager_id):
     """View that allows type versions management.
 
