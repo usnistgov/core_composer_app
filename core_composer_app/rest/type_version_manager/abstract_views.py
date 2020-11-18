@@ -3,6 +3,7 @@
 from abc import ABCMeta, abstractmethod
 
 from django.http import Http404
+from django.utils.decorators import method_decorator
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -16,6 +17,7 @@ from core_main_app.commons.exceptions import NotUniqueError, XSDError
 from core_main_app.rest.template_version_manager.abstract_views import (
     AbstractTemplateVersionManagerDetail,
 )
+from core_main_app.utils.decorators import api_staff_member_required
 
 
 class AbstractTypeList(
@@ -54,7 +56,9 @@ class AbstractTypeList(
         """
         try:
             # Build serializers
-            type_serializer = CreateTypeSerializer(data=request.data)
+            type_serializer = CreateTypeSerializer(
+                data=request.data, context={"request": request}
+            )
             type_version_manager_serializer = TypeVersionManagerSerializer(
                 data=request.data
             )
@@ -67,7 +71,9 @@ class AbstractTypeList(
             type_version_manager_object = type_version_manager_serializer.save(
                 user=self.get_user()
             )
-            type_serializer.save(type_version_manager=type_version_manager_object)
+            type_serializer.save(
+                type_version_manager=type_version_manager_object, user=self.get_user()
+            )
 
             return Response(type_serializer.data, status=status.HTTP_201_CREATED)
         except ValidationError as validation_exception:
@@ -92,6 +98,7 @@ class AbstractTypeList(
 class TypeVersion(AbstractTemplateVersionManagerDetail):
     """Create a type version"""
 
+    @method_decorator(api_staff_member_required())
     def post(self, request, pk):
         """Create a type version
 
@@ -126,13 +133,18 @@ class TypeVersion(AbstractTemplateVersionManagerDetail):
             type_version_manager_object = self.get_object(pk)
 
             # Build serializers
-            type_serializer = CreateTypeSerializer(data=request.data)
+            type_serializer = CreateTypeSerializer(
+                data=request.data, context={"request": request}
+            )
 
             # Validate data
             type_serializer.is_valid(True)
 
             # Save data
-            type_serializer.save(type_version_manager=type_version_manager_object)
+            type_serializer.save(
+                type_version_manager=type_version_manager_object,
+                user=type_version_manager_object.user,
+            )
 
             return Response(type_serializer.data, status=status.HTTP_201_CREATED)
         except Http404:

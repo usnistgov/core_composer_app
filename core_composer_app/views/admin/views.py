@@ -47,7 +47,9 @@ def manage_types(request):
 
     """
     # get all types
-    type_version_managers = type_version_manager_api.get_global_version_managers()
+    type_version_managers = type_version_manager_api.get_global_version_managers(
+        request=request
+    )
     # get buckets
     buckets = bucket_api.get_all()
 
@@ -108,7 +110,7 @@ def manage_type_versions(request, version_manager_id):
     """
     try:
         # get the version manager
-        version_manager = version_manager_api.get(version_manager_id)
+        version_manager = version_manager_api.get(version_manager_id, request=request)
         context = get_context_manage_template_versions(version_manager, "Type")
 
         # updating context regarding the installed apps
@@ -233,7 +235,9 @@ def _save_type(request, assets, context):
     try:
         type_object = Type(filename=xsd_file.name, content=xsd_data)
         type_version_manager = TypeVersionManager(title=name)
-        type_version_manager_api.insert(type_version_manager, type_object, buckets)
+        type_version_manager_api.insert(
+            type_version_manager, type_object, request=request, list_bucket_ids=buckets
+        )
         return HttpResponseRedirect(reverse("admin:core_composer_app_types"))
     except exceptions.XSDError as xsd_error:
         return _handle_xsd_errors(
@@ -262,7 +266,7 @@ def _handle_xsd_errors(request, assets, context, xsd_error, xsd_content, filenam
     if len(includes) > 0 or len(imports) > 0:
         # build dependency resolver
         context["dependency_resolver"] = _get_dependency_resolver_html(
-            imports, includes, xsd_content, filename
+            imports, includes, xsd_content, filename, request=request
         )
         return _upload_type_response(request, assets, context)
     else:
@@ -270,7 +274,7 @@ def _handle_xsd_errors(request, assets, context, xsd_error, xsd_content, filenam
         return _upload_type_response(request, assets, context)
 
 
-def _get_dependency_resolver_html(imports, includes, xsd_data, filename):
+def _get_dependency_resolver_html(imports, includes, xsd_data, filename, request):
     """Return HTML for dependency resolver form.
 
     Args:
@@ -278,12 +282,15 @@ def _get_dependency_resolver_html(imports, includes, xsd_data, filename):
         includes:
         xsd_data:
         filename:
+        request:
 
     Returns:
 
     """
     # build the list of dependencies
-    current_types = type_version_manager_api.get_global_version_managers()
+    current_types = type_version_manager_api.get_global_version_managers(
+        request=request
+    )
     list_dependencies_template = loader.get_template(
         "core_main_app/admin/list_dependencies.html"
     )
@@ -358,7 +365,7 @@ def upload_type_version(request, version_manager_id):
         ]
     }
 
-    type_version_manager = version_manager_api.get(version_manager_id)
+    type_version_manager = version_manager_api.get(version_manager_id, request=request)
     context = {
         "object_name": "Type",
         "version_manager": type_version_manager,
@@ -408,7 +415,9 @@ def _save_type_version(request, assets, context, type_version_manager):
 
     try:
         type_object = Type(filename=xsd_file.name, content=xsd_data)
-        type_version_manager_api.insert(type_version_manager, type_object)
+        type_version_manager_api.insert(
+            type_version_manager, type_object, request=request
+        )
         return HttpResponseRedirect(
             reverse(
                 "admin:core_composer_app_manage_type_versions",
@@ -516,7 +525,7 @@ def manage_type_buckets(request, version_manager_id):
     version_manager = None
 
     try:
-        version_manager = version_manager_api.get(version_manager_id)
+        version_manager = version_manager_api.get(version_manager_id, request=request)
     except ModelError as e:
         logger.error("manage_type_buckets threw a ModelError: {0}".format(str(e)))
         return admin_render(

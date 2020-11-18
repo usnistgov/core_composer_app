@@ -13,7 +13,7 @@ from core_main_app.utils.integration_tests.integration_base_test_case import (
     MongoIntegrationBaseTestCase,
 )
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
-from core_main_app.utils.tests_tools.RequestMock import RequestMock
+from core_main_app.utils.tests_tools.RequestMock import RequestMock, create_mock_request
 from tests.components.type_version_manager.fixtures.fixtures import (
     TypeVersionManagerFixtures,
 )
@@ -253,6 +253,7 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
     def test_post_owner_is_user(self):
         # Arrange
         user = create_mock_user("1")
+        mock_request = create_mock_request(user=user)
 
         # Act
         response = RequestMock.do_request_post(
@@ -261,8 +262,10 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
 
         # get type version manager from posted type
         type_id = response.data["id"]
-        type_object = type_api.get(type_id)
-        type_version_manager = vm_api.get_from_version(type_object)
+        type_object = type_api.get(type_id, request=mock_request)
+        type_version_manager = vm_api.get_from_version(
+            type_object, request=mock_request
+        )
 
         # Assert
         self.assertEqual(type_version_manager.user, user.id)
@@ -412,6 +415,7 @@ class TestGlobalTypeList(MongoIntegrationBaseTestCase):
     def test_post_owner_is_global(self):
         # Arrange
         user = create_mock_user("1", is_staff=True)
+        mock_request = create_mock_request(user=user)
 
         # Act
         response = RequestMock.do_request_post(
@@ -420,8 +424,10 @@ class TestGlobalTypeList(MongoIntegrationBaseTestCase):
 
         # get type version manager from posted type
         type_id = response.data["id"]
-        type_object = type_api.get(type_id)
-        type_version_manager = vm_api.get_from_version(type_object)
+        type_object = type_api.get(type_id, request=mock_request)
+        type_version_manager = vm_api.get_from_version(
+            type_object, request=mock_request
+        )
 
         # Assert
         self.assertEqual(type_version_manager.user, None)

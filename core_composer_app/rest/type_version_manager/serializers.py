@@ -40,7 +40,9 @@ class CreateTypeSerializer(TemplateSerializer):
         Create and return a new `Type` instance, given the validated data.
         """
         type_object = Type(
-            filename=validated_data["filename"], content=validated_data["content"]
+            filename=validated_data["filename"],
+            content=validated_data["content"],
+            user=validated_data["user"],
         )
         type_version_manager_object = validated_data["type_version_manager"]
 
@@ -48,10 +50,14 @@ class CreateTypeSerializer(TemplateSerializer):
         dependencies_dict = load_dependencies(validated_data)
 
         # Update the content of the template with dependencies
-        init_template_with_dependencies(type_object, dependencies_dict)
+        init_template_with_dependencies(
+            type_object, dependencies_dict, request=self.context["request"]
+        )
 
         # Create the template and its template version manager
-        type_version_manager_api.insert(type_version_manager_object, type_object)
+        type_version_manager_api.insert(
+            type_version_manager_object, type_object, request=self.context["request"]
+        )
 
         return type_object
 

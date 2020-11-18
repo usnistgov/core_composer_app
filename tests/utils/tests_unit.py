@@ -39,7 +39,7 @@ class TestInsertElementType(TestCase):
             join(RESOURCES_PATH, type_filename),
         )
 
-        errors = validate_xml_schema(result_tree)
+        errors = validate_xml_schema(result_tree, request=None)
         self.assertTrue(errors is None)
 
     def test_add_type_with_target_namespace_to_base(self):
@@ -77,7 +77,7 @@ class TestInsertElementType(TestCase):
             join(RESOURCES_PATH, type_filename),
         )
 
-        errors = validate_xml_schema(result_tree)
+        errors = validate_xml_schema(result_tree, request=None)
         self.assertTrue(errors is None)
 
     def test_add_type_with_target_namespace_to_base_with_same_target_namespace(self):
@@ -97,7 +97,7 @@ class TestInsertElementType(TestCase):
             join(RESOURCES_PATH, type_filename),
         )
 
-        errors = validate_xml_schema(result_tree)
+        errors = validate_xml_schema(result_tree, request=None)
         self.assertTrue(errors is None)
 
     def test_add_type_with_target_namespace_to_base_with_different_target_namespace(
@@ -137,7 +137,7 @@ class TestInsertElementType(TestCase):
             join(RESOURCES_PATH, type_filename),
         )
 
-        errors = validate_xml_schema(result_tree)
+        errors = validate_xml_schema(result_tree, request=None)
         self.assertTrue(errors is None)
 
     def test_add_type_with_target_namespace_prefix_to_base_with_same_target_namespace_prefix(
@@ -159,7 +159,7 @@ class TestInsertElementType(TestCase):
             join(RESOURCES_PATH, type_filename),
         )
 
-        errors = validate_xml_schema(result_tree)
+        errors = validate_xml_schema(result_tree, request=None)
         self.assertTrue(errors is None)
 
     def test_add_type_with_target_namespace_prefix_to_base_with_different_target_namespace_prefix(
@@ -181,7 +181,7 @@ class TestInsertElementType(TestCase):
             join(RESOURCES_PATH, type_filename),
         )
 
-        errors = validate_xml_schema(result_tree)
+        errors = validate_xml_schema(result_tree, request=None)
         self.assertTrue(errors is None)
 
 

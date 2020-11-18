@@ -59,16 +59,21 @@ def insert_element_sequence(request):
         if type_id == "built_in_type":
             # insert built-in type into xsd string
             new_xsd_str = composer_xml_utils.insert_element_built_in_type(
-                xsd_string, xpath, type_name
+                xsd_string, xpath, type_name, request=request
             )
         else:
             # get type from database
-            type_object = type_api.get(type_id)
+            type_object = type_api.get(type_id, request=request)
             # generate include url
             include_url = main_xml_utils._get_schema_location_uri(str(type_id))
             # insert element in xsd string
             new_xsd_str = composer_xml_utils.insert_element_type(
-                xsd_string, xpath, type_object.content, type_name, include_url
+                xsd_string,
+                xpath,
+                type_object.content,
+                type_name,
+                include_url,
+                request=request,
             )
             # add the id of the type if not already present
             if include_url not in request.session["includedTypesCompose"]:
@@ -179,7 +184,7 @@ def rename_element(request):
         # build xsd tree
         xsd_tree = XSDTree.build_tree(xsd_string)
         # validate the schema
-        error = main_xml_utils.validate_xml_schema(xsd_tree)
+        error = main_xml_utils.validate_xml_schema(xsd_tree, request=request)
 
         if error is not None:
             return _error_response("This is not a valid name.")
@@ -317,7 +322,7 @@ def save_template(request):
             xsd_tree = XSDTree.build_tree(xsd_string)
 
             # validate the schema
-            error = main_xml_utils.validate_xml_schema(xsd_tree)
+            error = main_xml_utils.validate_xml_schema(xsd_tree, request=request)
 
             if error is not None:
                 return _error_response("This is not a valid XML schema. " + error)
@@ -325,7 +330,9 @@ def save_template(request):
             return _error_response("This is not a valid XML schema. " + escape(str(e)))
 
         # get list of dependencies
-        dependencies = _get_dependencies_ids(request.session["includedTypesCompose"])
+        dependencies = _get_dependencies_ids(
+            request.session["includedTypesCompose"], request=request
+        )
 
         try:
             # create template version manager
@@ -334,10 +341,15 @@ def save_template(request):
             )
             # create template
             template = Template(
-                filename=template_name, content=xsd_string, dependencies=dependencies
+                filename=template_name,
+                content=xsd_string,
+                dependencies=dependencies,
+                user=str(request.user.id),
             )
             # save template in database
-            template_version_manager_api.insert(template_version_manager, template)
+            template_version_manager_api.insert(
+                template_version_manager, template, request=request
+            )
         except exceptions.NotUniqueError:
             return HttpResponseBadRequest(
                 "A template with the same name already exists. Please choose another name."
@@ -378,8 +390,8 @@ def save_type(request):
         # can save as type if new type or from existing type
         if template_id != "new":
             try:
-                # check if the type exists, raises exception otherise
-                type_api.get(template_id)
+                # check if the type exists, raises exception otherwise
+                type_api.get(template_id, request=request)
             except Exception as e:
                 # the type does not exist
                 logger.warning("save_type threw an exception: {0}".format(str(e)))
@@ -391,14 +403,16 @@ def save_type(request):
             # build xsd tree
             xsd_tree = XSDTree.build_tree(xsd_string)
             # validate the schema
-            error = main_xml_utils.validate_xml_schema(xsd_tree)
+            error = main_xml_utils.validate_xml_schema(xsd_tree, request=request)
 
             if error is not None:
                 return _error_response("This is not a valid XML schema. " + error)
         except Exception as e:
             return _error_response("This is not a valid XML schema. " + str(e))
 
-        dependencies = _get_dependencies_ids(request.session["includedTypesCompose"])
+        dependencies = _get_dependencies_ids(
+            request.session["includedTypesCompose"], request=request
+        )
 
         try:
             # create type version manager
@@ -407,10 +421,15 @@ def save_type(request):
             )
             # create type
             type_object = Type(
-                filename=type_name, content=xsd_string, dependencies=dependencies
+                filename=type_name,
+                content=xsd_string,
+                dependencies=dependencies,
+                user=str(request.user.id),
             )
             # save type in database
-            type_version_manager_api.insert(type_version_manager, type_object)
+            type_version_manager_api.insert(
+                type_version_manager, type_object, request=request
+            )
         except exceptions.NotUniqueError:
             return HttpResponseBadRequest(
                 "A type with the same name already exists. Please choose another name."
@@ -427,7 +446,7 @@ def save_type(request):
         )
 
 
-def _get_dependencies_ids(list_dependencies):
+def _get_dependencies_ids(list_dependencies, request):
     """Return list of type ids from list of dependencies.
 
     Args:
@@ -448,7 +467,7 @@ def _get_dependencies_ids(list_dependencies):
             # get object id from url
             object_id = pattern.match(url.path).group("pk")
             # get type by id, exception raised if not found
-            type_object = type_api.get(object_id)
+            type_object = type_api.get(object_id, request=request)
             # add id to list of internal dependencies
             dependencies.append(type_object)
         except Exception as e:

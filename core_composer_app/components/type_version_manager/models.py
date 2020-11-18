@@ -56,20 +56,6 @@ class TypeVersionManager(TemplateVersionManager):
         return TypeVersionManager.objects(is_disabled=False, user=str(user_id)).all()
 
     @staticmethod
-    def get_all_type_version_manager_except_user_id(user_id):
-        """Return all Version Managers of all users except user with given user id.
-
-        Args:
-            user_id:
-
-        Returns:
-
-        """
-        return VersionManager.objects(
-            _cls=TypeVersionManager.class_name, user__nin=str(user_id)
-        ).all()
-
-    @staticmethod
     def get_all_type_version_manager():
         """Return all Version Managers of all users.
 

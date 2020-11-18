@@ -419,7 +419,7 @@ def _insert_element_type(
 
 
 def insert_element_type(
-    xsd_string, xpath, type_content, element_type_name, include_url
+    xsd_string, xpath, type_content, element_type_name, include_url, request
 ):
     """Insert an element of given type in xsd string, and validates result.
 
@@ -429,6 +429,7 @@ def insert_element_type(
         type_content: string content of the type to insert
         element_type_name: name of the type
         include_url: url used to reference the type in schemaLocation
+        request: request
 
     Returns:
 
@@ -437,8 +438,7 @@ def insert_element_type(
     new_xsd_tree = _insert_element_type(
         xsd_string, xpath, type_content, element_type_name, include_url
     )
-
-    error = validate_xml_schema(new_xsd_tree)
+    error = validate_xml_schema(new_xsd_tree, request=request)
 
     # if errors, raise exception
     if error is not None:
@@ -449,13 +449,14 @@ def insert_element_type(
     return new_xsd_string
 
 
-def insert_element_built_in_type(xsd_string, xpath, element_type_name):
+def insert_element_built_in_type(xsd_string, xpath, element_type_name, request):
     """Insert element with a builtin type in xsd string.
 
     Args:
         xsd_string: xsd string
         xpath: xpath where to insert the element
         element_type_name: name of the type to insert
+        request: request
 
     Returns:
 
@@ -477,7 +478,7 @@ def insert_element_built_in_type(xsd_string, xpath, element_type_name):
         )
     )
     # validate XML schema
-    error = validate_xml_schema(xsd_tree)
+    error = validate_xml_schema(xsd_tree, request=request)
 
     # if errors, raise exception
     if error is not None:

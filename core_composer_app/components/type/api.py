@@ -3,14 +3,19 @@ Type API
 """
 from core_composer_app.components.type.models import Type
 from core_composer_app.utils.xml import check_type_core_support, COMPLEX_TYPE
+from core_main_app.access_control.api import is_superuser
+from core_main_app.access_control.decorators import access_control
 from core_main_app.components.template import api as template_api
+from core_main_app.components.template.access_control import can_write, can_read
 
 
-def upsert(type_object):
+@access_control(can_write)
+def upsert(type_object, request):
     """Save or update the type.
 
     Args:
         type_object:
+        request:
 
     Returns:
 
@@ -19,14 +24,16 @@ def upsert(type_object):
     type_definition = check_type_core_support(type_object.content)
     type_object.is_complex = type_definition == COMPLEX_TYPE
     # Save type
-    return template_api.upsert(type_object)
+    return template_api.upsert(type_object, request=request)
 
 
-def get(type_id):
+@access_control(can_read)
+def get(type_id, request):
     """Get a type.
 
     Args:
         type_id:
+        request:
 
     Returns:
 
@@ -34,7 +41,8 @@ def get(type_id):
     return Type.get_by_id(type_id)
 
 
-def get_all():
+@access_control(is_superuser)
+def get_all(request):
     """List all types.
 
     Returns:
@@ -43,7 +51,8 @@ def get_all():
     return Type.get_all()
 
 
-def get_all_complex_type():
+@access_control(is_superuser)
+def get_all_complex_type(request):
     """List all complex types.
 
     Returns:
@@ -52,7 +61,8 @@ def get_all_complex_type():
     return Type.get_all_complex_type()
 
 
-def delete(type_object):
+@access_control(can_write)
+def delete(type_object, request):
     """Delete the type.
 
     Returns:

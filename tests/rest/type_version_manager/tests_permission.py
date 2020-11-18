@@ -18,7 +18,7 @@ from core_main_app.utils.tests_tools.RequestMock import RequestMock
 
 class TestGlobalTypeVersionManagerListGetPermission(SimpleTestCase):
     @patch.object(TypeVersionManager, "get_global_version_managers")
-    def test_anonymous_returns_http_200(
+    def test_anonymous_returns_http_403(
         self, type_version_manager_get_all_global_version_managers
     ):
         type_version_manager_get_all_global_version_managers.return_value = {}
@@ -27,7 +27,7 @@ class TestGlobalTypeVersionManagerListGetPermission(SimpleTestCase):
             type_version_manager_views.GlobalTypeVersionManagerList.as_view(), None
         )
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     @patch.object(TypeVersionManager, "get_global_version_managers")
     def test_authenticated_returns_http_200(

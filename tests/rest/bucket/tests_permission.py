@@ -238,7 +238,7 @@ class TestTypeVersionManagerBucketsPatchPermission(SimpleTestCase):
         bucket_get_by_id,
     ):
         bucket_get_by_id.return_value = {}
-        version_manager_get_by_id.return_value = {}
+        version_manager_get_by_id.return_value = VersionManager(user=None)
         bucket_serializer_data.return_value = True
         bucket_serializer_save.return_value = None
         bucket_serializer_valid.return_value = {}

@@ -14,6 +14,8 @@ from core_composer_app.components.type_version_manager import api as version_man
 from core_composer_app.components.type_version_manager.api import get_no_buckets_types
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_main_app.commons.exceptions import CoreError, ModelError, NotUniqueError
+from core_main_app.utils.tests_tools.MockUser import create_mock_user
+from core_main_app.utils.tests_tools.RequestMock import create_mock_request
 
 
 class TestTypeVersionManagerInsert(TestCase):
@@ -23,6 +25,8 @@ class TestTypeVersionManagerInsert(TestCase):
         self, mock_save_type, mock_save_type_version_manager
     ):
         # Arrange
+        mock_user = create_mock_user("1", is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
         type_filename = "schema.xsd"
         type_content = "<schema xmlns='http://www.w3.org/2001/XMLSchema'></schema>"
         type_object = _create_type(type_filename, type_content)
@@ -34,7 +38,9 @@ class TestTypeVersionManagerInsert(TestCase):
 
         # Act + Assert
         with self.assertRaises(CoreError):
-            version_manager_api.insert(version_manager, type_object)
+            version_manager_api.insert(
+                version_manager, type_object, request=mock_request
+            )
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(TypeVersionManager, "save")
@@ -43,6 +49,8 @@ class TestTypeVersionManagerInsert(TestCase):
         self, mock_save_type, mock_save_type_version_manager
     ):
         # Arrange
+        mock_user = create_mock_user("1", is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
         type_filename = "schema.xsd"
         type_content = (
             "<schema xmlns='http://www.w3.org/2001/XMLSchema'><simpleType name='type'>"
@@ -57,7 +65,9 @@ class TestTypeVersionManagerInsert(TestCase):
         mock_save_type_version_manager.return_value = version_manager
 
         # Act
-        result = version_manager_api.insert(version_manager, type_object)
+        result = version_manager_api.insert(
+            version_manager, type_object, request=mock_request
+        )
 
         # Assert
         self.assertIsInstance(result, TypeVersionManager)
@@ -70,6 +80,8 @@ class TestTypeVersionManagerInsert(TestCase):
         self, mock_version_manager_save, mock_save, mock_delete
     ):
         # Arrange
+        mock_user = create_mock_user("1", is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
         type_filename = "schema.xsd"
         type_object = _create_type(type_filename)
 
@@ -80,7 +92,9 @@ class TestTypeVersionManagerInsert(TestCase):
 
         # Act + Assert
         with self.assertRaises(NotUniqueError):
-            version_manager_api.insert(mock_version_manager, type_object)
+            version_manager_api.insert(
+                mock_version_manager, type_object, request=mock_request
+            )
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, "save")
@@ -88,6 +102,8 @@ class TestTypeVersionManagerInsert(TestCase):
         self, mock_save
     ):
         # Arrange
+        mock_user = create_mock_user("1", is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
         type_filename = "schema.xsd"
         type_object = _create_type(type_filename)
 
@@ -96,7 +112,9 @@ class TestTypeVersionManagerInsert(TestCase):
 
         # Act + Assert
         with self.assertRaises(django_exceptions.ValidationError):
-            version_manager_api.insert(mock_version_manager, type_object)
+            version_manager_api.insert(
+                mock_version_manager, type_object, request=mock_request
+            )
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, "delete")
@@ -106,6 +124,8 @@ class TestTypeVersionManagerInsert(TestCase):
         self, mock_save, mock_save_version_manager, mock_delete
     ):
         # Arrange
+        mock_user = create_mock_user("1", is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
         type_filename = "Schema"
         type_object = _create_type(type_filename)
 
@@ -116,7 +136,9 @@ class TestTypeVersionManagerInsert(TestCase):
 
         # Act + Assert
         with self.assertRaises(ModelError):
-            version_manager_api.insert(version_manager, type_object)
+            version_manager_api.insert(
+                version_manager, type_object, request=mock_request
+            )
 
 
 class TestTypeVersionManagerGetGlobalVersions(TestCase):
@@ -125,12 +147,14 @@ class TestTypeVersionManagerGetGlobalVersions(TestCase):
         self, mock_get_global_version_managers
     ):
         # Arrange
+        mock_user = create_mock_user("1", is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
         mock_type1 = _create_mock_type()
         mock_type2 = _create_mock_type()
 
         mock_get_global_version_managers.return_value = [mock_type1, mock_type2]
 
-        result = version_manager_api.get_global_version_managers()
+        result = version_manager_api.get_global_version_managers(request=mock_request)
 
         # Assert
         self.assertTrue(all(isinstance(item, Type) for item in result))
@@ -143,12 +167,14 @@ class TestTypeVersionManagerGetVersionManagersByUser(TestCase):
     ):
         # Arrange
         user_id = "10"
+        mock_user = create_mock_user(user_id=user_id, is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
         mock_type1 = _create_mock_type_version_manager(user=user_id)
         mock_type2 = _create_mock_type_version_manager(user=user_id)
 
         mock_get_version_managers_by_user.return_value = [mock_type1, mock_type2]
 
-        result = version_manager_api.get_version_managers_by_user(user_id)
+        result = version_manager_api.get_version_managers_by_user(request=mock_request)
 
         # Assert
         self.assertTrue(item.user_id == user_id for item in result)
@@ -161,12 +187,14 @@ class TestGetNoBucketsTypes(TestCase):
         self, mock_get_all_buckets, mock_get_global_version_managers
     ):
         # Arrange
+        mock_user = create_mock_user("1", is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
         mock_type1 = _create_mock_type_version_manager()
         mock_type2 = _create_mock_type_version_manager()
         mock_get_global_version_managers.return_value = [mock_type1, mock_type2]
         mock_get_all_buckets.return_value = []
 
-        result = get_no_buckets_types()
+        result = get_no_buckets_types(request=mock_request)
         self.assertTrue(all(isinstance(item, TypeVersionManager) for item in result))
 
     @patch.object(TypeVersionManager, "get_global_version_managers")
@@ -175,12 +203,14 @@ class TestGetNoBucketsTypes(TestCase):
         self, mock_get_all_buckets, mock_get_global_version_managers
     ):
         # Arrange
+        mock_user = create_mock_user("1", is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
         mock_type1 = _create_mock_type_version_manager()
         mock_type2 = _create_mock_type_version_manager()
         mock_get_global_version_managers.return_value = [mock_type1, mock_type2]
         mock_get_all_buckets.return_value = []
 
-        self.assertTrue(len(get_no_buckets_types()) == 2)
+        self.assertTrue(len(get_no_buckets_types(request=mock_request)) == 2)
 
     @patch.object(TypeVersionManager, "get_global_version_managers")
     @patch.object(Bucket, "get_all")
@@ -188,6 +218,8 @@ class TestGetNoBucketsTypes(TestCase):
         self, mock_get_all_buckets, mock_get_global_version_managers
     ):
         # Arrange
+        mock_user = create_mock_user("1", is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
         mock_type1 = _create_mock_type_version_manager()
         mock_type2 = _create_mock_type_version_manager()
 
@@ -196,7 +228,7 @@ class TestGetNoBucketsTypes(TestCase):
         mock_get_global_version_managers.return_value = [mock_type1, mock_type2]
         mock_get_all_buckets.return_value = [mock_bucket]
 
-        self.assertTrue(len(get_no_buckets_types()) == 1)
+        self.assertTrue(len(get_no_buckets_types(request=mock_request)) == 1)
 
 
 def _create_mock_bucket(types=None):

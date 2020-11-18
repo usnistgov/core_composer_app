@@ -23,7 +23,9 @@ class GlobalTypeVersionManagerList(AbstractTemplateVersionManagerList):
 
             TypeVersionManager
         """
-        return type_version_manager_api.get_global_version_managers()
+        return type_version_manager_api.get_global_version_managers(
+            request=self.request
+        )
 
 
 class UserTypeVersionManagerList(AbstractTemplateVersionManagerList):
@@ -39,7 +41,7 @@ class UserTypeVersionManagerList(AbstractTemplateVersionManagerList):
             TypeVersionManager
         """
         return type_version_manager_api.get_version_managers_by_user(
-            user_id=self.request.user.id
+            request=self.request
         )
 
 

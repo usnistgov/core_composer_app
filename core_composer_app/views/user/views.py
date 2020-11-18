@@ -48,19 +48,21 @@ def index(request):
     assets = {"js": [], "css": []}
 
     global_active_template_list = (
-        template_version_manager_api.get_active_global_version_manager(_cls=True)
+        template_version_manager_api.get_active_global_version_manager(
+            request=request, _cls=True
+        )
     )
     user_active_template_list = (
         template_version_manager_api.get_active_version_manager_by_user_id(
-            request.user.id, _cls=True
+            request=request, _cls=True
         )
     )
 
     global_active_type_list = (
-        type_version_manager_api.get_active_global_version_manager()
+        type_version_manager_api.get_active_global_version_manager(request=request)
     )
     user_active_type_list = (
-        type_version_manager_api.get_active_version_manager_by_user_id(request.user.id)
+        type_version_manager_api.get_active_version_manager_by_user_id(request=request)
     )
 
     context = {
@@ -96,7 +98,7 @@ def build_template(request, template_id):
         )
         xsd_string = read_file_content(base_template_path)
     else:
-        template = template_api.get(template_id)
+        template = template_api.get(template_id, request=request)
         xsd_string = template.content
 
     request.session["newXmlTemplateCompose"] = xsd_string
@@ -129,14 +131,12 @@ def build_template(request, template_id):
     xsd_to_html_string = xsl_transform(xsd_string, xslt_string)
 
     # 1) Get user defined types
-    user_types = type_version_manager_api.get_version_managers_by_user(
-        str(request.user.id)
-    )
+    user_types = type_version_manager_api.get_version_managers_by_user(request=request)
     # 2) Get buckets
     buckets = bucket_api.get_all()
 
     # 3) no_buckets_types: list of types that are not assigned to a specific bucket
-    no_buckets_types = type_version_manager_api.get_no_buckets_types()
+    no_buckets_types = type_version_manager_api.get_no_buckets_types(request=request)
 
     # 4) Build list of built-in types
     built_in_types = []
@@ -231,7 +231,7 @@ def manage_type_versions(request, version_manager_id):
     """
     try:
         # get the version manager
-        version_manager = version_manager_api.get(version_manager_id)
+        version_manager = version_manager_api.get(version_manager_id, request=request)
         context = get_context_manage_template_versions(version_manager, "Type")
         if "core_parser_app" in settings.INSTALLED_APPS:
             context.update({"module_url": "core_composer_app_type_modules"})
