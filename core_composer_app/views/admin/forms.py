@@ -5,6 +5,7 @@ from django import forms
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.bucket.models import Bucket
 from django_mongoengine.forms import DocumentForm
+from core_main_app.commons.validators import ExtensionValidator
 
 
 class BucketForm(forms.Form):
@@ -43,6 +44,7 @@ class UploadTypeForm(forms.Form):
     xsd_file = forms.FileField(
         label="Select a file",
         required=True,
+        validators=[ExtensionValidator(".xsd")],
         widget=forms.FileInput(attrs={"accept": ".xsd", "class": "form-control"}),
     )
     buckets = BucketDataModelChoiceField(

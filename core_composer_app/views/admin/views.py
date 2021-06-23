@@ -223,16 +223,17 @@ def _save_type(request, assets, context):
     Returns:
 
     """
-    # get the schema name
-    name = request.POST["name"]
-    # get the file from the form
-    xsd_file = request.FILES["xsd_file"]
-    # read the content of the file
-    xsd_data = read_xsd_file(xsd_file)
-    # get the buckets
-    buckets = request.POST.getlist("buckets")
 
     try:
+        # get the schema name
+        name = request.POST["name"]
+        # get the file from the form
+        xsd_file = request.FILES["xsd_file"]
+        # read the content of the file
+        xsd_data = read_xsd_file(xsd_file)
+        # get the buckets
+        buckets = request.POST.getlist("buckets")
+
         type_object = Type(filename=xsd_file.name, content=xsd_data)
         type_version_manager = TypeVersionManager(title=name)
         type_version_manager_api.insert(
