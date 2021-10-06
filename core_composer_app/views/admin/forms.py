@@ -1,10 +1,10 @@
 """Composer Admin Forms
 """
 from django import forms
+from django.forms import ModelForm
 
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.bucket.models import Bucket
-from django_mongoengine.forms import DocumentForm
 from core_main_app.commons.validators import ExtensionValidator
 
 
@@ -68,7 +68,7 @@ class EditTypeBucketsForm(forms.Form):
     )
 
 
-class EditBucketForm(DocumentForm):
+class EditBucketForm(ModelForm):
     label = forms.CharField(
         label="Label",
         widget=forms.TextInput(
@@ -77,5 +77,5 @@ class EditBucketForm(DocumentForm):
     )
 
     class Meta(object):
-        document = Bucket
+        model = Bucket
         fields = ["label"]

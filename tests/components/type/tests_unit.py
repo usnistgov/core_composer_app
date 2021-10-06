@@ -2,16 +2,16 @@
 """
 from unittest.case import TestCase
 
-from bson.objectid import ObjectId
-from django.core import exceptions as django_exceptions
 from django.test import override_settings
 from mock.mock import Mock, patch
 
 from core_composer_app.components.type import api as type_api
 from core_composer_app.components.type.models import Type
 from core_main_app.commons import exceptions
+from core_main_app.commons.exceptions import ModelError
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import create_mock_request
+from tests.components.type_version_manager.tests_unit import MockDependencies
 
 
 class TestTypeGet(TestCase):
@@ -38,7 +38,7 @@ class TestTypeGet(TestCase):
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
-        mock_absent_id = ObjectId()
+        mock_absent_id = -1
         mock_get_by_id.side_effect = exceptions.DoesNotExist("")
 
         # Act + Assert
@@ -84,24 +84,26 @@ class TestTypeGetAllComplexType(TestCase):
 
 class TestTypeUpsert(TestCase):
     @override_settings(ROOT_URLCONF="core_main_app.urls")
+    @patch.object(Type, "dependencies")
     @patch.object(Type, "save")
-    def test_type_upsert_valid_returns_type(self, mock_save):
+    def test_type_upsert_valid_returns_type(self, mock_save, mock_dependencies):
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
         type_object = _create_type()
 
         mock_save.return_value = type_object
+        mock_dependencies = MockDependencies()
         result = type_api.upsert(type_object, request=mock_request)
         self.assertIsInstance(result, Type)
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, "save")
-    def test_type_upsert_invalid_filename_raises_validation_error(self, mock_save):
+    def test_type_upsert_invalid_filename_raises_model_error(self, mock_save):
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
         type_object = _create_type(filename=1)
-        mock_save.side_effect = django_exceptions.ValidationError("")
-        with self.assertRaises(django_exceptions.ValidationError):
+        mock_save.side_effect = ModelError("")
+        with self.assertRaises(ModelError):
             type_api.upsert(type_object, request=mock_request)
 
     @patch.object(Type, "save")
@@ -127,7 +129,7 @@ def _create_mock_type(filename="", content=""):
     mock_type = Mock(spec=Type)
     mock_type.filename = filename
     mock_type.content = content
-    mock_type.id = ObjectId()
+    mock_type.id = 1
     return mock_type
 
 
@@ -148,4 +150,4 @@ def _create_type(filename="", content=None):
             "<restriction base='string'><enumeration value='test'/></restriction>"
             "</simpleType></schema>"
         )
-    return Type(id=ObjectId(), filename=filename, content=content)
+    return Type(id=1, filename=filename, content=content)

@@ -2,14 +2,14 @@
 """
 from django.http import Http404
 from rest_framework.fields import CharField
-from rest_framework_mongoengine.serializers import DocumentSerializer
+from rest_framework.serializers import ModelSerializer
 
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.bucket.models import Bucket
 from core_main_app.commons.exceptions import DoesNotExist
 
 
-class BucketSerializer(DocumentSerializer):
+class BucketSerializer(ModelSerializer):
     """Bucket serializer"""
 
     class Meta(object):
@@ -27,21 +27,22 @@ class BucketSerializer(DocumentSerializer):
         Create and return a new `Bucket` instance, given the validated data.
         """
         # Create data
-        bucket = Bucket(
-            label=validated_data["label"], types=validated_data.get("types", None)
-        )
+        bucket = Bucket(label=validated_data["label"])
         # Save the data
-        return bucket_api.upsert(bucket)
+        bucket_api.upsert(bucket)
+        bucket.types.set(validated_data.get("types", []))
+        return bucket
 
     def update(self, instance, validated_data):
         """
         Update and return an existing `Bucket` instance, given the validated data.
         """
         instance.label = validated_data.get("label", instance.label)
-        return bucket_api.upsert(instance)
+        bucket_api.upsert(instance)
+        return instance
 
 
-class BucketsSerializer(DocumentSerializer):
+class BucketsSerializer(ModelSerializer):
     """Buckets serializer."""
 
     id = CharField()

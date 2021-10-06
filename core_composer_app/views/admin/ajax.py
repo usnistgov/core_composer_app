@@ -17,7 +17,6 @@ from core_composer_app.components.type_version_manager.models import TypeVersion
 from core_composer_app.views.admin.forms import EditBucketForm
 from core_main_app.commons import exceptions
 from core_main_app.components.template.api import init_template_with_dependencies
-from core_main_app.components.version_manager import api as version_manager_api
 from core_main_app.views.admin.ajax import (
     _get_xsd_content_from_html,
     _get_dependencies_dict,
@@ -78,7 +77,7 @@ def resolve_dependencies(request):
 
         # get the version manager or create a new one
         if version_manager_id != "":
-            type_version_manager = version_manager_api.get(
+            type_version_manager = type_version_manager_api.get_by_id(
                 version_manager_id, request=request
             )
         else:
@@ -96,8 +95,8 @@ def resolve_dependencies(request):
 
 class EditBucketView(EditObjectModalView):
     form_class = EditBucketForm
-    document = Bucket
-    success_url = reverse_lazy("admin:core_composer_app_buckets")
+    model = Bucket
+    success_url = reverse_lazy("core-admin:core_composer_app_buckets")
     success_message = "Label edited with success."
 
     def _save(self, form):

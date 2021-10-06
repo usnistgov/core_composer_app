@@ -2,13 +2,12 @@
 """
 import json
 
-from django.urls import reverse
 from django.test import override_settings
+from django.urls import reverse
 from rest_framework import status
 
 from core_composer_app.components.type import api as type_api
 from core_composer_app.rest.type_version_manager import views
-from core_main_app.components.version_manager import api as vm_api
 from core_main_app.utils.integration_tests.integration_base_test_case import (
     MongoIntegrationBaseTestCase,
 )
@@ -263,12 +262,8 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
         # get type version manager from posted type
         type_id = response.data["id"]
         type_object = type_api.get(type_id, request=mock_request)
-        type_version_manager = vm_api.get_from_version(
-            type_object, request=mock_request
-        )
-
         # Assert
-        self.assertEqual(type_version_manager.user, user.id)
+        self.assertEqual(type_object.user, user.id)
 
     def test_post_type_name_already_exists_returns_http_400(self):
         # Arrange
@@ -425,9 +420,5 @@ class TestGlobalTypeList(MongoIntegrationBaseTestCase):
         # get type version manager from posted type
         type_id = response.data["id"]
         type_object = type_api.get(type_id, request=mock_request)
-        type_version_manager = vm_api.get_from_version(
-            type_object, request=mock_request
-        )
-
         # Assert
-        self.assertEqual(type_version_manager.user, None)
+        self.assertEqual(type_object.user, None)

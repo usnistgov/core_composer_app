@@ -10,7 +10,7 @@ Please select the type of the element that you want to insert in the template.
 <div id="table_types">
     {% for bucket in data.buckets %}
     <h3><span class="bucket" style="background:{{ bucket.color}};">{{bucket.label}}</span></h3>
-    {% include 'core_composer_app/user/builder/list_types.html' with types=bucket.types %}
+    {% include 'core_composer_app/user/builder/list_types.html' with types=bucket.types.all %}
     {% endfor %}
 
     <h3>Built-in Datatypes</h3>

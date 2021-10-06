@@ -2,7 +2,7 @@
 
 
 {% block box_tools %}
-<a href="{% url 'admin:core_composer_app_upload_bucket' %}" class="float-right btn btn-secondary">
+<a href="{% url 'core-admin:core_composer_app_upload_bucket' %}" class="float-right btn btn-secondary">
     <i class="fas fa-plus"></i> Add {{ data.object_name }}
 </a>
 {% endblock %}
@@ -22,7 +22,7 @@
                 </span>
             </td>
             <td>
-                {% url 'admin:core_composer_app_edit_bucket' bucket.id as edit_url %}
+                {% url 'core-admin:core_composer_app_edit_bucket' bucket.id as edit_url %}
                 {% include 'core_main_app/common/buttons/edit.html' %}
                <span class='icon legend delete'>
                    <button class="btn btn-danger delete" bucketid='{{ bucket.id }}'>

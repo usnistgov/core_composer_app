@@ -1,17 +1,43 @@
 """
 Type Version Manager model
 """
+from django.core.exceptions import ObjectDoesNotExist
+
+from core_main_app.commons import exceptions
 from core_main_app.components.template_version_manager.models import (
     TemplateVersionManager,
 )
-from core_main_app.components.version_manager.models import VersionManager
 
 
 class TypeVersionManager(TemplateVersionManager):
     """Manage versions of types."""
 
-    # TODO: see if better way to find _cls
-    class_name = "VersionManager.TemplateVersionManager.TypeVersionManager"
+    _class_name = "VersionManager.TemplateVersionManager.TypeVersionManager"
+
+    @property
+    def class_name(self):
+        return TypeVersionManager._class_name
+
+    @property
+    def class_name(self):
+        return self.__class__.__name__
+
+    @staticmethod
+    def get_by_id(version_manager_id):
+        """Return Version Managers by id.
+
+        Args:
+            version_manager_id:
+
+        Returns:
+
+        """
+        try:
+            return TypeVersionManager.objects.get(pk=str(version_manager_id))
+        except ObjectDoesNotExist as e:
+            raise exceptions.DoesNotExist(str(e))
+        except Exception as e:
+            raise exceptions.ModelError(str(e))
 
     @staticmethod
     def get_global_version_managers(_cls=True):
@@ -20,7 +46,7 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        return TypeVersionManager.objects(user=None).all()
+        return TypeVersionManager.objects.filter(user=None).all()
 
     @staticmethod
     def get_active_global_version_manager(_cls=True):
@@ -29,7 +55,7 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        return TypeVersionManager.objects(is_disabled=False, user=None).all()
+        return TypeVersionManager.objects.filter(is_disabled=False, user=None).all()
 
     @staticmethod
     def get_version_managers_by_user(user_id):
@@ -41,7 +67,7 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        return TypeVersionManager.objects(user=str(user_id)).all()
+        return TypeVersionManager.objects.filter(user=str(user_id)).all()
 
     @staticmethod
     def get_active_version_manager_by_user_id(user_id):
@@ -53,7 +79,9 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        return TypeVersionManager.objects(is_disabled=False, user=str(user_id)).all()
+        return TypeVersionManager.objects.filter(
+            is_disabled=False, user=str(user_id)
+        ).all()
 
     @staticmethod
     def get_all_type_version_manager():
@@ -64,4 +92,6 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        return VersionManager.objects(_cls=TypeVersionManager.class_name).all()
+        return TypeVersionManager.objects.filter(
+            _cls=TypeVersionManager._class_name
+        ).all()

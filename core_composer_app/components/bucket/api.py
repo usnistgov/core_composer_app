@@ -38,7 +38,8 @@ def upsert(bucket):
 
         bucket.color = color
 
-    return bucket.save_object()
+    bucket.save_object()
+    return bucket
 
 
 def get_all():
@@ -93,9 +94,7 @@ def add_type_to_buckets(version_manager, list_bucket_ids):
             raise ApiError("No bucket found with the given id.")
 
         # add type to bucket
-        bucket.types.append(version_manager)
-        # update bucket
-        upsert(bucket)
+        bucket.add_type(version_manager)
 
 
 def update_type_buckets(version_manager, list_bucket_ids):
@@ -128,8 +127,6 @@ def remove_type_from_buckets(version_manager):
     # Iterate through all buckets
     for bucket in buckets:
         # if type in bucket
-        if version_manager in bucket.types:
+        if version_manager in bucket.types.all():
             # remove type from the bucket
-            bucket.types.remove(version_manager)
-            # update bucket
-            upsert(bucket)
+            bucket.remove_type(version_manager)

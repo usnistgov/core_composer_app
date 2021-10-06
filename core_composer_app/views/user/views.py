@@ -16,7 +16,6 @@ from core_main_app.components.template import api as template_api
 from core_main_app.components.template_version_manager import (
     api as template_version_manager_api,
 )
-from core_main_app.components.version_manager import api as version_manager_api
 from core_main_app.utils import decorators as decorators
 from core_main_app.utils.file import read_file_content, get_file_http_response
 from core_main_app.utils.rendering import render
@@ -98,7 +97,7 @@ def build_template(request, template_id):
         )
         xsd_string = read_file_content(base_template_path)
     else:
-        template = template_api.get(template_id, request=request)
+        template = template_api.get_by_id(template_id, request=request)
         xsd_string = template.content
 
     request.session["newXmlTemplateCompose"] = xsd_string
@@ -231,7 +230,9 @@ def manage_type_versions(request, version_manager_id):
     """
     try:
         # get the version manager
-        version_manager = version_manager_api.get(version_manager_id, request=request)
+        version_manager = type_version_manager_api.get_by_id(
+            version_manager_id, request=request
+        )
         context = get_context_manage_template_versions(version_manager, "Type")
         if "core_parser_app" in settings.INSTALLED_APPS:
             context.update({"module_url": "core_composer_app_type_modules"})

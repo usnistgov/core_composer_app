@@ -231,7 +231,7 @@ class TestBucketDetail(MongoIntegrationBaseTestCase):
 
         # Act
         response = RequestMock.do_request_get(
-            views.BucketDetail.as_view(), user, param={"pk": "507f1f77bcf86cd799439011"}
+            views.BucketDetail.as_view(), user, param={"pk": -1}
         )
 
         # Assert
@@ -257,7 +257,7 @@ class TestBucketDetail(MongoIntegrationBaseTestCase):
 
         # Act
         response = RequestMock.do_request_delete(
-            views.BucketDetail.as_view(), user, param={"pk": "507f1f77bcf86cd799439011"}
+            views.BucketDetail.as_view(), user, param={"pk": -1}
         )
 
         # Assert
@@ -299,7 +299,7 @@ class TestBucketDetail(MongoIntegrationBaseTestCase):
 
         # Act
         response = RequestMock.do_request_patch(
-            views.BucketDetail.as_view(), user, param={"pk": "507f1f77bcf86cd799439011"}
+            views.BucketDetail.as_view(), user, param={"pk": -1}
         )
 
         # Assert
@@ -366,7 +366,7 @@ class TestTypeVersionManagerBuckets(MongoIntegrationBaseTestCase):
     def test_patch_wrong_bucket_id_returns_http_404(self):
         # Arrange
         user = create_mock_user("1", is_staff=True)
-        self.data = [{"id": "507f1f77bcf86cd799439011"}]
+        self.data = [{"id": -1}]
 
         # Act
         response = RequestMock.do_request_patch(
@@ -388,7 +388,7 @@ class TestTypeVersionManagerBuckets(MongoIntegrationBaseTestCase):
         response = RequestMock.do_request_patch(
             views.TypeVersionManagerBuckets.as_view(),
             user,
-            param={"pk": "507f1f77bcf86cd799439011"},
+            param={"pk": -1},
             data=self.data,
         )
 

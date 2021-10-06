@@ -5,9 +5,9 @@ from mock.mock import patch
 from rest_framework import status
 
 from core_composer_app.components.bucket.models import Bucket
+from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_composer_app.rest.bucket import views as bucket_views
 from core_composer_app.rest.bucket.serializers import BucketSerializer
-from core_main_app.components.version_manager.models import VersionManager
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import RequestMock
 
@@ -79,7 +79,7 @@ class TestBucketListPostPermission(SimpleTestCase):
 
 class TestBucketDetailGetPermission(SimpleTestCase):
     def setUp(self):
-        self.fake_id = "507f1f77bcf86cd799439011"
+        self.fake_id = -1
 
     def test_anonymous_returns_http_403(self):
         response = RequestMock.do_request_get(
@@ -121,7 +121,7 @@ class TestBucketDetailGetPermission(SimpleTestCase):
 
 class TestBucketDetailDeletePermission(SimpleTestCase):
     def setUp(self):
-        self.fake_id = "507f1f77bcf86cd799439011"
+        self.fake_id = -1
 
     def test_anonymous_returns_http_403(self):
         response = RequestMock.do_request_delete(
@@ -156,7 +156,7 @@ class TestBucketDetailDeletePermission(SimpleTestCase):
 
 class TestBucketDetailPatchPermission(SimpleTestCase):
     def setUp(self):
-        self.fake_id = "507f1f77bcf86cd799439011"
+        self.fake_id = -1
 
     def test_anonymous_returns_http_403(self):
 
@@ -202,7 +202,7 @@ class TestBucketDetailPatchPermission(SimpleTestCase):
 
 class TestTypeVersionManagerBucketsPatchPermission(SimpleTestCase):
     def setUp(self):
-        self.fake_id = "507f1f77bcf86cd799439011"
+        self.fake_id = -1
 
     def test_anonymous_returns_http_403(self):
         response = RequestMock.do_request_patch(
@@ -224,8 +224,9 @@ class TestTypeVersionManagerBucketsPatchPermission(SimpleTestCase):
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
+    @patch("core_composer_app.components.bucket.api.update_type_buckets")
     @patch.object(Bucket, "get_by_id")
-    @patch.object(VersionManager, "get_by_id")
+    @patch.object(TypeVersionManager, "get_by_id")
     @patch.object(BucketSerializer, "is_valid")
     @patch.object(BucketSerializer, "save")
     @patch.object(BucketSerializer, "data")
@@ -236,9 +237,11 @@ class TestTypeVersionManagerBucketsPatchPermission(SimpleTestCase):
         bucket_serializer_valid,
         version_manager_get_by_id,
         bucket_get_by_id,
+        bucket_update_type_buckets,
     ):
         bucket_get_by_id.return_value = {}
-        version_manager_get_by_id.return_value = VersionManager(user=None)
+        bucket_update_type_buckets.return_value = None
+        version_manager_get_by_id.return_value = TypeVersionManager(user=None)
         bucket_serializer_data.return_value = True
         bucket_serializer_save.return_value = None
         bucket_serializer_valid.return_value = {}

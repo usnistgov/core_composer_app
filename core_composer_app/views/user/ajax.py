@@ -343,13 +343,13 @@ def save_template(request):
             template = Template(
                 filename=template_name,
                 content=xsd_string,
-                dependencies=dependencies,
                 user=str(request.user.id),
             )
             # save template in database
             template_version_manager_api.insert(
                 template_version_manager, template, request=request
             )
+            template.dependencies.set(dependencies)
         except exceptions.NotUniqueError:
             return HttpResponseBadRequest(
                 "A template with the same name already exists. Please choose another name."
@@ -423,13 +423,13 @@ def save_type(request):
             type_object = Type(
                 filename=type_name,
                 content=xsd_string,
-                dependencies=dependencies,
                 user=str(request.user.id),
             )
             # save type in database
             type_version_manager_api.insert(
                 type_version_manager, type_object, request=request
             )
+            type_object.dependencies.set(dependencies)
         except exceptions.NotUniqueError:
             return HttpResponseBadRequest(
                 "A type with the same name already exists. Please choose another name."

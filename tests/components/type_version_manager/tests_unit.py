@@ -2,11 +2,10 @@
 """
 from unittest.case import TestCase
 
-from bson.objectid import ObjectId
 from django.core import exceptions as django_exceptions
+from django.db import IntegrityError
 from django.test import override_settings
 from mock.mock import Mock, patch
-from mongoengine import errors as mongoengine_exceptions
 
 from core_composer_app.components.bucket.models import Bucket
 from core_composer_app.components.type.models import Type
@@ -43,10 +42,14 @@ class TestTypeVersionManagerInsert(TestCase):
             )
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
+    @patch.object(Type, "dependencies")
     @patch.object(TypeVersionManager, "save")
     @patch.object(Type, "save")
     def test_create_version_manager_returns_version_manager(
-        self, mock_save_type, mock_save_type_version_manager
+        self,
+        mock_save_type,
+        mock_save_type_version_manager,
+        mock_dependencies,
     ):
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
@@ -64,6 +67,8 @@ class TestTypeVersionManagerInsert(TestCase):
         version_manager = _create_type_version_manager(title="Schema")
         mock_save_type_version_manager.return_value = version_manager
 
+        mock_dependencies.return_value = MockDependencies()
+
         # Act
         result = version_manager_api.insert(
             version_manager, type_object, request=mock_request
@@ -73,11 +78,12 @@ class TestTypeVersionManagerInsert(TestCase):
         self.assertIsInstance(result, TypeVersionManager)
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
+    @patch.object(Type, "dependencies")
     @patch.object(Type, "delete")
     @patch.object(Type, "save")
     @patch.object(TypeVersionManager, "save")
     def test_insert_manager_raises_api_error_if_title_already_exists(
-        self, mock_version_manager_save, mock_save, mock_delete
+        self, mock_version_manager_save, mock_save, mock_delete, mock_dependencies
     ):
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
@@ -88,7 +94,9 @@ class TestTypeVersionManagerInsert(TestCase):
         mock_save.return_value = type_object
         mock_delete.return_value = None
         mock_version_manager = _create_type_version_manager(title="Schema")
-        mock_version_manager_save.side_effect = mongoengine_exceptions.NotUniqueError
+        mock_version_manager_save.side_effect = IntegrityError("")
+
+        mock_dependencies.return_value = MockDependencies()
 
         # Act + Assert
         with self.assertRaises(NotUniqueError):
@@ -108,20 +116,21 @@ class TestTypeVersionManagerInsert(TestCase):
         type_object = _create_type(type_filename)
 
         mock_version_manager = _create_mock_type_version_manager(title="Schema")
-        mock_save.side_effect = django_exceptions.ValidationError("")
+        mock_save.side_effect = ModelError("")
 
         # Act + Assert
-        with self.assertRaises(django_exceptions.ValidationError):
+        with self.assertRaises(ModelError):
             version_manager_api.insert(
                 mock_version_manager, type_object, request=mock_request
             )
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
+    @patch.object(Type, "dependencies")
     @patch.object(Type, "delete")
     @patch.object(TypeVersionManager, "save")
     @patch.object(Type, "save")
     def test_create_version_manager_raises_exception_if_error_in_create_version_manager(
-        self, mock_save, mock_save_version_manager, mock_delete
+        self, mock_save, mock_save_version_manager, mock_delete, mock_dependencies
     ):
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
@@ -134,6 +143,7 @@ class TestTypeVersionManagerInsert(TestCase):
         mock_save_version_manager.side_effect = django_exceptions.ValidationError("")
         mock_delete.return_value = None
 
+        mock_dependencies = MockDependencies()
         # Act + Assert
         with self.assertRaises(ModelError):
             version_manager_api.insert(
@@ -223,7 +233,7 @@ class TestGetNoBucketsTypes(TestCase):
         mock_type1 = _create_mock_type_version_manager()
         mock_type2 = _create_mock_type_version_manager()
 
-        mock_bucket = _create_mock_bucket(types=[mock_type1])
+        mock_bucket = _create_mock_bucket(types=MockTypes([mock_type1]))
 
         mock_get_global_version_managers.return_value = [mock_type1, mock_type2]
         mock_get_all_buckets.return_value = [mock_bucket]
@@ -263,7 +273,7 @@ def _create_mock_type(filename="", content="", is_disable=False):
     mock_type = Mock(spec=Type)
     mock_type.filename = filename
     mock_type.content = content
-    mock_type.id = ObjectId()
+    mock_type.id = 1
     mock_type.is_disabled = is_disable
     return mock_type
 
@@ -280,7 +290,7 @@ def _create_mock_type_version_manager(title="", versions=None, user="1"):
     """
     mock_type_version_manager = Mock(spec=TypeVersionManager)
     mock_type_version_manager.title = title
-    mock_type_version_manager.id = ObjectId()
+    mock_type_version_manager.id = 1
     mock_type_version_manager.user = user
     if versions is not None:
         mock_type_version_manager.versions = versions
@@ -307,7 +317,7 @@ def _create_type(filename="", content=None):
             "<restriction base='string'><enumeration value='test'/></restriction>"
             "</simpleType></schema>"
         )
-    return Type(id=ObjectId(), filename=filename, content=content)
+    return Type(id=1, filename=filename, content=content)
 
 
 def _create_type_version_manager(title="", user="1"):
@@ -321,5 +331,25 @@ def _create_type_version_manager(title="", user="1"):
 
     """
     return TypeVersionManager(
-        id=ObjectId(), title=title, versions=[], user=user, disabled_versions=[]
+        id=1,
+        title=title,
+        user=user,
     )
+
+
+class MockDependencies:
+    """ """
+
+    def clear(self):
+        pass
+
+
+class MockTypes:
+    def __init__(self, types):
+        self._types = types
+
+    def all(self):
+        return self._types
+
+    def count(self):
+        return len(self._types)
