@@ -18,10 +18,6 @@ class TypeVersionManager(TemplateVersionManager):
     def class_name(self):
         return TypeVersionManager._class_name
 
-    @property
-    def class_name(self):
-        return self.__class__.__name__
-
     @staticmethod
     def get_by_id(version_manager_id):
         """Return Version Managers by id.
