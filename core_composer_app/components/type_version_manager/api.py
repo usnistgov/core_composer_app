@@ -59,7 +59,7 @@ def insert(type_version_manager, type_object, request, list_bucket_ids=None):
         # return version manager
         return type_version_manager
     except Exception as e:
-        type_api.delete(type_object, request=request)
+        type_version_manager.delete()
         raise e
 
 
