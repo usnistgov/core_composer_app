@@ -4,8 +4,10 @@ import json
 import logging
 from urllib.parse import urlparse
 
+from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.template import loader
+from django.utils.decorators import method_decorator
 from django.utils.html import escape
 
 from core_composer_app.components.type import api as type_api
@@ -27,6 +29,7 @@ from core_main_app.components.template_version_manager.models import (
 from core_main_app.utils import decorators as decorators
 from core_main_app.utils import xml as main_xml_utils
 from core_main_app.utils.urls import get_template_download_pattern
+from core_main_app.views.common.ajax import EditTemplateVersionManagerView
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 
 logger = logging.getLogger(__name__)
@@ -491,3 +494,8 @@ def _error_response(error):
     return HttpResponseBadRequest(
         error.replace("'", ""), content_type="application/javascript"
     )
+
+
+@method_decorator(login_required, name="dispatch")
+class EditTypeVersionManagerView(EditTemplateVersionManagerView):
+    model = TypeVersionManager
