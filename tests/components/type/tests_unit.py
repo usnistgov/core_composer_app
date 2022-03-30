@@ -133,7 +133,7 @@ def _create_mock_type(filename="", content=""):
     return mock_type
 
 
-def _create_type(filename="", content=None):
+def _create_type(filename="Schema", content=None):
     """Returns a type
 
     Args:

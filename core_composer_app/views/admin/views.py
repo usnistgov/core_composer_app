@@ -23,12 +23,12 @@ from core_composer_app.views.admin.forms import (
     UploadTypeForm,
     EditTypeBucketsForm,
 )
+from core_composer_app.views.user.ajax import EditTypeVersionManagerView
 from core_main_app.commons import exceptions
 from core_main_app.commons.exceptions import NotUniqueError, ModelError, DoesNotExist
 from core_main_app.utils.rendering import admin_render
 from core_main_app.utils.xml import get_imports_and_includes
 from core_main_app.views.admin.forms import UploadVersionForm
-from core_main_app.views.common.ajax import EditTemplateVersionManagerView
 from core_main_app.views.common.views import read_xsd_file
 from core_main_app.views.user.views import get_context_manage_template_versions
 
@@ -74,14 +74,14 @@ def manage_types(request):
                 "path": "core_main_app/common/js/templates/list/modals/disable.js",
                 "is_raw": False,
             },
-            EditTemplateVersionManagerView.get_modal_js_path(),
+            EditTypeVersionManagerView.get_modal_js_path(),
         ],
         "css": ["core_composer_app/common/css/bucket.css"],
     }
 
     modals = [
         "core_main_app/admin/templates/list/modals/disable.html",
-        EditTemplateVersionManagerView.get_modal_html_path(),
+        EditTypeVersionManagerView.get_modal_html_path(),
     ]
 
     return admin_render(

@@ -10,8 +10,8 @@ from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_composer_app.views.admin import views as admin_views, ajax as admin_ajax
 from core_composer_app.views.admin.ajax import EditBucketView
+from core_composer_app.views.user.ajax import EditTypeVersionManagerView
 from core_main_app.admin import core_admin_site
-from core_main_app.views.common.ajax import EditTemplateVersionManagerView
 
 parser_url = []
 if "core_parser_app" in settings.INSTALLED_APPS:
@@ -34,7 +34,7 @@ admin_urls = [
     re_path(
         r"^type/(?P<pk>[\w-]+)/edit/$",
         staff_member_required(
-            EditTemplateVersionManagerView.as_view(
+            EditTypeVersionManagerView.as_view(
                 success_url=reverse_lazy("core-admin:core_composer_app_types")
             )
         ),
