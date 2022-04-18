@@ -300,7 +300,7 @@ def _create_mock_type_version_manager(title="", versions=None, user="1"):
     return mock_type_version_manager
 
 
-def _create_type(filename="", content=None):
+def _create_type(filename="test", content=None):
     """Returns a type
 
     Args:

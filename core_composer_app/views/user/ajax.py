@@ -9,7 +9,6 @@ from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.template import loader
 from django.utils.decorators import method_decorator
 from django.utils.html import escape
-
 from core_composer_app.components.type import api as type_api
 from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager import (
@@ -31,6 +30,7 @@ from core_main_app.utils import xml as main_xml_utils
 from core_main_app.utils.urls import get_template_download_pattern
 from core_main_app.views.common.ajax import EditTemplateVersionManagerView
 from xml_utils.xsd_tree.xsd_tree import XSDTree
+from django.core.exceptions import ValidationError
 
 logger = logging.getLogger(__name__)
 
@@ -357,9 +357,12 @@ def save_template(request):
             return HttpResponseBadRequest(
                 "A template with the same name already exists. Please choose another name."
             )
+        except ValidationError as e:
+            return HttpResponseBadRequest(
+                "Title must not be empty or only whitespaces."
+            )
         except Exception as e:
             return _error_response(escape(str(e)))
-
         return HttpResponse(
             json.dumps(response_dict), content_type="application/javascript"
         )
@@ -436,6 +439,10 @@ def save_type(request):
         except exceptions.NotUniqueError:
             return HttpResponseBadRequest(
                 "A type with the same name already exists. Please choose another name."
+            )
+        except ValidationError as e:
+            return HttpResponseBadRequest(
+                "Title must not be empty or only whitespaces."
             )
         except Exception as e:
             return _error_response(escape(str(e)))

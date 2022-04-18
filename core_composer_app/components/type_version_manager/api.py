@@ -11,6 +11,7 @@ from core_main_app.components.template.access_control import can_read_global
 from core_main_app.components.template_version_manager.access_control import can_write
 from core_main_app.components.version_manager import api as version_manager_api
 from core_main_app.components.version_manager.utils import get_latest_version_name
+import core_main_app.commons.exceptions as exceptions
 
 
 @access_control(can_read)
@@ -58,6 +59,8 @@ def insert(type_version_manager, type_object, request, list_bucket_ids=None):
         type_object.save()
         # return version manager
         return type_version_manager
+    except exceptions.NotUniqueError as e:
+        raise e
     except Exception as e:
         type_version_manager.delete()
         raise e

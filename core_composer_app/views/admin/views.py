@@ -242,6 +242,11 @@ def _save_type(request, assets, context):
         return _handle_xsd_errors(
             request, assets, context, xsd_error, xsd_data, xsd_file.name
         )
+    except exceptions.NotUniqueError:
+        context[
+            "errors"
+        ] = "A type with the same name already exists. Please choose another name."
+        return _upload_type_response(request, assets, context)
     except Exception as e:
         context["errors"] = html_escape(str(e))
         return _upload_type_response(request, assets, context)
