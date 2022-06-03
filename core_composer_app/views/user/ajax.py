@@ -68,7 +68,7 @@ def insert_element_sequence(request):
             # get type from database
             type_object = type_api.get(type_id, request=request)
             # generate include url
-            include_url = main_xml_utils._get_schema_location_uri(str(type_id))
+            include_url = main_xml_utils._get_schema_location_uri(str(type_id), request)
             # insert element in xsd string
             new_xsd_str = composer_xml_utils.insert_element_type(
                 xsd_string,
