@@ -357,7 +357,7 @@ def save_template(request):
             return HttpResponseBadRequest(
                 "A template with the same name already exists. Please choose another name."
             )
-        except ValidationError as e:
+        except ValidationError:
             return HttpResponseBadRequest(
                 "Title must not be empty or only whitespaces."
             )
@@ -440,7 +440,7 @@ def save_type(request):
             return HttpResponseBadRequest(
                 "A type with the same name already exists. Please choose another name."
             )
-        except ValidationError as e:
+        except ValidationError:
             return HttpResponseBadRequest(
                 "Title must not be empty or only whitespaces."
             )

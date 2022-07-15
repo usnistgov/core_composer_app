@@ -11,7 +11,6 @@ from core_main_app.commons import exceptions
 from core_main_app.commons.exceptions import ModelError
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import create_mock_request
-from tests.components.type_version_manager.tests_unit import MockDependencies
 
 
 class TestTypeGet(TestCase):
@@ -92,7 +91,6 @@ class TestTypeUpsert(TestCase):
         type_object = _create_type()
 
         mock_save.return_value = type_object
-        mock_dependencies = MockDependencies()
         result = type_api.upsert(type_object, request=mock_request)
         self.assertIsInstance(result, Type)
 

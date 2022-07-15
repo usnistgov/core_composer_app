@@ -12,7 +12,7 @@ from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager import api as version_manager_api
 from core_composer_app.components.type_version_manager.api import get_no_buckets_types
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
-from core_main_app.commons.exceptions import CoreError, ModelError, NotUniqueError
+from core_main_app.commons.exceptions import CoreError, ModelError
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import create_mock_request
 
@@ -143,7 +143,6 @@ class TestTypeVersionManagerInsert(TestCase):
         mock_save_version_manager.side_effect = django_exceptions.ValidationError("")
         mock_delete.return_value = None
 
-        mock_dependencies = MockDependencies()
         # Act + Assert
         with self.assertRaises(django_exceptions.ValidationError):
             version_manager_api.insert(
