@@ -78,4 +78,4 @@ admin_urls = [
 ]
 
 urls = admin.site.get_urls()
-admin.site.get_urls = lambda: admin_urls + urls + parser_url
+admin.site.get_urls = lambda: parser_url + admin_urls + urls
