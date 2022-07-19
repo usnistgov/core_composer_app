@@ -86,4 +86,4 @@ admin.site.register(Type)
 admin.site.register(TypeVersionManager)
 
 urls = core_admin_site.get_urls()
-core_admin_site.get_urls = lambda: admin_urls + urls + parser_url
+core_admin_site.get_urls = lambda: parser_url + admin_urls + urls
