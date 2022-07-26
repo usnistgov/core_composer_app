@@ -6,7 +6,11 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import re_path, reverse_lazy
 
 from core_composer_app.components.bucket.models import Bucket
+from core_composer_app.components.type.admin_site import CustomTypeAdmin
 from core_composer_app.components.type.models import Type
+from core_composer_app.components.type_version_manager.admin_site import (
+    CustomTypeVersionManagerAdmin,
+)
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_composer_app.views.admin import views as admin_views, ajax as admin_ajax
 from core_composer_app.views.admin.ajax import EditBucketView
@@ -82,8 +86,8 @@ admin_urls = [
 ]
 
 admin.site.register(Bucket)
-admin.site.register(Type)
-admin.site.register(TypeVersionManager)
+admin.site.register(Type, CustomTypeAdmin)
+admin.site.register(TypeVersionManager, CustomTypeVersionManagerAdmin)
 
 urls = core_admin_site.get_urls()
 core_admin_site.get_urls = lambda: parser_url + admin_urls + urls

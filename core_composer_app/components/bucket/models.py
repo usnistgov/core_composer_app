@@ -83,3 +83,11 @@ class Bucket(models.Model):
 
         """
         self.types.remove(type_version_manager)
+
+    def __str__(self):
+        """Bucket as string
+
+        Returns:
+
+        """
+        return self.label

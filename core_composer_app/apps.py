@@ -9,6 +9,7 @@ class ComposerAppConfig(AppConfig):
     """Core composer application settings"""
 
     name = "core_composer_app"
+    verbose_name = "Core Composer App"
 
     def ready(self):
         """Run when the app is ready.
