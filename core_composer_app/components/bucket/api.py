@@ -2,8 +2,8 @@
 """
 import random
 
-from core_composer_app.components.bucket.models import Bucket
 from core_main_app.commons.exceptions import ApiError
+from core_composer_app.components.bucket.models import Bucket
 
 
 def get_by_id(bucket_id):

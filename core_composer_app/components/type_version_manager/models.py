@@ -16,6 +16,7 @@ class TypeVersionManager(TemplateVersionManager):
 
     @property
     def class_name(self):
+        """Class name"""
         return TypeVersionManager._class_name
 
     @staticmethod
@@ -30,10 +31,10 @@ class TypeVersionManager(TemplateVersionManager):
         """
         try:
             return TypeVersionManager.objects.get(pk=str(version_manager_id))
-        except ObjectDoesNotExist as e:
-            raise exceptions.DoesNotExist(str(e))
-        except Exception as e:
-            raise exceptions.ModelError(str(e))
+        except ObjectDoesNotExist as exception:
+            raise exceptions.DoesNotExist(str(exception))
+        except Exception as exception:
+            raise exceptions.ModelError(str(exception))
 
     @staticmethod
     def get_global_version_managers(_cls=True):

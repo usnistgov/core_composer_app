@@ -10,6 +10,14 @@ from django.template import loader
 from django.urls import reverse
 from django.utils.html import escape as html_escape
 
+from core_main_app.commons import exceptions
+from core_main_app.commons.exceptions import NotUniqueError, ModelError, DoesNotExist
+from core_main_app.utils.rendering import admin_render
+from core_main_app.utils.xml import get_imports_and_includes
+from core_main_app.views.admin.forms import UploadVersionForm
+from core_main_app.views.common.views import read_xsd_file
+from core_main_app.views.user.views import get_context_manage_template_versions
+
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.bucket.models import Bucket
 from core_composer_app.components.type.models import Type
@@ -24,13 +32,7 @@ from core_composer_app.views.admin.forms import (
     EditTypeBucketsForm,
 )
 from core_composer_app.views.user.ajax import EditTypeVersionManagerView
-from core_main_app.commons import exceptions
-from core_main_app.commons.exceptions import NotUniqueError, ModelError, DoesNotExist
-from core_main_app.utils.rendering import admin_render
-from core_main_app.utils.xml import get_imports_and_includes
-from core_main_app.views.admin.forms import UploadVersionForm
-from core_main_app.views.common.views import read_xsd_file
-from core_main_app.views.user.views import get_context_manage_template_versions
+
 
 logger = logging.getLogger(__name__)
 
@@ -148,11 +150,11 @@ def manage_type_versions(request, version_manager_id):
             modals=modals,
             context=context,
         )
-    except Exception as e:
+    except Exception as exception:
         return admin_render(
             request,
             "core_main_app/common/commons/error.html",
-            context={"error": str(e)},
+            context={"error": str(exception)},
         )
 
 
@@ -200,14 +202,14 @@ def upload_type(request):
 
         if form.is_valid():
             return _save_type(request, assets, context)
-        else:
-            # Display error from the form
-            return _upload_type_response(request, assets, context)
-    # method is GET
-    else:
-        # render the form to upload a template
-        context["upload_form"] = UploadTypeForm()
+
+        # Display error from the form
         return _upload_type_response(request, assets, context)
+
+    # method is GET
+    # render the form to upload a template
+    context["upload_form"] = UploadTypeForm()
+    return _upload_type_response(request, assets, context)
 
 
 def _save_type(request, assets, context):
@@ -247,8 +249,8 @@ def _save_type(request, assets, context):
             "errors"
         ] = "A type with the same name already exists. Please choose another name."
         return _upload_type_response(request, assets, context)
-    except Exception as e:
-        context["errors"] = html_escape(str(e))
+    except Exception as exception:
+        context["errors"] = html_escape(str(exception))
         return _upload_type_response(request, assets, context)
 
 
@@ -273,9 +275,9 @@ def _handle_xsd_errors(request, assets, context, xsd_error, xsd_content, filenam
             imports, includes, xsd_content, filename, request=request
         )
         return _upload_type_response(request, assets, context)
-    else:
-        context["errors"] = html_escape(str(xsd_error))
-        return _upload_type_response(request, assets, context)
+
+    context["errors"] = html_escape(str(xsd_error))
+    return _upload_type_response(request, assets, context)
 
 
 def _get_dependency_resolver_html(imports, includes, xsd_data, filename, request):
@@ -392,14 +394,14 @@ def upload_type_version(request, version_manager_id):
 
         if form.is_valid():
             return _save_type_version(request, assets, context, type_version_manager)
-        else:
-            # Display errors from the form
-            return _upload_type_response(request, assets, context)
-    # method is GET
-    else:
-        # render the form to upload a template
-        context["upload_form"] = UploadVersionForm()
+
+        # Display errors from the form
         return _upload_type_response(request, assets, context)
+
+    # method is GET
+    # render the form to upload a template
+    context["upload_form"] = UploadVersionForm()
+    return _upload_type_response(request, assets, context)
 
 
 def _save_type_version(request, assets, context, type_version_manager):
@@ -434,8 +436,8 @@ def _save_type_version(request, assets, context, type_version_manager):
         return _handle_xsd_errors(
             request, assets, context, xsd_error, xsd_data, xsd_file.name
         )
-    except Exception as e:
-        context["errors"] = html_escape(str(e))
+    except Exception as exception:
+        context["errors"] = html_escape(str(exception))
         return _upload_type_response(request, assets, context)
 
 
@@ -501,8 +503,8 @@ def upload_bucket(request):
                 return redirect(reverse("core-admin:core_composer_app_buckets"))
             except NotUniqueError:
                 context["errors"] = "A bucket with the same name already exists."
-            except Exception as e:
-                context["errors"] = str(e)
+            except Exception as exception:
+                context["errors"] = str(exception)
 
     else:
         form = BucketForm()
@@ -534,17 +536,17 @@ def manage_type_buckets(request, version_manager_id):
         version_manager = type_version_manager_api.get_by_id(
             version_manager_id, request=request
         )
-    except ModelError as e:
-        logger.error("manage_type_buckets threw a ModelError: {0}".format(str(e)))
+    except ModelError as exception:
+        logger.error("manage_type_buckets threw a ModelError: %s", str(exception))
         return admin_render(
             request,
             "core_main_app/common/commons/error.html",
-            context={"error": str(e)},
+            context={"error": str(exception)},
         )
-    except DoesNotExist as e:
+    except DoesNotExist as exception:
         # TODO: catch exception, redirect to error page
         logger.warning(
-            "manage_type_buckets threw a DoesNotExist exception: {0}".format(str(e))
+            "manage_type_buckets threw a DoesNotExist exception: %s", str(exception)
         )
 
     context = {"version_manager": version_manager, "buckets": bucket_api.get_all()}

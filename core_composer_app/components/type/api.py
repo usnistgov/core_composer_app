@@ -1,12 +1,13 @@
 """
 Type API
 """
-from core_composer_app.components.type.models import Type
-from core_composer_app.utils.xml import check_type_core_support, COMPLEX_TYPE
 from core_main_app.access_control.api import is_superuser
 from core_main_app.access_control.decorators import access_control
 from core_main_app.components.template import api as template_api
 from core_main_app.components.template.access_control import can_write, can_read
+
+from core_composer_app.components.type.models import Type
+from core_composer_app.utils.xml import check_type_core_support, COMPLEX_TYPE
 
 
 @access_control(can_write)

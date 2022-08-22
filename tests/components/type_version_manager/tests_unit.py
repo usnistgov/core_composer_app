@@ -7,22 +7,26 @@ from django.db import IntegrityError
 from django.test import override_settings
 from mock.mock import Mock, patch
 
+from core_main_app.commons.exceptions import CoreError, ModelError
+from core_main_app.utils.tests_tools.MockUser import create_mock_user
+from core_main_app.utils.tests_tools.RequestMock import create_mock_request
 from core_composer_app.components.bucket.models import Bucket
 from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager import api as version_manager_api
 from core_composer_app.components.type_version_manager.api import get_no_buckets_types
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
-from core_main_app.commons.exceptions import CoreError, ModelError
-from core_main_app.utils.tests_tools.MockUser import create_mock_user
-from core_main_app.utils.tests_tools.RequestMock import create_mock_request
 
 
 class TestTypeVersionManagerInsert(TestCase):
+    """Test Type Version Manager Insert"""
+
     @patch.object(TypeVersionManager, "save")
     @patch.object(Type, "save")
     def test_create_version_manager_raises_exception_if_type_not_supported(
         self, mock_save_type, mock_save_type_version_manager
     ):
+        """test_create_version_manager_raises_exception_if_type_not_supported"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -51,6 +55,8 @@ class TestTypeVersionManagerInsert(TestCase):
         mock_save_type_version_manager,
         mock_dependencies,
     ):
+        """test_create_version_manager_returns_version_manager"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -85,6 +91,8 @@ class TestTypeVersionManagerInsert(TestCase):
     def test_insert_manager_raises_api_error_if_title_already_exists(
         self, mock_version_manager_save, mock_save, mock_delete, mock_dependencies
     ):
+        """test_insert_manager_raises_api_error_if_title_already_exists"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -109,6 +117,8 @@ class TestTypeVersionManagerInsert(TestCase):
     def test_create_version_manager_raises_exception_if_error_in_create_type(
         self, mock_save
     ):
+        """test_create_version_manager_raises_exception_if_error_in_create_type"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -132,6 +142,8 @@ class TestTypeVersionManagerInsert(TestCase):
     def test_create_version_manager_raises_exception_if_error_in_create_version_manager(
         self, mock_save, mock_save_version_manager, mock_delete, mock_dependencies
     ):
+        """test_create_version_manager_raises_exception_if_error_in_create_version_manager"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -151,10 +163,14 @@ class TestTypeVersionManagerInsert(TestCase):
 
 
 class TestTypeVersionManagerGetGlobalVersions(TestCase):
+    """Test Type Version Manager Get Global Versions"""
+
     @patch.object(TypeVersionManager, "get_global_version_managers")
     def test_get_global_version_managers_returns_types(
         self, mock_get_global_version_managers
     ):
+        """test_get_global_version_managers_returns_types"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -170,10 +186,14 @@ class TestTypeVersionManagerGetGlobalVersions(TestCase):
 
 
 class TestTypeVersionManagerGetVersionManagersByUser(TestCase):
+    """Test Type Version Manager Get Version Manager By User"""
+
     @patch.object(TypeVersionManager, "get_version_managers_by_user")
     def test_get_version_managers_by_user_returns_types_with_given_user_id(
         self, mock_get_version_managers_by_user
     ):
+        """test_get_version_managers_by_user_returns_types_with_given_user_id"""
+
         # Arrange
         user_id = "10"
         mock_user = create_mock_user(user_id=user_id, is_superuser=True)
@@ -190,11 +210,15 @@ class TestTypeVersionManagerGetVersionManagersByUser(TestCase):
 
 
 class TestGetNoBucketsTypes(TestCase):
+    """Test Get No Buckets Types"""
+
     @patch.object(TypeVersionManager, "get_global_version_managers")
     @patch.object(Bucket, "get_all")
     def test_get_no_buckets_types_returns_types(
         self, mock_get_all_buckets, mock_get_global_version_managers
     ):
+        """test_get_no_buckets_types_returns_types"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -211,6 +235,8 @@ class TestGetNoBucketsTypes(TestCase):
     def test_get_no_buckets_types_returns_all_types_if_no_buckets(
         self, mock_get_all_buckets, mock_get_global_version_managers
     ):
+        """test_get_no_buckets_types_returns_all_types_if_no_buckets"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -226,6 +252,8 @@ class TestGetNoBucketsTypes(TestCase):
     def test_get_no_buckets_types_returns_all_types_not_in_buckets(
         self, mock_get_all_buckets, mock_get_global_version_managers
     ):
+        """test_get_no_buckets_types_returns_all_types_not_in_buckets"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -337,18 +365,31 @@ def _create_type_version_manager(title="", user="1"):
 
 
 class MockDependencies:
-    """ """
+    """MockDependencies"""
 
     def clear(self):
+        """Clear
+
+        Returns:
+
+        """
         pass
 
 
 class MockTypes:
+    """MockTypes"""
+
     def __init__(self, types):
         self._types = types
 
     def all(self):
+        """All
+        Returns:
+        """
         return self._types
 
     def count(self):
+        """Count
+        Returns:
+        """
         return len(self._types)

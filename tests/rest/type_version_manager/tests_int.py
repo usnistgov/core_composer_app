@@ -6,13 +6,14 @@ from django.test import override_settings
 from django.urls import reverse
 from rest_framework import status
 
-from core_composer_app.components.type import api as type_api
-from core_composer_app.rest.type_version_manager import views
 from core_main_app.utils.integration_tests.integration_base_test_case import (
     MongoIntegrationBaseTestCase,
 )
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import RequestMock, create_mock_request
+from core_composer_app.components.type import api as type_api
+from core_composer_app.rest.type_version_manager import views
+
 from tests.components.type_version_manager.fixtures.fixtures import (
     TypeVersionManagerFixtures,
 )
@@ -21,12 +22,18 @@ fixture_type = TypeVersionManagerFixtures()
 
 
 class TestGlobalTypeVersionManagerList(MongoIntegrationBaseTestCase):
+    """Test"""
+
     fixture = fixture_type
 
     def setUp(self):
-        super(TestGlobalTypeVersionManagerList, self).setUp()
+        """setUp"""
+
+        super().setUp()
 
     def test_get_returns_http_200(self):
+        """test_get_returns_http_200"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -39,6 +46,8 @@ class TestGlobalTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_returns_all_global_tvm(self):
+        """test_get_returns_all_global_tvm"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -51,6 +60,8 @@ class TestGlobalTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(len(response.data), 1)
 
     def test_get_returned_tvm_are_global(self):
+        """test_get_returned_tvm_are_global"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -63,6 +74,8 @@ class TestGlobalTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(response.data[0]["user"], None)
 
     def test_get_filtered_by_correct_title_returns_tvm(self):
+        """test_get_filtered_by_correct_title_returns_tvm"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -77,6 +90,8 @@ class TestGlobalTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(len(response.data), 1)
 
     def test_get_filtered_by_incorrect_title_returns_no_tvm(self):
+        """test_get_filtered_by_incorrect_title_returns_no_tvm"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -91,6 +106,8 @@ class TestGlobalTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(len(response.data), 0)
 
     def test_get_filtered_by_expected_is_disabled_returns_tvm(self):
+        """test_get_filtered_by_expected_is_disabled_returns_tvm"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -105,6 +122,8 @@ class TestGlobalTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(len(response.data), 1)
 
     def test_get_filtered_by_incorrect_is_disabled_returns_no_tvm(self):
+        """test_get_filtered_by_incorrect_is_disabled_returns_no_tvm"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -120,12 +139,18 @@ class TestGlobalTypeVersionManagerList(MongoIntegrationBaseTestCase):
 
 
 class TestUserTypeVersionManagerList(MongoIntegrationBaseTestCase):
+    """Test User Type Version Manager List"""
+
     fixture = fixture_type
 
     def setUp(self):
-        super(TestUserTypeVersionManagerList, self).setUp()
+        """setUp"""
+
+        super().setUp()
 
     def test_get_returns_http_200(self):
+        """test_get_returns_http_200"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -138,6 +163,8 @@ class TestUserTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_returns_all_user_tvm(self):
+        """test_get_returns_all_user_tvm"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -150,6 +177,8 @@ class TestUserTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(len(response.data), 1)
 
     def test_get_returned_tvm_are_from_user(self):
+        """test_get_returned_tvm_are_from_user"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -162,6 +191,8 @@ class TestUserTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(response.data[0]["user"], "1")
 
     def test_get_filtered_by_correct_title_returns_tvm(self):
+        """test_get_filtered_by_correct_title_returns_tvm"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -176,6 +207,8 @@ class TestUserTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(len(response.data), 1)
 
     def test_get_filtered_by_incorrect_title_returns_no_tvm(self):
+        """test_get_filtered_by_incorrect_title_returns_no_tvm"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -190,6 +223,8 @@ class TestUserTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(len(response.data), 0)
 
     def test_get_filtered_by_expected_is_disabled_returns_tvm(self):
+        """test_get_filtered_by_expected_is_disabled_returns_tvm"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -204,6 +239,8 @@ class TestUserTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(len(response.data), 1)
 
     def test_get_filtered_by_incorrect_is_disabled_returns_no_tvm(self):
+        """test_get_filtered_by_incorrect_is_disabled_returns_no_tvm"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -219,10 +256,14 @@ class TestUserTypeVersionManagerList(MongoIntegrationBaseTestCase):
 
 
 class TestUserTypeList(MongoIntegrationBaseTestCase):
+    """Test User Type List"""
+
     fixture = fixture_type
 
     def setUp(self):
-        super(TestUserTypeList, self).setUp()
+        """setUp"""
+
+        super().setUp()
         type_content = (
             "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>"
             "<xs:simpleType name='temperature'>"
@@ -237,6 +278,8 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     def test_post_returns_http_201(self):
+        """test_post_returns_http_201"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -250,6 +293,8 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     def test_post_owner_is_user(self):
+        """test_post_owner_is_user"""
+
         # Arrange
         user = create_mock_user("1")
         mock_request = create_mock_request(user=user)
@@ -266,6 +311,8 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
         self.assertEqual(type_object.user, user.id)
 
     def test_post_type_name_already_exists_returns_http_400(self):
+        """test_post_type_name_already_exists_returns_http_400"""
+
         # Arrange
         user = create_mock_user("1")
         self.data["title"] = self.fixture.type_vm_1.title
@@ -280,6 +327,8 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     def test_post_type_with_correct_dependency_returns_http_201(self):
+        """test_post_type_with_correct_dependency_returns_http_201"""
+
         # Arrange
         user = create_mock_user("1")
         self.data["content"] = (
@@ -308,7 +357,9 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
         self.assertTrue(expected_download_url in response.data["message"])
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
-    def test_post_type_with_incorrect_dependency_schemaLocation_returns_http_400(self):
+    def test_post_type_with_incorrect_dependency_schema_location_returns_http_400(self):
+        """test_post_type_with_incorrect_dependency_schemaLocation_returns_http_400"""
+
         # Arrange
         user = create_mock_user("1")
         self.data["content"] = (
@@ -331,6 +382,8 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     def test_post_type_with_incorrect_dependency_id_returns_http_400(self):
+        """test_post_type_with_incorrect_dependency_id_returns_http_400"""
+
         # Arrange
         user = create_mock_user("1")
         self.data["content"] = (
@@ -351,10 +404,14 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
 
 
 class TestGlobalTypeList(MongoIntegrationBaseTestCase):
+    """Test Global Type List"""
+
     fixture = fixture_type
 
     def setUp(self):
-        super(TestGlobalTypeList, self).setUp()
+        """setUp"""
+
+        super().setUp()
         type_content = (
             "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>"
             "<xs:simpleType name='temperature'>"
@@ -369,6 +426,8 @@ class TestGlobalTypeList(MongoIntegrationBaseTestCase):
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     def test_post_returns_http_201_if_user_is_staff(self):
+        """test_post_returns_http_201_if_user_is_staff"""
+
         # Arrange
         user = create_mock_user("1", is_staff=True)
 
@@ -382,6 +441,8 @@ class TestGlobalTypeList(MongoIntegrationBaseTestCase):
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     def test_post_returns_http_403_if_user_is_superuser(self):
+        """test_post_returns_http_403_if_user_is_superuser"""
+
         # Arrange
         user = create_mock_user("1", is_superuser=True)
 
@@ -395,6 +456,8 @@ class TestGlobalTypeList(MongoIntegrationBaseTestCase):
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     def test_post_returns_http_403_if_user_does_not_have_permission(self):
+        """test_post_returns_http_403_if_user_does_not_have_permission"""
+
         # Arrange
         user = create_mock_user("1")
 
@@ -408,6 +471,8 @@ class TestGlobalTypeList(MongoIntegrationBaseTestCase):
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     def test_post_owner_is_global(self):
+        """test_post_owner_is_global"""
+
         # Arrange
         user = create_mock_user("1", is_staff=True)
         mock_request = create_mock_request(user=user)

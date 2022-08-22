@@ -5,17 +5,21 @@ from unittest.case import TestCase
 from django.test import override_settings
 from mock.mock import Mock, patch
 
-from core_composer_app.components.type import api as type_api
-from core_composer_app.components.type.models import Type
 from core_main_app.commons import exceptions
 from core_main_app.commons.exceptions import ModelError
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import create_mock_request
+from core_composer_app.components.type import api as type_api
+from core_composer_app.components.type.models import Type
 
 
 class TestTypeGet(TestCase):
+    """Test Type Get"""
+
     @patch.object(Type, "get_by_id")
     def test_type_get_returns_type(self, mock_get_by_id):
+        """test_type_get_returns_type"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -34,6 +38,8 @@ class TestTypeGet(TestCase):
     def test_template_get_raises_exception_if_object_does_not_exist(
         self, mock_get_by_id
     ):
+        """test_template_get_raises_exception_if_object_does_not_exist"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -46,8 +52,12 @@ class TestTypeGet(TestCase):
 
 
 class TestTypeGetAll(TestCase):
+    """Test Type Get All"""
+
     @patch.object(Type, "get_all")
     def test_get_all_types_returns_types(self, mock_get_all):
+        """test_get_all_types_returns_types"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -64,8 +74,12 @@ class TestTypeGetAll(TestCase):
 
 
 class TestTypeGetAllComplexType(TestCase):
+    """Test Type Get All Complex Type"""
+
     @patch.object(Type, "get_all_complex_type")
     def test_get_all_types_returns_types(self, mock_get_all_complex_type):
+        """test_get_all_types_returns_types"""
+
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
@@ -82,10 +96,14 @@ class TestTypeGetAllComplexType(TestCase):
 
 
 class TestTypeUpsert(TestCase):
+    """Test Type Upsert"""
+
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, "dependencies")
     @patch.object(Type, "save")
     def test_type_upsert_valid_returns_type(self, mock_save, mock_dependencies):
+        """test_type_upsert_valid_returns_type"""
+
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
         type_object = _create_type()
@@ -97,6 +115,8 @@ class TestTypeUpsert(TestCase):
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, "save")
     def test_type_upsert_invalid_filename_raises_model_error(self, mock_save):
+        """test_type_upsert_invalid_filename_raises_model_error"""
+
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
         type_object = _create_type(filename=1)
@@ -106,6 +126,8 @@ class TestTypeUpsert(TestCase):
 
     @patch.object(Type, "save")
     def test_type_upsert_invalid_core_type_raises_core_error(self, mock_save):
+        """test_type_upsert_invalid_core_type_raises_core_error"""
+
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
         type_object = _create_type(content="<schema></schema>")

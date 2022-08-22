@@ -5,6 +5,8 @@ from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
 from django.urls import re_path, reverse_lazy
 
+from core_main_app.admin import core_admin_site
+
 from core_composer_app.components.bucket.models import Bucket
 from core_composer_app.components.type.admin_site import CustomTypeAdmin
 from core_composer_app.components.type.models import Type
@@ -15,7 +17,7 @@ from core_composer_app.components.type_version_manager.models import TypeVersion
 from core_composer_app.views.admin import views as admin_views, ajax as admin_ajax
 from core_composer_app.views.admin.ajax import EditBucketView
 from core_composer_app.views.user.ajax import EditTypeVersionManagerView
-from core_main_app.admin import core_admin_site
+
 
 parser_url = []
 if "core_parser_app" in settings.INSTALLED_APPS:

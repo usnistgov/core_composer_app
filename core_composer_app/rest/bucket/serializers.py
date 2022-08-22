@@ -4,15 +4,15 @@ from django.http import Http404
 from rest_framework.fields import CharField
 from rest_framework.serializers import ModelSerializer
 
+from core_main_app.commons.exceptions import DoesNotExist
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.bucket.models import Bucket
-from core_main_app.commons.exceptions import DoesNotExist
 
 
 class BucketSerializer(ModelSerializer):
     """Bucket serializer"""
 
-    class Meta(object):
+    class Meta:
         """Meta"""
 
         model = Bucket
@@ -47,7 +47,9 @@ class BucketsSerializer(ModelSerializer):
 
     id = CharField()
 
-    class Meta(object):
+    class Meta:
+        """Meta"""
+
         model = Bucket
         fields = ("id",)
 

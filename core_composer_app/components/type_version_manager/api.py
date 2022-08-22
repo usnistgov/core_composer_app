@@ -1,9 +1,6 @@
 """
 Type Version Manager API
 """
-from core_composer_app.components.bucket import api as bucket_api
-from core_composer_app.components.type import api as type_api
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_main_app.access_control.api import is_superuser
 from core_main_app.access_control.decorators import access_control
 from core_main_app.components.template.access_control import can_read
@@ -12,6 +9,9 @@ from core_main_app.components.template_version_manager.access_control import can
 from core_main_app.components.version_manager import api as version_manager_api
 from core_main_app.components.version_manager.utils import get_latest_version_name
 import core_main_app.commons.exceptions as exceptions
+from core_composer_app.components.bucket import api as bucket_api
+from core_composer_app.components.type import api as type_api
+from core_composer_app.components.type_version_manager.models import TypeVersionManager
 
 
 @access_control(can_read)
@@ -59,11 +59,11 @@ def insert(type_version_manager, type_object, request, list_bucket_ids=None):
         type_object.save()
         # return version manager
         return type_version_manager
-    except exceptions.NotUniqueError as e:
-        raise e
-    except Exception as e:
+    except exceptions.NotUniqueError as exception:
+        raise exception
+    except Exception as exception:
         type_version_manager.delete()
-        raise e
+        raise exception
 
 
 @access_control(can_read_global)

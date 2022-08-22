@@ -3,8 +3,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models, IntegrityError
 
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_main_app.commons import exceptions
+from core_composer_app.components.type_version_manager.models import TypeVersionManager
 
 
 class Bucket(models.Model):
@@ -26,8 +26,8 @@ class Bucket(models.Model):
         """
         try:
             return Bucket.objects.get(pk=str(bucket_id))
-        except ObjectDoesNotExist as e:
-            raise exceptions.DoesNotExist(str(e))
+        except ObjectDoesNotExist as exception:
+            raise exceptions.DoesNotExist(str(exception))
         except Exception as ex:
             raise exceptions.ModelError(str(ex))
 
@@ -57,8 +57,8 @@ class Bucket(models.Model):
         """
         try:
             return self.save()
-        except IntegrityError as e:
-            raise exceptions.NotUniqueError(str(e))
+        except IntegrityError as exception:
+            raise exceptions.NotUniqueError(str(exception))
         except Exception as ex:
             raise exceptions.ModelError(str(ex))
 

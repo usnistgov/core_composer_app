@@ -8,6 +8,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from core_main_app.access_control.exceptions import AccessControlError
+from core_main_app.commons import exceptions
+from core_main_app.commons.exceptions import DoesNotExist
+from core_main_app.rest.template_version_manager.abstract_views import (
+    AbstractTemplateVersionManagerDetail,
+)
+from core_main_app.utils.decorators import api_staff_member_required
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.type_version_manager import (
     api as type_version_manager_api,
@@ -16,13 +23,6 @@ from core_composer_app.rest.bucket.serializers import (
     BucketSerializer,
     BucketsSerializer,
 )
-from core_main_app.access_control.exceptions import AccessControlError
-from core_main_app.commons import exceptions
-from core_main_app.commons.exceptions import DoesNotExist
-from core_main_app.rest.template_version_manager.abstract_views import (
-    AbstractTemplateVersionManagerDetail,
-)
-from core_main_app.utils.decorators import api_staff_member_required
 
 
 class BucketList(APIView):

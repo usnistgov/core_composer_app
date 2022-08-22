@@ -20,7 +20,7 @@ class BucketFixtures(TypeVersionManagerFixtures):
         Returns:
 
         """
-        super(BucketFixtures, self).insert_data()
+        super().insert_data()
 
         self.bucket_empty = Bucket(label="empty", color="#000000")
         self.bucket_empty.save()
