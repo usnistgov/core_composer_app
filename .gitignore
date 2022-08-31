@@ -141,6 +141,7 @@ coverage.xml
 
 # Django stuff:
 /data
+/xml_schemas
 *.log
 logfile*
 db.sqlite3

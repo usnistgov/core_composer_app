@@ -59,10 +59,8 @@ def insert(type_version_manager, type_object, request, list_bucket_ids=None):
         type_object.save()
         # return version manager
         return type_version_manager
-    except exceptions.NotUniqueError as exception:
-        raise exception
     except Exception as exception:
-        type_version_manager.delete()
+        type_object.delete()
         raise exception
 
 

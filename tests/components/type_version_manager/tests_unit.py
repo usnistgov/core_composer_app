@@ -85,7 +85,7 @@ class TestTypeVersionManagerInsert(TestCase):
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, "dependencies")
-    @patch.object(TypeVersionManager, "delete")
+    @patch.object(Type, "delete")
     @patch.object(Type, "save_template")
     @patch.object(TypeVersionManager, "save_version_manager")
     def test_insert_manager_raises_api_error_if_title_already_exists(
@@ -136,7 +136,7 @@ class TestTypeVersionManagerInsert(TestCase):
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, "dependencies")
-    @patch.object(TypeVersionManager, "delete")
+    @patch.object(Type, "delete")
     @patch.object(TypeVersionManager, "save_version_manager")
     @patch.object(Type, "save_template")
     def test_create_version_manager_raises_exception_if_error_in_create_version_manager(
