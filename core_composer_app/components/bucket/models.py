@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models, IntegrityError
 
 from core_main_app.commons import exceptions
+from core_main_app.utils.validation.regex_validation import not_empty_or_whitespaces
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 
 
@@ -56,6 +57,7 @@ class Bucket(models.Model):
 
         """
         try:
+            self.clean()
             return self.save()
         except IntegrityError as exception:
             raise exceptions.NotUniqueError(str(exception))
@@ -91,3 +93,12 @@ class Bucket(models.Model):
 
         """
         return self.label
+
+    def clean(self):
+        """Clean before saving
+
+        Returns:
+
+        """
+        not_empty_or_whitespaces(self.label)
+        self.label = self.label.strip()
