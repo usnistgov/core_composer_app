@@ -3,14 +3,15 @@
 
 from django.urls import re_path
 
-from core_composer_app.rest.bucket import views as bucket_views
-from core_composer_app.rest.type_version_manager import (
-    views as type_version_manager_views,
-)
 from core_main_app.rest.template import views as template_views
 from core_main_app.rest.template_version_manager import (
     views as template_version_manager_views,
 )
+from core_composer_app.rest.bucket import views as bucket_views
+from core_composer_app.rest.type_version_manager import (
+    views as type_version_manager_views,
+)
+
 
 urlpatterns = [
     re_path(

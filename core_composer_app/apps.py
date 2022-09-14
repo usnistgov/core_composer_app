@@ -9,6 +9,7 @@ class ComposerAppConfig(AppConfig):
     """Core composer application settings"""
 
     name = "core_composer_app"
+    verbose_name = "Core Composer App"
 
     def ready(self):
         """Run when the app is ready.
@@ -17,6 +18,6 @@ class ComposerAppConfig(AppConfig):
 
         """
         if "migrate" not in sys.argv:
-            import core_composer_app.permissions.discover as discover
+            from core_composer_app.permissions import discover
 
             discover.init_permissions()

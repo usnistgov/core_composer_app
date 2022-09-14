@@ -2,18 +2,21 @@
 """
 from unittest.case import TestCase
 
-from bson.objectid import ObjectId
 from mock.mock import Mock, patch
 
+from core_main_app.commons import exceptions
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.bucket.models import Bucket
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
-from core_main_app.commons import exceptions
 
 
 class TestBucketGetById(TestCase):
+    """Test Bucket Get By Id"""
+
     @patch.object(Bucket, "get_by_id")
     def test_bucket_get_by_id_returns_bucket(self, mock_get_by_id):
+        """test_bucket_get_by_id_returns_bucket"""
+
         # Arrange
         mock_bucket = _create_mock_bucket()
 
@@ -29,8 +32,10 @@ class TestBucketGetById(TestCase):
     def test_bucket_get_by_id_raises_exception_if_object_does_not_exist(
         self, mock_get_by_id
     ):
+        """test_bucket_get_by_id_raises_exception_if_object_does_not_exist"""
+
         # Arrange
-        mock_absent_id = ObjectId()
+        mock_absent_id = -1
         mock_get_by_id.side_effect = exceptions.DoesNotExist("")
 
         # Act + Assert
@@ -39,20 +44,28 @@ class TestBucketGetById(TestCase):
 
 
 class TestBucketUpsert(TestCase):
+    """Test Bucket Upsert"""
+
     @patch.object(Bucket, "get_colors")
     @patch.object(Bucket, "save")
-    def test_upsert_bucket_returns_bucket(self, mock_save, mock_get_colors):
+    def test_upsert_bucket_creates_bucket(self, mock_save, mock_get_colors):
+        """test_upsert_bucket_creates_bucket"""
+
         bucket = _create_bucket()
 
         mock_save.return_value = bucket
         mock_get_colors.return_value = []
-        result = bucket_api.upsert(bucket)
-        self.assertIsInstance(result, Bucket)
+        bucket_api.upsert(bucket)
+        self.assertIsInstance(bucket, Bucket)
 
 
 class TestBucketGetAll(TestCase):
+    """Test Bucket Get All"""
+
     @patch.object(Bucket, "get_all")
     def test_get_all_buckets_returns_buckets(self, mock_get_all):
+        """test_get_all_buckets_returns_buckets"""
+
         # Arrange
         mock_bucket1 = _create_mock_bucket()
         mock_bucket2 = _create_mock_bucket()
@@ -67,22 +80,26 @@ class TestBucketGetAll(TestCase):
 
 
 class TestAddTypeToBuckets(TestCase):
+    """Test Add Type To Buckets"""
+
+    @patch.object(Bucket, "add_type")
     @patch.object(Bucket, "get_by_id")
     @patch.object(Bucket, "get_colors")
     @patch.object(Bucket, "save")
-    def test_add_type_to_buckets_adds_one_to_list(
-        self, mock_save, mock_get_colors, mock_get_by_id
+    def test_add_type_to_buckets_does_not_raise_error(
+        self, mock_save, mock_get_colors, mock_get_by_id, mock_add_type
     ):
+        """test_add_type_to_buckets_does_not_raise_error"""
+
         bucket = _create_bucket()
         mock_save.return_value = bucket
         mock_get_by_id.return_value = bucket
         mock_get_colors.return_value = []
+        mock_add_type.return_value = None
 
         mock_version_manager = _create_mock_type_version_manager()
 
-        self.assertTrue(len(bucket.types) == 0)
         bucket_api.add_type_to_buckets(mock_version_manager, [bucket.id])
-        self.assertTrue(len(bucket.types) == 1)
 
     @patch.object(Bucket, "get_by_id")
     @patch.object(Bucket, "get_colors")
@@ -90,6 +107,8 @@ class TestAddTypeToBuckets(TestCase):
     def test_add_no_type_to_buckets_does_not_update_bucket(
         self, mock_save, mock_get_colors, mock_get_by_id
     ):
+        """test_add_no_type_to_buckets_does_not_update_bucket"""
+
         bucket = _create_bucket()
         mock_save.return_value = bucket
         mock_get_by_id.return_value = bucket
@@ -97,9 +116,9 @@ class TestAddTypeToBuckets(TestCase):
 
         mock_version_manager = _create_mock_type_version_manager()
 
-        self.assertTrue(len(bucket.types) == 0)
+        self.assertTrue(bucket.types.count() == 0)
         bucket_api.add_type_to_buckets(mock_version_manager, [])
-        self.assertTrue(len(bucket.types) == 0)
+        self.assertTrue(bucket.types.count() == 0)
 
     @patch.object(Bucket, "get_by_id")
     @patch.object(Bucket, "get_colors")
@@ -107,6 +126,7 @@ class TestAddTypeToBuckets(TestCase):
     def test_add_type_to_buckets_raises_exception_if_bucket_id_not_found(
         self, mock_save, mock_get_colors, mock_get_by_id
     ):
+        """test_add_type_to_buckets_raises_exception_if_bucket_id_not_found"""
 
         mock_get_by_id.side_effect = exceptions.DoesNotExist
         mock_get_colors.return_value = []
@@ -114,52 +134,57 @@ class TestAddTypeToBuckets(TestCase):
         mock_version_manager = _create_mock_type_version_manager()
 
         with self.assertRaises(exceptions.ApiError):
-            bucket_api.add_type_to_buckets(mock_version_manager, [ObjectId()])
+            bucket_api.add_type_to_buckets(mock_version_manager, [-1])
 
 
 class TestRemoveTypeFromBuckets(TestCase):
+    """Test Remove Type F rom Buckets"""
+
+    @patch.object(Bucket, "remove_type")
     @patch.object(Bucket, "get_all")
     @patch.object(Bucket, "get_by_id")
     @patch.object(Bucket, "get_colors")
     @patch.object(Bucket, "save")
-    def test_remove_type_from_buckets_substracts_one_to_list(
-        self, mock_save, mock_get_colors, mock_get_by_id, mock_get_all
+    def test_remove_type_from_buckets_does_not_raise_error(
+        self, mock_save, mock_get_colors, mock_get_by_id, mock_get_all, mock_remove_type
     ):
+        """test_remove_type_from_buckets_does_not_raise_error"""
+
         bucket = _create_bucket()
         mock_version_manager = _create_mock_type_version_manager()
 
-        bucket.types = [mock_version_manager]
+        mock_remove_type.return_value = None
         mock_get_all.return_value = [bucket]
 
         mock_save.return_value = bucket
         mock_get_by_id.return_value = bucket
         mock_get_colors.return_value = []
 
-        self.assertTrue(len(bucket.types) == 1)
         bucket_api.remove_type_from_buckets(mock_version_manager)
-        self.assertTrue(len(bucket.types) == 0)
 
+    @patch.object(Bucket, "remove_type")
     @patch.object(Bucket, "get_all")
     @patch.object(Bucket, "get_by_id")
     @patch.object(Bucket, "get_colors")
     @patch.object(Bucket, "save")
-    def test_removes_absent_type_from_buckets_does_not_update_bucket(
-        self, mock_save, mock_get_colors, mock_get_by_id, mock_get_all
+    def test_removes_absent_type_from_buckets_does_not_raise_error(
+        self, mock_save, mock_get_colors, mock_get_by_id, mock_get_all, mock_remove_type
     ):
+        """test_removes_absent_type_from_buckets_does_not_raise_error"""
+
         bucket = _create_bucket()
-        mock_version_manager = _create_mock_type_version_manager()
+        # mock_version_manager = _create_mock_type_version_manager()
         mock_absent_version_manager = _create_mock_type_version_manager()
 
-        bucket.types = [mock_version_manager]
+        # bucket.types = [mock_version_manager]
         mock_get_all.return_value = [bucket]
 
         mock_save.return_value = bucket
         mock_get_by_id.return_value = bucket
         mock_get_colors.return_value = []
+        mock_remove_type.return_value = None
 
-        self.assertTrue(len(bucket.types) == 1)
         bucket_api.remove_type_from_buckets(mock_absent_version_manager)
-        self.assertTrue(len(bucket.types) == 1)
 
 
 def _create_mock_bucket():
@@ -174,7 +199,7 @@ def _create_mock_bucket():
     mock_bucket.label = "bucket"
     mock_bucket.color = "#000000"
     mock_bucket.types = []
-    mock_bucket.id = ObjectId()
+    mock_bucket.id = 1
     return mock_bucket
 
 
@@ -186,7 +211,7 @@ def _create_bucket():
     Returns:
 
     """
-    return Bucket(id=ObjectId(), label="bucket", color="#000000", types=[])
+    return Bucket(id=1, label="bucket", color="#000000")
 
 
 def _create_mock_type_version_manager(title="", versions=None, user="1"):
@@ -199,13 +224,10 @@ def _create_mock_type_version_manager(title="", versions=None, user="1"):
     Returns:
 
     """
-    mock_type_version_manager = Mock(spec=TypeVersionManager)
+    mock_type_version_manager = TypeVersionManager()
     mock_type_version_manager.title = title
-    mock_type_version_manager.id = ObjectId()
+    mock_type_version_manager.id = 1
     mock_type_version_manager.user = user
     if versions is not None:
-        mock_type_version_manager.versions = versions
-    else:
-        mock_type_version_manager.versions = []
-    mock_type_version_manager.disabled_versions = []
+        mock_type_version_manager.version_set.set(versions)
     return mock_type_version_manager

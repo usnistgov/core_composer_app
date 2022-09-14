@@ -4,18 +4,13 @@ import json
 import logging
 from urllib.parse import urlparse
 
+from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.template import loader
+from django.utils.decorators import method_decorator
 from django.utils.html import escape
+from django.core.exceptions import ValidationError
 
-from core_composer_app.components.type import api as type_api
-from core_composer_app.components.type.models import Type
-from core_composer_app.components.type_version_manager import (
-    api as type_version_manager_api,
-)
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
-from core_composer_app.permissions import rights
-from core_composer_app.utils import xml as composer_xml_utils
 from core_main_app.commons import exceptions
 from core_main_app.components.template.models import Template
 from core_main_app.components.template_version_manager import (
@@ -27,14 +22,25 @@ from core_main_app.components.template_version_manager.models import (
 from core_main_app.utils import decorators as decorators
 from core_main_app.utils import xml as main_xml_utils
 from core_main_app.utils.urls import get_template_download_pattern
+from core_main_app.views.common.ajax import EditTemplateVersionManagerView
 from xml_utils.xsd_tree.xsd_tree import XSDTree
+
+from core_composer_app.components.type import api as type_api
+from core_composer_app.components.type.models import Type
+from core_composer_app.components.type_version_manager import (
+    api as type_version_manager_api,
+)
+from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_composer_app.permissions import rights
+from core_composer_app.utils import xml as composer_xml_utils
+
 
 logger = logging.getLogger(__name__)
 
 
 @decorators.permission_required(
-    content_type=rights.composer_content_type,
-    permission=rights.composer_access,
+    content_type=rights.COMPOSER_CONTENT_TYPE,
+    permission=rights.COMPOSER_ACCESS,
     raise_exception=True,
 )
 def insert_element_sequence(request):
@@ -91,15 +97,15 @@ def insert_element_sequence(request):
             json.dumps({"new_element": new_element_html}),
             content_type="application/json",
         )
-    except Exception as e:
+    except Exception as exception:
         return HttpResponseBadRequest(
-            escape(str(e)), content_type="application/javascript"
+            escape(str(exception)), content_type="application/javascript"
         )
 
 
 @decorators.permission_required(
-    content_type=rights.composer_content_type,
-    permission=rights.composer_access,
+    content_type=rights.COMPOSER_CONTENT_TYPE,
+    permission=rights.COMPOSER_ACCESS,
     raise_exception=True,
 )
 def change_xsd_type(request):
@@ -124,15 +130,15 @@ def change_xsd_type(request):
         # save the tree in the session
         request.session["newXmlTemplateCompose"] = xsd_string
         return HttpResponse(json.dumps({}), content_type="application/javascript")
-    except Exception as e:
+    except Exception as exception:
         return HttpResponseBadRequest(
-            escape(str(e)), content_type="application/javascript"
+            escape(str(exception)), content_type="application/javascript"
         )
 
 
 @decorators.permission_required(
-    content_type=rights.composer_content_type,
-    permission=rights.composer_access,
+    content_type=rights.COMPOSER_CONTENT_TYPE,
+    permission=rights.COMPOSER_ACCESS,
     raise_exception=True,
 )
 def change_root_type_name(request):
@@ -153,15 +159,15 @@ def change_root_type_name(request):
 
         request.session["newXmlTemplateCompose"] = xsd_string
         return HttpResponse(json.dumps({}), content_type="application/javascript")
-    except Exception as e:
+    except Exception as exception:
         return HttpResponseBadRequest(
-            escape(str(e)), content_type="application/javascript"
+            escape(str(exception)), content_type="application/javascript"
         )
 
 
 @decorators.permission_required(
-    content_type=rights.composer_content_type,
-    permission=rights.composer_access,
+    content_type=rights.COMPOSER_CONTENT_TYPE,
+    permission=rights.COMPOSER_ACCESS,
     raise_exception=True,
 )
 def rename_element(request):
@@ -193,15 +199,15 @@ def rename_element(request):
         request.session["newXmlTemplateCompose"] = xsd_string
 
         return HttpResponse(json.dumps({}), content_type="application/javascript")
-    except Exception as e:
+    except Exception as exception:
         return HttpResponseBadRequest(
-            escape(str(e)), content_type="application/javascript"
+            escape(str(exception)), content_type="application/javascript"
         )
 
 
 @decorators.permission_required(
-    content_type=rights.composer_content_type,
-    permission=rights.composer_access,
+    content_type=rights.COMPOSER_CONTENT_TYPE,
+    permission=rights.COMPOSER_ACCESS,
     raise_exception=True,
 )
 def delete_element(request):
@@ -224,15 +230,15 @@ def delete_element(request):
         request.session["newXmlTemplateCompose"] = xsd_string
 
         return HttpResponse(json.dumps({}), content_type="application/javascript")
-    except Exception as e:
+    except Exception as exception:
         return HttpResponseBadRequest(
-            escape(str(e)), content_type="application/javascript"
+            escape(str(exception)), content_type="application/javascript"
         )
 
 
 @decorators.permission_required(
-    content_type=rights.composer_content_type,
-    permission=rights.composer_access,
+    content_type=rights.COMPOSER_CONTENT_TYPE,
+    permission=rights.COMPOSER_ACCESS,
     raise_exception=True,
 )
 def get_element_occurrences(request):
@@ -257,15 +263,15 @@ def get_element_occurrences(request):
         return HttpResponse(
             json.dumps(response_dict), content_type="application/javascript"
         )
-    except Exception as e:
+    except Exception as exception:
         return HttpResponseBadRequest(
-            escape(str(e)), content_type="application/javascript"
+            escape(str(exception)), content_type="application/javascript"
         )
 
 
 @decorators.permission_required(
-    content_type=rights.composer_content_type,
-    permission=rights.composer_access,
+    content_type=rights.COMPOSER_CONTENT_TYPE,
+    permission=rights.COMPOSER_ACCESS,
     raise_exception=True,
 )
 def set_element_occurrences(request):
@@ -291,15 +297,15 @@ def set_element_occurrences(request):
         # save the tree in the session
         request.session["newXmlTemplateCompose"] = xsd_string
         return HttpResponse(json.dumps({}), content_type="application/javascript")
-    except Exception as e:
+    except Exception as exception:
         return HttpResponseBadRequest(
-            escape(str(e)), content_type="application/javascript"
+            escape(str(exception)), content_type="application/javascript"
         )
 
 
 @decorators.permission_required(
-    content_type=rights.composer_content_type,
-    permission=rights.composer_save_template,
+    content_type=rights.COMPOSER_CONTENT_TYPE,
+    permission=rights.COMPOSER_SAVE_TEMPLATE,
     raise_exception=True,
 )
 def save_template(request):
@@ -326,8 +332,10 @@ def save_template(request):
 
             if error is not None:
                 return _error_response("This is not a valid XML schema. " + error)
-        except Exception as e:
-            return _error_response("This is not a valid XML schema. " + escape(str(e)))
+        except Exception as exception:
+            return _error_response(
+                "This is not a valid XML schema. " + escape(str(exception))
+            )
 
         # get list of dependencies
         dependencies = _get_dependencies_ids(
@@ -343,32 +351,35 @@ def save_template(request):
             template = Template(
                 filename=template_name,
                 content=xsd_string,
-                dependencies=dependencies,
                 user=str(request.user.id),
             )
             # save template in database
             template_version_manager_api.insert(
                 template_version_manager, template, request=request
             )
+            template.dependencies.set(dependencies)
         except exceptions.NotUniqueError:
             return HttpResponseBadRequest(
                 "A template with the same name already exists. Please choose another name."
             )
-        except Exception as e:
-            return _error_response(escape(str(e)))
-
+        except ValidationError:
+            return HttpResponseBadRequest(
+                "Title must not be empty or only whitespaces."
+            )
+        except Exception as exception:
+            return _error_response(escape(str(exception)))
         return HttpResponse(
             json.dumps(response_dict), content_type="application/javascript"
         )
-    except Exception as e:
+    except Exception as exception:
         return HttpResponseBadRequest(
-            escape(str(e)), content_type="application/javascript"
+            escape(str(exception)), content_type="application/javascript"
         )
 
 
 @decorators.permission_required(
-    content_type=rights.composer_content_type,
-    permission=rights.composer_save_type,
+    content_type=rights.COMPOSER_CONTENT_TYPE,
+    permission=rights.COMPOSER_SAVE_TYPE,
     raise_exception=True,
 )
 def save_type(request):
@@ -392,9 +403,9 @@ def save_type(request):
             try:
                 # check if the type exists, raises exception otherwise
                 type_api.get(template_id, request=request)
-            except Exception as e:
+            except Exception as exception:
                 # the type does not exist
-                logger.warning("save_type threw an exception: {0}".format(str(e)))
+                logger.warning("save_type threw an exception: %s", str(exception))
                 return _error_response("Unable to save an existing template as a type.")
 
         try:
@@ -407,8 +418,8 @@ def save_type(request):
 
             if error is not None:
                 return _error_response("This is not a valid XML schema. " + error)
-        except Exception as e:
-            return _error_response("This is not a valid XML schema. " + str(e))
+        except Exception as exception:
+            return _error_response("This is not a valid XML schema. " + str(exception))
 
         dependencies = _get_dependencies_ids(
             request.session["includedTypesCompose"], request=request
@@ -423,26 +434,30 @@ def save_type(request):
             type_object = Type(
                 filename=type_name,
                 content=xsd_string,
-                dependencies=dependencies,
                 user=str(request.user.id),
             )
             # save type in database
             type_version_manager_api.insert(
                 type_version_manager, type_object, request=request
             )
+            type_object.dependencies.set(dependencies)
         except exceptions.NotUniqueError:
             return HttpResponseBadRequest(
                 "A type with the same name already exists. Please choose another name."
             )
-        except Exception as e:
-            return _error_response(escape(str(e)))
+        except ValidationError:
+            return HttpResponseBadRequest(
+                "Title must not be empty or only whitespaces."
+            )
+        except Exception as exception:
+            return _error_response(escape(str(exception)))
 
         return HttpResponse(
             json.dumps(response_dict), content_type="application/javascript"
         )
-    except Exception as e:
+    except Exception as exception:
         return HttpResponseBadRequest(
-            escape(str(e)), content_type="application/javascript"
+            escape(str(exception)), content_type="application/javascript"
         )
 
 
@@ -470,10 +485,10 @@ def _get_dependencies_ids(list_dependencies, request):
             type_object = type_api.get(object_id, request=request)
             # add id to list of internal dependencies
             dependencies.append(type_object)
-        except Exception as e:
+        except Exception as exception:
             # id not found, don't add it to list of dependencies
             logger.warning(
-                "_get_dependencies_ids threw an exception: {0}".format(str(e))
+                "_get_dependencies_ids threw an exception: %s", str(exception)
             )
 
     return dependencies
@@ -491,3 +506,10 @@ def _error_response(error):
     return HttpResponseBadRequest(
         error.replace("'", ""), content_type="application/javascript"
     )
+
+
+@method_decorator(login_required, name="dispatch")
+class EditTypeVersionManagerView(EditTemplateVersionManagerView):
+    """Edit Type Version Manager View"""
+
+    model = TypeVersionManager

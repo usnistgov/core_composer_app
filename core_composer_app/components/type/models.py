@@ -1,17 +1,18 @@
 """
 Type models
 """
-from django_mongoengine import fields
-from mongoengine import errors as mongoengine_errors
+from django.db import models
 
 from core_main_app.commons import exceptions
+from core_main_app.commons.exceptions import DoesNotExist
 from core_main_app.components.template.models import Template
 
 
 class Type(Template):
     """Type class."""
 
-    is_complex = fields.BooleanField(blank=False)
+    class_name = "Type"
+    is_complex = models.BooleanField(blank=False, default=False)
 
     @staticmethod
     def get_by_id(type_id):
@@ -24,8 +25,8 @@ class Type(Template):
 
         """
         try:
-            return Type.objects().get(pk=str(type_id))
-        except mongoengine_errors.DoesNotExist as e:
+            return Type.objects.get(pk=str(type_id))
+        except DoesNotExist as e:
             raise exceptions.DoesNotExist(str(e))
         except Exception as e:
             raise exceptions.ModelError(str(e))
@@ -37,7 +38,7 @@ class Type(Template):
         Returns:
 
         """
-        return Type.objects().all()
+        return Type.objects.all()
 
     @staticmethod
     def get_all_complex_type():
@@ -46,4 +47,4 @@ class Type(Template):
         Returns:
 
         """
-        return Type.objects(is_complex=True).all()
+        return Type.objects.filter(is_complex=True).all()

@@ -2,19 +2,23 @@
 """
 from django.db import models
 
-from core_composer_app.permissions import rights
 from core_main_app.permissions.utils import get_formatted_name
+from core_composer_app.permissions import rights
 
 
 class Composer(models.Model):
-    class Meta(object):
+    """Composer object"""
+
+    class Meta:
+        """Meta"""
+
         verbose_name = "core_composer_app"
         default_permissions = ()
         permissions = (
-            (rights.composer_access, get_formatted_name(rights.composer_access)),
+            (rights.COMPOSER_ACCESS, get_formatted_name(rights.COMPOSER_ACCESS)),
             (
-                rights.composer_save_template,
-                get_formatted_name(rights.composer_save_template),
+                rights.COMPOSER_SAVE_TEMPLATE,
+                get_formatted_name(rights.COMPOSER_SAVE_TEMPLATE),
             ),
-            (rights.composer_save_type, get_formatted_name(rights.composer_save_type)),
+            (rights.COMPOSER_SAVE_TYPE, get_formatted_name(rights.COMPOSER_SAVE_TYPE)),
         )

@@ -4,7 +4,7 @@
 
 {% block box_tools %}
 
-{% url 'admin:core_composer_app_types' as type_list_url %}
+{% url 'core-admin:core_composer_app_types' as type_list_url %}
 {% include 'core_main_app/common/buttons/go_to.html' with url=type_list_url label='Back to Types' %}
 
 {% endblock %}
@@ -20,7 +20,7 @@
             {% endif %}
         {% endfor %}
         <form id="form_edit" method="post"
-              action="{% url 'admin:core_composer_app_type_buckets' data.version_manager.id %}">
+              action="{% url 'core-admin:core_composer_app_type_buckets' data.version_manager.id %}">
             {% csrf_token %}
 
             {{ data.form }}

@@ -4,14 +4,14 @@
 {% block box_title %}Add {{ data.object_name }}{% endblock %}
 
 {% block box_tools %}
-{% url 'admin:core_composer_app_buckets' as bucket_list_url %}
+{% url 'core-admin:core_composer_app_buckets' as bucket_list_url %}
 {% include 'core_main_app/common/buttons/go_to.html' with url=bucket_list_url label='Back to Buckets' %}
 {% endblock %}
 
 {% block box_body %}
 <div class="row">
     <div class="col-md-12">
-        <form id="form_start" action="{% url 'admin:core_composer_app_upload_bucket' %}" method="post">
+        <form id="form_start" action="{% url 'core-admin:core_composer_app_upload_bucket' %}" method="post">
             {% csrf_token %}
             {{ data.form }}
             <div id="upload_errors" class="text-danger">

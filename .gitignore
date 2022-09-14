@@ -141,6 +141,7 @@ coverage.xml
 
 # Django stuff:
 /data
+/xml_schemas
 *.log
 logfile*
 db.sqlite3
@@ -237,3 +238,4 @@ radon.xml
 
 #virtual env
 venv/
+

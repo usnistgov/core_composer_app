@@ -4,6 +4,9 @@ from django.test import SimpleTestCase
 from mock.mock import patch
 from rest_framework import status
 
+from core_main_app.utils.tests_tools.MockUser import create_mock_user
+from core_main_app.utils.tests_tools.RequestMock import RequestMock
+
 from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_composer_app.rest.type_version_manager import (
     views as type_version_manager_views,
@@ -12,15 +15,17 @@ from core_composer_app.rest.type_version_manager.serializers import (
     TypeVersionManagerSerializer,
     CreateTypeSerializer,
 )
-from core_main_app.utils.tests_tools.MockUser import create_mock_user
-from core_main_app.utils.tests_tools.RequestMock import RequestMock
 
 
 class TestGlobalTypeVersionManagerListGetPermission(SimpleTestCase):
+    """Test Global Type Version Manager List Get Permission"""
+
     @patch.object(TypeVersionManager, "get_global_version_managers")
     def test_anonymous_returns_http_403(
         self, type_version_manager_get_all_global_version_managers
     ):
+        """test_anonymous_returns_http_403"""
+
         type_version_manager_get_all_global_version_managers.return_value = {}
 
         response = RequestMock.do_request_get(
@@ -33,6 +38,8 @@ class TestGlobalTypeVersionManagerListGetPermission(SimpleTestCase):
     def test_authenticated_returns_http_200(
         self, type_version_manager_get_all_global_version_managers
     ):
+        """test_authenticated_returns_http_200"""
+
         type_version_manager_get_all_global_version_managers.return_value = {}
 
         mock_user = create_mock_user("1")
@@ -47,6 +54,8 @@ class TestGlobalTypeVersionManagerListGetPermission(SimpleTestCase):
     def test_staff_returns_http_200(
         self, type_version_manager_get_all_global_version_managers
     ):
+        """test_staff_returns_http_200"""
+
         type_version_manager_get_all_global_version_managers.return_value = {}
 
         mock_user = create_mock_user("1", is_staff=True)
@@ -59,7 +68,10 @@ class TestGlobalTypeVersionManagerListGetPermission(SimpleTestCase):
 
 
 class TestUserTypeVersionManagerListGetPermission(SimpleTestCase):
+    """Test User Type Version Manager List Get Permission"""
+
     def test_anonymous_returns_http_403(self):
+        """test_anonymous_returns_http_403"""
         response = RequestMock.do_request_get(
             type_version_manager_views.UserTypeVersionManagerList.as_view(), None
         )
@@ -70,6 +82,8 @@ class TestUserTypeVersionManagerListGetPermission(SimpleTestCase):
     def test_authenticated_returns_http_200(
         self, type_version_manager_get_version_managers_by_user
     ):
+        """test_authenticated_returns_http_200"""
+
         type_version_manager_get_version_managers_by_user.return_value = {}
 
         mock_user = create_mock_user("1")
@@ -84,6 +98,8 @@ class TestUserTypeVersionManagerListGetPermission(SimpleTestCase):
     def test_staff_returns_http_200(
         self, type_version_manager_get_version_managers_by_user
     ):
+        """test_staff_returns_http_200"""
+
         type_version_manager_get_version_managers_by_user.return_value = {}
 
         mock_user = create_mock_user("1", is_staff=True)
@@ -96,7 +112,11 @@ class TestUserTypeVersionManagerListGetPermission(SimpleTestCase):
 
 
 class TestUserTypeListPostPermission(SimpleTestCase):
+    """Test User Type List Post Permission"""
+
     def test_anonymous_returns_http_403(self):
+        """test_anonymous_returns_http_403"""
+
         response = RequestMock.do_request_post(
             type_version_manager_views.UserTypeList.as_view(), None
         )
@@ -118,6 +138,8 @@ class TestUserTypeListPostPermission(SimpleTestCase):
         create_type_version_manager_serializer_save,
         create_type_version_manager_serializer_valid,
     ):
+        """test_authenticated_returns_http_201"""
+
         create_type_version_manager_serializer_data.return_value = True
         create_type_version_manager_serializer_save.return_value = None
         create_type_version_manager_serializer_valid.return_value = {}
@@ -148,6 +170,8 @@ class TestUserTypeListPostPermission(SimpleTestCase):
         create_type_version_manager_serializer_save,
         create_type_version_manager_serializer_valid,
     ):
+        """test_staff_returns_http_201"""
+
         create_type_version_manager_serializer_data.return_value = True
         create_type_version_manager_serializer_save.return_value = None
         create_type_version_manager_serializer_valid.return_value = {}
@@ -165,7 +189,11 @@ class TestUserTypeListPostPermission(SimpleTestCase):
 
 
 class TestGlobalTypeListPostPermission(SimpleTestCase):
+    """Test Global Type List Post Permission"""
+
     def test_anonymous_returns_http_403(self):
+        """test_anonymous_returns_http_403"""
+
         response = RequestMock.do_request_post(
             type_version_manager_views.GlobalTypeList.as_view(), None
         )
@@ -173,6 +201,8 @@ class TestGlobalTypeListPostPermission(SimpleTestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_authenticated_returns_http_403(self):
+        """test_authenticated_returns_http_403"""
+
         mock_user = create_mock_user("1")
 
         response = RequestMock.do_request_post(
@@ -196,6 +226,8 @@ class TestGlobalTypeListPostPermission(SimpleTestCase):
         create_type_version_manager_serializer_save,
         create_type_version_manager_serializer_valid,
     ):
+        """test_staff_returns_http_201"""
+
         create_type_version_manager_serializer_data.return_value = True
         create_type_version_manager_serializer_save.return_value = None
         create_type_version_manager_serializer_valid.return_value = {}

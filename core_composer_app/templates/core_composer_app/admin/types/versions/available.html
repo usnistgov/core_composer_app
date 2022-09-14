@@ -3,7 +3,7 @@
 {% block box_tools %}
 
 {% if not data.version_manager.user %}
-	<a href="{% url 'admin:core_composer_app_upload_type_version' data.version_manager.id %}"
+	<a href="{% url 'core-admin:core_composer_app_upload_type_version' data.version_manager.id %}"
 	   class="float-right btn btn-secondary">
 		<i class="fas fa-upload"></i> Upload New Version
 	</a>

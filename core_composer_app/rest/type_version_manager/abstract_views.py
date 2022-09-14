@@ -8,16 +8,15 @@ from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from core_composer_app.rest.type_version_manager.serializers import (
-    CreateTypeSerializer,
-    TypeVersionManagerSerializer,
-)
 from core_main_app.commons.exceptions import NotUniqueError, XSDError
 from core_main_app.rest.template_version_manager.abstract_views import (
     AbstractTemplateVersionManagerDetail,
 )
 from core_main_app.utils.decorators import api_staff_member_required
+from core_composer_app.rest.type_version_manager.serializers import (
+    CreateTypeSerializer,
+    TypeVersionManagerSerializer,
+)
 
 
 class AbstractTypeList(

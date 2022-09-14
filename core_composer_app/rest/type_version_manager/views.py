@@ -3,14 +3,14 @@
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import IsAuthenticated
 
-from core_composer_app.components.type_version_manager import (
-    api as type_version_manager_api,
-)
-from core_composer_app.rest.type_version_manager.abstract_views import AbstractTypeList
 from core_main_app.rest.template_version_manager.views import (
     AbstractTemplateVersionManagerList,
 )
 from core_main_app.utils.decorators import api_staff_member_required
+from core_composer_app.components.type_version_manager import (
+    api as type_version_manager_api,
+)
+from core_composer_app.rest.type_version_manager.abstract_views import AbstractTypeList
 
 
 class GlobalTypeVersionManagerList(AbstractTemplateVersionManagerList):
@@ -58,7 +58,9 @@ class UserTypeList(AbstractTypeList):
             {
                 "title": "title",
                 "filename": "filename",
-                "content": "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'><xs:simpleType name='root'/></xs:schema>"
+                "content": "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+                            <xs:simpleType name='root'/></xs:schema>"
+
             }
 
         Note:
@@ -78,7 +80,7 @@ class UserTypeList(AbstractTypeList):
             - code: 500
               content: Internal server error
         """
-        return super(UserTypeList, self).post(request)
+        return super().post(request)
 
     def get_user(self):
         """Retrieve user from the request"""
@@ -97,7 +99,8 @@ class GlobalTypeList(AbstractTypeList):
             {
                 "title": "title",
                 "filename": "filename",
-                "content": "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'><xs:simpleType name='root'/></xs:schema>"
+                "content": "<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema'>
+                            <xs:simpleType name='root'/></xs:schema>"
             }
 
         Note:
@@ -117,7 +120,7 @@ class GlobalTypeList(AbstractTypeList):
             - code: 500
               content: Internal server error
         """
-        return super(GlobalTypeList, self).post(request)
+        return super().post(request)
 
     def get_user(self):
         """None for global type"""

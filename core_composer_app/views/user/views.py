@@ -7,16 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.staticfiles import finders
 from django.urls import reverse_lazy
 
-from core_composer_app.components.bucket import api as bucket_api
-from core_composer_app.components.type_version_manager import (
-    api as type_version_manager_api,
-)
-from core_composer_app.permissions import rights
 from core_main_app.components.template import api as template_api
 from core_main_app.components.template_version_manager import (
     api as template_version_manager_api,
 )
-from core_main_app.components.version_manager import api as version_manager_api
 from core_main_app.utils import decorators as decorators
 from core_main_app.utils.file import read_file_content, get_file_http_response
 from core_main_app.utils.rendering import render
@@ -26,14 +20,18 @@ from xml_utils.commons.constants import LXML_SCHEMA_NAMESPACE
 from xml_utils.xsd_tree.operations.annotation import remove_annotations
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 from xml_utils.xsd_types.xsd_types import get_xsd_types
-
+from core_composer_app.components.bucket import api as bucket_api
+from core_composer_app.components.type_version_manager import (
+    api as type_version_manager_api,
+)
+from core_composer_app.permissions import rights
 
 # TODO: see if sessions are problematic
 
 
 @decorators.permission_required(
-    content_type=rights.composer_content_type,
-    permission=rights.composer_access,
+    content_type=rights.COMPOSER_CONTENT_TYPE,
+    permission=rights.COMPOSER_ACCESS,
     login_url=reverse_lazy("core_main_app_login"),
 )
 def index(request):
@@ -78,8 +76,8 @@ def index(request):
 
 
 @decorators.permission_required(
-    content_type=rights.composer_content_type,
-    permission=rights.composer_access,
+    content_type=rights.COMPOSER_CONTENT_TYPE,
+    permission=rights.COMPOSER_ACCESS,
     login_url=reverse_lazy("core_main_app_login"),
 )
 def build_template(request, template_id):
@@ -98,7 +96,7 @@ def build_template(request, template_id):
         )
         xsd_string = read_file_content(base_template_path)
     else:
-        template = template_api.get(template_id, request=request)
+        template = template_api.get_by_id(template_id, request=request)
         xsd_string = template.content
 
     request.session["newXmlTemplateCompose"] = xsd_string
@@ -106,13 +104,13 @@ def build_template(request, template_id):
 
     # store the current includes/imports
     xsd_tree = XSDTree.build_tree(xsd_string)
-    includes = xsd_tree.findall("{}include".format(LXML_SCHEMA_NAMESPACE))
+    includes = xsd_tree.findall(f"{LXML_SCHEMA_NAMESPACE}include")
     for el_include in includes:
         if "schemaLocation" in el_include.attrib:
             request.session["includedTypesCompose"].append(
                 el_include.attrib["schemaLocation"]
             )
-    imports = xsd_tree.findall("{}import".format(LXML_SCHEMA_NAMESPACE))
+    imports = xsd_tree.findall(f"{LXML_SCHEMA_NAMESPACE}import")
     for el_import in imports:
         if "schemaLocation" in el_import.attrib:
             request.session["includedTypesCompose"].append(
@@ -194,8 +192,8 @@ def build_template(request, template_id):
 
 
 @decorators.permission_required(
-    content_type=rights.composer_content_type,
-    permission=rights.composer_access,
+    content_type=rights.COMPOSER_CONTENT_TYPE,
+    permission=rights.COMPOSER_ACCESS,
     login_url=reverse_lazy("core_main_app_login"),
 )
 def download_xsd(request):
@@ -231,7 +229,9 @@ def manage_type_versions(request, version_manager_id):
     """
     try:
         # get the version manager
-        version_manager = version_manager_api.get(version_manager_id, request=request)
+        version_manager = type_version_manager_api.get_by_id(
+            version_manager_id, request=request
+        )
         context = get_context_manage_template_versions(version_manager, "Type")
         if "core_parser_app" in settings.INSTALLED_APPS:
             context.update({"module_url": "core_composer_app_type_modules"})
@@ -262,9 +262,9 @@ def manage_type_versions(request, version_manager_id):
             modals=modals,
             context=context,
         )
-    except Exception as e:
+    except Exception as exception:
         return render(
             request,
             "core_main_app/common/commons/error.html",
-            context={"error": str(e)},
+            context={"error": str(exception)},
         )

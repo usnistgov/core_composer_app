@@ -20,14 +20,15 @@ class BucketFixtures(TypeVersionManagerFixtures):
         Returns:
 
         """
-        super(BucketFixtures, self).insert_data()
+        super().insert_data()
 
-        self.bucket_empty = Bucket(label="empty", color="#000000", types=[]).save()
-        self.bucket_1 = Bucket(
-            label="bucket1", color="#000001", types=[self.type_vm_1]
-        ).save()
-        self.bucket_2 = Bucket(
-            label="bucket2", color="#000002", types=[self.type_vm_1, self.type_vm_2]
-        ).save()
+        self.bucket_empty = Bucket(label="empty", color="#000000")
+        self.bucket_empty.save()
+        self.bucket_1 = Bucket(label="bucket1", color="#000001")
+        self.bucket_1.save()
+        self.bucket_1.types.set([self.type_vm_1])
+        self.bucket_2 = Bucket(label="bucket2", color="#000002")
+        self.bucket_2.save()
+        self.bucket_2.types.set([self.type_vm_1, self.type_vm_2])
 
         self.bucket_collection = [self.bucket_empty, self.bucket_1, self.bucket_2]
