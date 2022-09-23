@@ -90,7 +90,7 @@ def add_type_to_buckets(version_manager, list_bucket_ids):
         try:
             # get the bucket using its id
             bucket = get_by_id(bucket_id)
-        except:
+        except Exception:
             raise ApiError("No bucket found with the given id.")
 
         # add type to bucket

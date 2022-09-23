@@ -1,6 +1,9 @@
 """
 Type Version Manager API
 """
+from core_composer_app.components.bucket import api as bucket_api
+from core_composer_app.components.type import api as type_api
+from core_composer_app.components.type_version_manager.models import TypeVersionManager
 from core_main_app.access_control.api import is_superuser
 from core_main_app.access_control.decorators import access_control
 from core_main_app.components.template.access_control import can_read
@@ -8,10 +11,6 @@ from core_main_app.components.template.access_control import can_read_global
 from core_main_app.components.template_version_manager.access_control import can_write
 from core_main_app.components.version_manager import api as version_manager_api
 from core_main_app.components.version_manager.utils import get_latest_version_name
-import core_main_app.commons.exceptions as exceptions
-from core_composer_app.components.bucket import api as bucket_api
-from core_composer_app.components.type import api as type_api
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
 
 
 @access_control(can_read)

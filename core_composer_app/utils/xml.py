@@ -535,7 +535,7 @@ def _get_valid_xml_name(name):
 
         if len(name) == 0:
             name = default_name
-    except:
+    except Exception:
         name = default_name
 
     return name
