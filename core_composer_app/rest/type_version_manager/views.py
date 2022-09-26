@@ -10,7 +10,9 @@ from core_main_app.utils.decorators import api_staff_member_required
 from core_composer_app.components.type_version_manager import (
     api as type_version_manager_api,
 )
-from core_composer_app.rest.type_version_manager.abstract_views import AbstractTypeList
+from core_composer_app.rest.type_version_manager.abstract_views import (
+    AbstractTypeList,
+)
 
 
 class GlobalTypeVersionManagerList(AbstractTemplateVersionManagerList):

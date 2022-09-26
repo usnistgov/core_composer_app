@@ -3,14 +3,20 @@ Type Version Manager API
 """
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.type import api as type_api
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_composer_app.components.type_version_manager.models import (
+    TypeVersionManager,
+)
 from core_main_app.access_control.api import is_superuser
 from core_main_app.access_control.decorators import access_control
 from core_main_app.components.template.access_control import can_read
 from core_main_app.components.template.access_control import can_read_global
-from core_main_app.components.template_version_manager.access_control import can_write
+from core_main_app.components.template_version_manager.access_control import (
+    can_write,
+)
 from core_main_app.components.version_manager import api as version_manager_api
-from core_main_app.components.version_manager.utils import get_latest_version_name
+from core_main_app.components.version_manager.utils import (
+    get_latest_version_name,
+)
 
 
 @access_control(can_read)
@@ -53,7 +59,9 @@ def insert(type_version_manager, type_object, request, list_bucket_ids=None):
         # Add to the selected buckets
         bucket_api.add_type_to_buckets(type_version_manager, list_bucket_ids)
         # update display name
-        type_object.display_name = get_latest_version_name(type_version_manager)
+        type_object.display_name = get_latest_version_name(
+            type_version_manager
+        )
         # save type
         type_object.save()
         # return version manager
@@ -95,7 +103,9 @@ def get_version_managers_by_user(request):
     Returns:
 
     """
-    return TypeVersionManager.get_version_managers_by_user(str(request.user.id))
+    return TypeVersionManager.get_version_managers_by_user(
+        str(request.user.id)
+    )
 
 
 def get_active_version_manager_by_user_id(request):

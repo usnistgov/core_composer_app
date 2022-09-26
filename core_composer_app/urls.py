@@ -28,7 +28,9 @@ urlpatterns = [
         name="core_composer_build_template",
     ),
     re_path(
-        r"^download-xsd$", user_views.download_xsd, name="core_composer_download_xsd"
+        r"^download-xsd$",
+        user_views.download_xsd,
+        name="core_composer_download_xsd",
     ),
     re_path(
         r"^type/versions/(?P<version_manager_id>\w+)",
@@ -71,9 +73,13 @@ urlpatterns = [
         name="core_composer_set_element_occurrences",
     ),
     re_path(
-        r"^save-template$", user_ajax.save_template, name="core_composer_save_template"
+        r"^save-template$",
+        user_ajax.save_template,
+        name="core_composer_save_template",
     ),
-    re_path(r"^save-type$", user_ajax.save_type, name="core_composer_save_type"),
+    re_path(
+        r"^save-type$", user_ajax.save_type, name="core_composer_save_type"
+    ),
     re_path(r"^rest/", include("core_composer_app.rest.urls")),
 ]
 

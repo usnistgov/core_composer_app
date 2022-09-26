@@ -7,7 +7,9 @@ from rest_framework import status
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import RequestMock
 
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_composer_app.components.type_version_manager.models import (
+    TypeVersionManager,
+)
 from core_composer_app.rest.type_version_manager import (
     views as type_version_manager_views,
 )
@@ -29,7 +31,8 @@ class TestGlobalTypeVersionManagerListGetPermission(SimpleTestCase):
         type_version_manager_get_all_global_version_managers.return_value = {}
 
         response = RequestMock.do_request_get(
-            type_version_manager_views.GlobalTypeVersionManagerList.as_view(), None
+            type_version_manager_views.GlobalTypeVersionManagerList.as_view(),
+            None,
         )
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -45,7 +48,8 @@ class TestGlobalTypeVersionManagerListGetPermission(SimpleTestCase):
         mock_user = create_mock_user("1")
 
         response = RequestMock.do_request_get(
-            type_version_manager_views.GlobalTypeVersionManagerList.as_view(), mock_user
+            type_version_manager_views.GlobalTypeVersionManagerList.as_view(),
+            mock_user,
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -61,7 +65,8 @@ class TestGlobalTypeVersionManagerListGetPermission(SimpleTestCase):
         mock_user = create_mock_user("1", is_staff=True)
 
         response = RequestMock.do_request_get(
-            type_version_manager_views.GlobalTypeVersionManagerList.as_view(), mock_user
+            type_version_manager_views.GlobalTypeVersionManagerList.as_view(),
+            mock_user,
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -73,7 +78,8 @@ class TestUserTypeVersionManagerListGetPermission(SimpleTestCase):
     def test_anonymous_returns_http_403(self):
         """test_anonymous_returns_http_403"""
         response = RequestMock.do_request_get(
-            type_version_manager_views.UserTypeVersionManagerList.as_view(), None
+            type_version_manager_views.UserTypeVersionManagerList.as_view(),
+            None,
         )
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -89,7 +95,8 @@ class TestUserTypeVersionManagerListGetPermission(SimpleTestCase):
         mock_user = create_mock_user("1")
 
         response = RequestMock.do_request_get(
-            type_version_manager_views.UserTypeVersionManagerList.as_view(), mock_user
+            type_version_manager_views.UserTypeVersionManagerList.as_view(),
+            mock_user,
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -105,7 +112,8 @@ class TestUserTypeVersionManagerListGetPermission(SimpleTestCase):
         mock_user = create_mock_user("1", is_staff=True)
 
         response = RequestMock.do_request_get(
-            type_version_manager_views.UserTypeVersionManagerList.as_view(), mock_user
+            type_version_manager_views.UserTypeVersionManagerList.as_view(),
+            mock_user,
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -150,7 +158,9 @@ class TestUserTypeListPostPermission(SimpleTestCase):
         mock_user = create_mock_user("1")
 
         response = RequestMock.do_request_post(
-            type_version_manager_views.UserTypeList.as_view(), mock_user, data={}
+            type_version_manager_views.UserTypeList.as_view(),
+            mock_user,
+            data={},
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -182,7 +192,9 @@ class TestUserTypeListPostPermission(SimpleTestCase):
         mock_user = create_mock_user("1", is_staff=True)
 
         response = RequestMock.do_request_post(
-            type_version_manager_views.UserTypeList.as_view(), mock_user, data={}
+            type_version_manager_views.UserTypeList.as_view(),
+            mock_user,
+            data={},
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -206,7 +218,9 @@ class TestGlobalTypeListPostPermission(SimpleTestCase):
         mock_user = create_mock_user("1")
 
         response = RequestMock.do_request_post(
-            type_version_manager_views.GlobalTypeList.as_view(), mock_user, data={}
+            type_version_manager_views.GlobalTypeList.as_view(),
+            mock_user,
+            data={},
         )
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -238,7 +252,9 @@ class TestGlobalTypeListPostPermission(SimpleTestCase):
         mock_user = create_mock_user("1", is_staff=True)
 
         response = RequestMock.do_request_post(
-            type_version_manager_views.GlobalTypeList.as_view(), mock_user, data={}
+            type_version_manager_views.GlobalTypeList.as_view(),
+            mock_user,
+            data={},
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)

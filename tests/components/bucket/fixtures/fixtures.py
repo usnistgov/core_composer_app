@@ -31,4 +31,8 @@ class BucketFixtures(TypeVersionManagerFixtures):
         self.bucket_2.save()
         self.bucket_2.types.set([self.type_vm_1, self.type_vm_2])
 
-        self.bucket_collection = [self.bucket_empty, self.bucket_1, self.bucket_2]
+        self.bucket_collection = [
+            self.bucket_empty,
+            self.bucket_1,
+            self.bucket_2,
+        ]

@@ -1,6 +1,8 @@
 """Serializers used throughout the Rest API
 """
-from core_main_app.components.template.api import init_template_with_dependencies
+from core_main_app.components.template.api import (
+    init_template_with_dependencies,
+)
 from core_main_app.rest.template.serializers import TemplateSerializer
 from core_main_app.rest.template_version_manager.serializers import (
     TemplateVersionManagerSerializer,
@@ -11,7 +13,9 @@ from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager import (
     api as type_version_manager_api,
 )
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_composer_app.components.type_version_manager.models import (
+    TypeVersionManager,
+)
 
 
 class TypeVersionManagerSerializer(TemplateVersionManagerSerializer):
@@ -63,7 +67,9 @@ class CreateTypeSerializer(TemplateSerializer):
 
         # Create the template and its template version manager
         type_version_manager_api.insert(
-            type_version_manager_object, type_object, request=self.context["request"]
+            type_version_manager_object,
+            type_object,
+            request=self.context["request"],
         )
 
         return type_object

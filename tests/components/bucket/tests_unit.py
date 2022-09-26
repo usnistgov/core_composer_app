@@ -7,7 +7,9 @@ from unittest.mock import Mock, patch
 from core_main_app.commons import exceptions
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.bucket.models import Bucket
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_composer_app.components.type_version_manager.models import (
+    TypeVersionManager,
+)
 
 
 class TestBucketGetById(TestCase):
@@ -146,7 +148,12 @@ class TestRemoveTypeFromBuckets(TestCase):
     @patch.object(Bucket, "get_colors")
     @patch.object(Bucket, "save")
     def test_remove_type_from_buckets_does_not_raise_error(
-        self, mock_save, mock_get_colors, mock_get_by_id, mock_get_all, mock_remove_type
+        self,
+        mock_save,
+        mock_get_colors,
+        mock_get_by_id,
+        mock_get_all,
+        mock_remove_type,
     ):
         """test_remove_type_from_buckets_does_not_raise_error"""
 
@@ -168,7 +175,12 @@ class TestRemoveTypeFromBuckets(TestCase):
     @patch.object(Bucket, "get_colors")
     @patch.object(Bucket, "save")
     def test_removes_absent_type_from_buckets_does_not_raise_error(
-        self, mock_save, mock_get_colors, mock_get_by_id, mock_get_all, mock_remove_type
+        self,
+        mock_save,
+        mock_get_colors,
+        mock_get_by_id,
+        mock_get_all,
+        mock_remove_type,
     ):
         """test_removes_absent_type_from_buckets_does_not_raise_error"""
 

@@ -52,7 +52,9 @@ class TypeVersionManager(TemplateVersionManager):
         Returns:
 
         """
-        return TypeVersionManager.objects.filter(is_disabled=False, user=None).all()
+        return TypeVersionManager.objects.filter(
+            is_disabled=False, user=None
+        ).all()
 
     @staticmethod
     def get_version_managers_by_user(user_id):

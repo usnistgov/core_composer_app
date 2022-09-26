@@ -101,7 +101,9 @@ class TestTypeUpsert(TestCase):
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, "dependencies")
     @patch.object(Type, "save")
-    def test_type_upsert_valid_returns_type(self, mock_save, mock_dependencies):
+    def test_type_upsert_valid_returns_type(
+        self, mock_save, mock_dependencies
+    ):
         """test_type_upsert_valid_returns_type"""
 
         mock_user = create_mock_user("1", is_superuser=True)

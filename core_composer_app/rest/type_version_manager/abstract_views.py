@@ -71,10 +71,13 @@ class AbstractTypeList(
                 user=self.get_user()
             )
             type_serializer.save(
-                type_version_manager=type_version_manager_object, user=self.get_user()
+                type_version_manager=type_version_manager_object,
+                user=self.get_user(),
             )
 
-            return Response(type_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(
+                type_serializer.data, status=status.HTTP_201_CREATED
+            )
         except ValidationError as validation_exception:
             content = {"message": validation_exception.detail}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
@@ -86,7 +89,9 @@ class AbstractTypeList(
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     @abstractmethod
     def get_user(self):
@@ -145,7 +150,9 @@ class TypeVersion(AbstractTemplateVersionManagerDetail):
                 user=type_version_manager_object.user,
             )
 
-            return Response(type_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(
+                type_serializer.data, status=status.HTTP_201_CREATED
+            )
         except Http404:
             content = {"message": "Type Version Manager not found."}
             return Response(content, status=status.HTTP_404_NOT_FOUND)
@@ -154,4 +161,6 @@ class TypeVersion(AbstractTemplateVersionManagerDetail):
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

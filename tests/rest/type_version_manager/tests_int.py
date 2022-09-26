@@ -10,7 +10,10 @@ from core_main_app.utils.integration_tests.integration_base_test_case import (
     MongoIntegrationBaseTestCase,
 )
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
-from core_main_app.utils.tests_tools.RequestMock import RequestMock, create_mock_request
+from core_main_app.utils.tests_tools.RequestMock import (
+    RequestMock,
+    create_mock_request,
+)
 from core_composer_app.components.type import api as type_api
 from core_composer_app.rest.type_version_manager import views
 
@@ -274,7 +277,11 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
             "</xs:restriction></xs:simpleType>"
             "</xs:schema>"
         )
-        self.data = {"title": "title", "filename": "filename", "content": type_content}
+        self.data = {
+            "title": "title",
+            "filename": "filename",
+            "content": type_content,
+        }
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     def test_post_returns_http_201(self):
@@ -357,7 +364,9 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
         self.assertTrue(expected_download_url in response.data["message"])
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
-    def test_post_type_with_incorrect_dependency_schema_location_returns_http_400(self):
+    def test_post_type_with_incorrect_dependency_schema_location_returns_http_400(
+        self,
+    ):
         """test_post_type_with_incorrect_dependency_schemaLocation_returns_http_400"""
 
         # Arrange
@@ -422,7 +431,11 @@ class TestGlobalTypeList(MongoIntegrationBaseTestCase):
             "</xs:restriction></xs:simpleType>"
             "</xs:schema>"
         )
-        self.data = {"title": "title", "filename": "filename", "content": type_content}
+        self.data = {
+            "title": "title",
+            "filename": "filename",
+            "content": type_content,
+        }
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     def test_post_returns_http_201_if_user_is_staff(self):

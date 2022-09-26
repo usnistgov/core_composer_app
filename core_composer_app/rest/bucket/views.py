@@ -67,7 +67,9 @@ class BucketList(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     @method_decorator(api_staff_member_required())
     def post(self, request):
@@ -103,13 +105,17 @@ class BucketList(APIView):
             bucket_serializer.save()
 
             # Return the serialized data
-            return Response(bucket_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(
+                bucket_serializer.data, status=status.HTTP_201_CREATED
+            )
         except ValidationError as validation_exception:
             content = {"message": validation_exception.detail}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class BucketDetail(APIView):
@@ -164,7 +170,9 @@ class BucketDetail(APIView):
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     @method_decorator(api_staff_member_required())
     def delete(self, request, pk):
@@ -198,7 +206,9 @@ class BucketDetail(APIView):
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     @method_decorator(api_staff_member_required())
     def patch(self, request, pk):
@@ -249,7 +259,9 @@ class BucketDetail(APIView):
             return Response(content, status=status.HTTP_404_NOT_FOUND)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class TypeVersionManagerBuckets(AbstractTemplateVersionManagerDetail):
@@ -267,8 +279,8 @@ class TypeVersionManagerBuckets(AbstractTemplateVersionManagerDetail):
             TemplateVersionManager
         """
         try:
-            template_version_manager_object = type_version_manager_api.get_by_id(
-                pk, request=self.request
+            template_version_manager_object = (
+                type_version_manager_api.get_by_id(pk, request=self.request)
             )
             return template_version_manager_object
         except exceptions.DoesNotExist:
@@ -318,7 +330,9 @@ class TypeVersionManagerBuckets(AbstractTemplateVersionManagerDetail):
             serializer.is_valid(raise_exception=True)
 
             # Get list of unique ids
-            bucket_ids = set([bucket["id"] for bucket in serializer.validated_data])
+            bucket_ids = set(
+                [bucket["id"] for bucket in serializer.validated_data]
+            )
 
             # act
             bucket_api.update_type_buckets(type_version_manager, bucket_ids)
@@ -335,4 +349,6 @@ class TypeVersionManagerBuckets(AbstractTemplateVersionManagerDetail):
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
         except Exception as api_exception:
             content = {"message": str(api_exception)}
-            return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                content, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

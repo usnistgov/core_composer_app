@@ -45,7 +45,9 @@ class UploadTypeForm(forms.Form):
         label="Select a file",
         required=True,
         validators=[ExtensionValidator(".xsd")],
-        widget=forms.FileInput(attrs={"accept": ".xsd", "class": "form-control"}),
+        widget=forms.FileInput(
+            attrs={"accept": ".xsd", "class": "form-control"}
+        ),
     )
     buckets = BucketDataModelChoiceField(
         label="Select buckets",
@@ -76,7 +78,10 @@ class EditBucketForm(ModelForm):
     label = forms.CharField(
         label="Label",
         widget=forms.TextInput(
-            attrs={"class": "form-control", "placeholder": "Enter the new label"}
+            attrs={
+                "class": "form-control",
+                "placeholder": "Enter the new label",
+            }
         ),
     )
 

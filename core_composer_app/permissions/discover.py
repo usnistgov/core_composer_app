@@ -32,7 +32,11 @@ def init_permissions():
 
         # Add permissions to default group
         default_group.permissions.add(
-            composer_access_perm, composer_save_template_perm, composer_save_type_perm
+            composer_access_perm,
+            composer_save_template_perm,
+            composer_save_type_perm,
         )
     except Exception as exception:
-        logger.error("Impossible to init composer permissions: %s", str(exception))
+        logger.error(
+            "Impossible to init composer permissions: %s", str(exception)
+        )

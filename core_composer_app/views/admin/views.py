@@ -11,7 +11,11 @@ from django.urls import reverse
 from django.utils.html import escape as html_escape
 
 from core_main_app.commons import exceptions
-from core_main_app.commons.exceptions import NotUniqueError, ModelError, DoesNotExist
+from core_main_app.commons.exceptions import (
+    NotUniqueError,
+    ModelError,
+    DoesNotExist,
+)
 from core_main_app.utils.rendering import admin_render
 from core_main_app.utils.xml import get_imports_and_includes
 from core_main_app.views.admin.forms import UploadVersionForm
@@ -24,7 +28,9 @@ from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager import (
     api as type_version_manager_api,
 )
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_composer_app.components.type_version_manager.models import (
+    TypeVersionManager,
+)
 from core_composer_app.views.admin.ajax import EditBucketView
 from core_composer_app.views.admin.forms import (
     BucketForm,
@@ -48,8 +54,8 @@ def manage_types(request):
 
     """
     # get all types
-    type_version_managers = type_version_manager_api.get_global_version_managers(
-        request=request
+    type_version_managers = (
+        type_version_manager_api.get_global_version_managers(request=request)
     )
 
     context = {
@@ -117,7 +123,9 @@ def manage_type_versions(request, version_manager_id):
         # default back_url initialization
         context.update({"back_url": "core-admin:core_composer_app_types"})
         if "core_parser_app" in settings.INSTALLED_APPS:
-            context.update({"module_url": "core-admin:core_composer_app_type_modules"})
+            context.update(
+                {"module_url": "core-admin:core_composer_app_type_modules"}
+            )
         if "core_dashboard_app" in settings.INSTALLED_APPS:
             # the dashboard exposes the user's version managers
             # in this view, we come from the dashboard
@@ -237,9 +245,14 @@ def _save_type(request, assets, context):
         type_object = Type(filename=xsd_file.name, content=xsd_data)
         type_version_manager = TypeVersionManager(title=name)
         type_version_manager_api.insert(
-            type_version_manager, type_object, request=request, list_bucket_ids=buckets
+            type_version_manager,
+            type_object,
+            request=request,
+            list_bucket_ids=buckets,
         )
-        return HttpResponseRedirect(reverse("core-admin:core_composer_app_types"))
+        return HttpResponseRedirect(
+            reverse("core-admin:core_composer_app_types")
+        )
     except exceptions.XSDError as xsd_error:
         return _handle_xsd_errors(
             request, assets, context, xsd_error, xsd_data, xsd_file.name
@@ -254,7 +267,9 @@ def _save_type(request, assets, context):
         return _upload_type_response(request, assets, context)
 
 
-def _handle_xsd_errors(request, assets, context, xsd_error, xsd_content, filename):
+def _handle_xsd_errors(
+    request, assets, context, xsd_error, xsd_content, filename
+):
     """Handle XSD errors. Builds dependency resolver if needed.
 
     Args:
@@ -280,7 +295,9 @@ def _handle_xsd_errors(request, assets, context, xsd_error, xsd_content, filenam
     return _upload_type_response(request, assets, context)
 
 
-def _get_dependency_resolver_html(imports, includes, xsd_data, filename, request):
+def _get_dependency_resolver_html(
+    imports, includes, xsd_data, filename, request
+):
     """Return HTML for dependency resolver form.
 
     Args:
@@ -393,7 +410,9 @@ def upload_type_version(request, version_manager_id):
         context["upload_form"] = form
 
         if form.is_valid():
-            return _save_type_version(request, assets, context, type_version_manager)
+            return _save_type_version(
+                request, assets, context, type_version_manager
+            )
 
         # Display errors from the form
         return _upload_type_response(request, assets, context)
@@ -457,8 +476,14 @@ def manage_buckets(request):
     assets = {
         "js": [
             {"path": "core_composer_app/admin/js/bucket.js", "is_raw": False},
-            {"path": "core_composer_app/admin/js/bucket.raw.js", "is_raw": True},
-            {"path": "core_main_app/common/js/backtoprevious.js", "is_raw": True},
+            {
+                "path": "core_composer_app/admin/js/bucket.raw.js",
+                "is_raw": True,
+            },
+            {
+                "path": "core_main_app/common/js/backtoprevious.js",
+                "is_raw": True,
+            },
             EditBucketView.get_modal_js_path(),
         ],
         "css": ["core_composer_app/common/css/bucket.css"],
@@ -489,7 +514,12 @@ def upload_bucket(request):
 
     """
     assets = {
-        "js": [{"path": "core_main_app/common/js/backtoprevious.js", "is_raw": True}]
+        "js": [
+            {
+                "path": "core_main_app/common/js/backtoprevious.js",
+                "is_raw": True,
+            }
+        ]
     }
 
     context = {"object_name": "Bucket"}
@@ -500,9 +530,13 @@ def upload_bucket(request):
             bucket = Bucket(label=bucket_label)
             try:
                 bucket_api.upsert(bucket)
-                return redirect(reverse("core-admin:core_composer_app_buckets"))
+                return redirect(
+                    reverse("core-admin:core_composer_app_buckets")
+                )
             except NotUniqueError:
-                context["errors"] = "A bucket with the same name already exists."
+                context[
+                    "errors"
+                ] = "A bucket with the same name already exists."
             except Exception as exception:
                 context["errors"] = str(exception)
 
@@ -537,7 +571,9 @@ def manage_type_buckets(request, version_manager_id):
             version_manager_id, request=request
         )
     except ModelError as exception:
-        logger.error("manage_type_buckets threw a ModelError: %s", str(exception))
+        logger.error(
+            "manage_type_buckets threw a ModelError: %s", str(exception)
+        )
         return admin_render(
             request,
             "core_main_app/common/commons/error.html",
@@ -546,14 +582,23 @@ def manage_type_buckets(request, version_manager_id):
     except DoesNotExist as exception:
         # TODO: catch exception, redirect to error page
         logger.warning(
-            "manage_type_buckets threw a DoesNotExist exception: %s", str(exception)
+            "manage_type_buckets threw a DoesNotExist exception: %s",
+            str(exception),
         )
 
-    context = {"version_manager": version_manager, "buckets": bucket_api.get_all()}
+    context = {
+        "version_manager": version_manager,
+        "buckets": bucket_api.get_all(),
+    }
 
     assets = {
         "css": ["core_composer_app/common/css/bucket.css"],
-        "js": [{"path": "core_main_app/common/js/backtoprevious.js", "is_raw": True}],
+        "js": [
+            {
+                "path": "core_main_app/common/js/backtoprevious.js",
+                "is_raw": True,
+            }
+        ],
     }
     if request.method == "POST":
         form = EditTypeBucketsForm(request.POST)

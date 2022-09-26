@@ -1,8 +1,12 @@
 """ Fixtures files for type version manager
 """
-from core_main_app.utils.integration_tests.fixture_interface import FixtureInterface
+from core_main_app.utils.integration_tests.fixture_interface import (
+    FixtureInterface,
+)
 from core_composer_app.components.type.models import Type
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_composer_app.components.type_version_manager.models import (
+    TypeVersionManager,
+)
 
 
 class TypeVersionManagerFixtures(FixtureInterface):

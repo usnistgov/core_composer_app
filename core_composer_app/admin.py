@@ -13,8 +13,13 @@ from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager.admin_site import (
     CustomTypeVersionManagerAdmin,
 )
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
-from core_composer_app.views.admin import views as admin_views, ajax as admin_ajax
+from core_composer_app.components.type_version_manager.models import (
+    TypeVersionManager,
+)
+from core_composer_app.views.admin import (
+    views as admin_views,
+    ajax as admin_ajax,
+)
 from core_composer_app.views.admin.ajax import EditBucketView
 from core_composer_app.views.user.ajax import EditTypeVersionManagerView
 
@@ -36,7 +41,9 @@ if "core_parser_app" in settings.INSTALLED_APPS:
     ]
 
 admin_urls = [
-    re_path(r"^types$", admin_views.manage_types, name="core_composer_app_types"),
+    re_path(
+        r"^types$", admin_views.manage_types, name="core_composer_app_types"
+    ),
     re_path(
         r"^type/(?P<pk>[\w-]+)/edit/$",
         staff_member_required(
@@ -47,7 +54,9 @@ admin_urls = [
         name="core_composer_app_edit_type",
     ),
     re_path(
-        r"^type/upload$", admin_views.upload_type, name="core_composer_app_upload_type"
+        r"^type/upload$",
+        admin_views.upload_type,
+        name="core_composer_app_upload_type",
     ),
     re_path(
         r"^type/upload/(?P<version_manager_id>\w+)",
@@ -64,7 +73,11 @@ admin_urls = [
         admin_views.manage_type_buckets,
         name="core_composer_app_type_buckets",
     ),
-    re_path(r"^buckets$", admin_views.manage_buckets, name="core_composer_app_buckets"),
+    re_path(
+        r"^buckets$",
+        admin_views.manage_buckets,
+        name="core_composer_app_buckets",
+    ),
     re_path(
         r"^bucket/upload$",
         admin_views.upload_bucket,

@@ -79,7 +79,9 @@ class TestBucketList(MongoIntegrationBaseTestCase):
         )
 
         # Assert
-        self.assertEqual(response.data[0]["label"], self.fixture.bucket_1.label)
+        self.assertEqual(
+            response.data[0]["label"], self.fixture.bucket_1.label
+        )
 
     def test_get_by_incorrect_label_returns_no_bucket(self):
         """test_get_by_incorrect_label_returns_no_bucket"""
@@ -153,7 +155,9 @@ class TestBucketList(MongoIntegrationBaseTestCase):
         # Assert
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_post_with_one_correct_type_returns_response_containing_one_type(self):
+    def test_post_with_one_correct_type_returns_response_containing_one_type(
+        self,
+    ):
         """test_post_with_one_correct_type_returns_response_containing_one_type"""
 
         # Arrange
@@ -186,7 +190,9 @@ class TestBucketList(MongoIntegrationBaseTestCase):
         # Assert
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    def test_post_with_one_correct_type_returns_response_containing_two_types(self):
+    def test_post_with_one_correct_type_returns_response_containing_two_types(
+        self,
+    ):
         """test_post_with_one_correct_type_returns_response_containing_two_types"""
 
         # Arrange

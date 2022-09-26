@@ -30,7 +30,9 @@ from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager import (
     api as type_version_manager_api,
 )
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_composer_app.components.type_version_manager.models import (
+    TypeVersionManager,
+)
 from core_composer_app.permissions import rights
 from core_composer_app.utils import xml as composer_xml_utils
 
@@ -91,7 +93,11 @@ def insert_element_sequence(request):
         template = loader.get_template(
             "core_composer_app/user/builder/new_element.html"
         )
-        context = {"namespace": namespace, "path": path, "type_name": type_name}
+        context = {
+            "namespace": namespace,
+            "path": path,
+            "type_name": type_name,
+        }
         new_element_html = template.render(context)
         return HttpResponse(
             json.dumps({"new_element": new_element_html}),
@@ -129,7 +135,9 @@ def change_xsd_type(request):
 
         # save the tree in the session
         request.session["newXmlTemplateCompose"] = xsd_string
-        return HttpResponse(json.dumps({}), content_type="application/javascript")
+        return HttpResponse(
+            json.dumps({}), content_type="application/javascript"
+        )
     except Exception as exception:
         return HttpResponseBadRequest(
             escape(str(exception)), content_type="application/javascript"
@@ -155,10 +163,14 @@ def change_root_type_name(request):
         xsd_string = request.session["newXmlTemplateCompose"]
 
         # rename root type
-        xsd_string = composer_xml_utils.rename_single_root_type(xsd_string, type_name)
+        xsd_string = composer_xml_utils.rename_single_root_type(
+            xsd_string, type_name
+        )
 
         request.session["newXmlTemplateCompose"] = xsd_string
-        return HttpResponse(json.dumps({}), content_type="application/javascript")
+        return HttpResponse(
+            json.dumps({}), content_type="application/javascript"
+        )
     except Exception as exception:
         return HttpResponseBadRequest(
             escape(str(exception)), content_type="application/javascript"
@@ -185,7 +197,9 @@ def rename_element(request):
         xsd_string = request.session["newXmlTemplateCompose"]
 
         # rename element
-        xsd_string = composer_xml_utils.rename_xsd_element(xsd_string, xpath, new_name)
+        xsd_string = composer_xml_utils.rename_xsd_element(
+            xsd_string, xpath, new_name
+        )
 
         # build xsd tree
         xsd_tree = XSDTree.build_tree(xsd_string)
@@ -198,7 +212,9 @@ def rename_element(request):
         # save the tree in the session
         request.session["newXmlTemplateCompose"] = xsd_string
 
-        return HttpResponse(json.dumps({}), content_type="application/javascript")
+        return HttpResponse(
+            json.dumps({}), content_type="application/javascript"
+        )
     except Exception as exception:
         return HttpResponseBadRequest(
             escape(str(exception)), content_type="application/javascript"
@@ -229,7 +245,9 @@ def delete_element(request):
         # save the tree in the session
         request.session["newXmlTemplateCompose"] = xsd_string
 
-        return HttpResponse(json.dumps({}), content_type="application/javascript")
+        return HttpResponse(
+            json.dumps({}), content_type="application/javascript"
+        )
     except Exception as exception:
         return HttpResponseBadRequest(
             escape(str(exception)), content_type="application/javascript"
@@ -255,9 +273,10 @@ def get_element_occurrences(request):
         xsd_string = request.session["newXmlTemplateCompose"]
 
         # get occurrences of xsd element
-        min_occurs, max_occurs = composer_xml_utils.get_xsd_element_occurrences(
-            xsd_string, xpath
-        )
+        (
+            min_occurs,
+            max_occurs,
+        ) = composer_xml_utils.get_xsd_element_occurrences(xsd_string, xpath)
 
         response_dict = {"minOccurs": min_occurs, "maxOccurs": max_occurs}
         return HttpResponse(
@@ -296,7 +315,9 @@ def set_element_occurrences(request):
 
         # save the tree in the session
         request.session["newXmlTemplateCompose"] = xsd_string
-        return HttpResponse(json.dumps({}), content_type="application/javascript")
+        return HttpResponse(
+            json.dumps({}), content_type="application/javascript"
+        )
     except Exception as exception:
         return HttpResponseBadRequest(
             escape(str(exception)), content_type="application/javascript"
@@ -328,10 +349,14 @@ def save_template(request):
             xsd_tree = XSDTree.build_tree(xsd_string)
 
             # validate the schema
-            error = main_xml_utils.validate_xml_schema(xsd_tree, request=request)
+            error = main_xml_utils.validate_xml_schema(
+                xsd_tree, request=request
+            )
 
             if error is not None:
-                return _error_response("This is not a valid XML schema. " + error)
+                return _error_response(
+                    "This is not a valid XML schema. " + error
+                )
         except Exception as exception:
             return _error_response(
                 "This is not a valid XML schema. " + escape(str(exception))
@@ -405,21 +430,33 @@ def save_type(request):
                 type_api.get(template_id, request=request)
             except Exception as exception:
                 # the type does not exist
-                logger.warning("save_type threw an exception: %s", str(exception))
-                return _error_response("Unable to save an existing template as a type.")
+                logger.warning(
+                    "save_type threw an exception: %s", str(exception)
+                )
+                return _error_response(
+                    "Unable to save an existing template as a type."
+                )
 
         try:
             # remove root from tree if present
-            xsd_string = composer_xml_utils.remove_single_root_element(xsd_string)
+            xsd_string = composer_xml_utils.remove_single_root_element(
+                xsd_string
+            )
             # build xsd tree
             xsd_tree = XSDTree.build_tree(xsd_string)
             # validate the schema
-            error = main_xml_utils.validate_xml_schema(xsd_tree, request=request)
+            error = main_xml_utils.validate_xml_schema(
+                xsd_tree, request=request
+            )
 
             if error is not None:
-                return _error_response("This is not a valid XML schema. " + error)
+                return _error_response(
+                    "This is not a valid XML schema. " + error
+                )
         except Exception as exception:
-            return _error_response("This is not a valid XML schema. " + str(exception))
+            return _error_response(
+                "This is not a valid XML schema. " + str(exception)
+            )
 
         dependencies = _get_dependencies_ids(
             request.session["includedTypesCompose"], request=request

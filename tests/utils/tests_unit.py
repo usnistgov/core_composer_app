@@ -90,7 +90,9 @@ class TestInsertElementType(TestCase):
         errors = validate_xml_schema(result_tree, request=None)
         self.assertTrue(errors is None)
 
-    def test_add_type_with_target_namespace_to_base_with_same_target_namespace(self):
+    def test_add_type_with_target_namespace_to_base_with_same_target_namespace(
+        self,
+    ):
         """test_add_type_with_target_namespace_to_base_with_same_target_namespace"""
 
         base_filename = "base_target_ns.xsd"

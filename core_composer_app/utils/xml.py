@@ -60,7 +60,9 @@ def check_type_core_support(xsd_string):
                 if cpt_type > 1:
                     raise CoreError(error_message)
                 type_definition = (
-                    COMPLEX_TYPE if "complexType" in element.tag else SIMPLE_TYPE
+                    COMPLEX_TYPE
+                    if "complexType" in element.tag
+                    else SIMPLE_TYPE
                 )
     else:
         raise CoreError(error_message)
@@ -305,10 +307,14 @@ def _insert_element_type(
 
     # get the type from the included/imported file
     # If there is a complex type
-    element_type = type_xsd_tree.find("{}complexType".format(LXML_SCHEMA_NAMESPACE))
+    element_type = type_xsd_tree.find(
+        "{}complexType".format(LXML_SCHEMA_NAMESPACE)
+    )
     if element_type is None:
         # If there is a simple type
-        element_type = type_xsd_tree.find("{}simpleType".format(LXML_SCHEMA_NAMESPACE))
+        element_type = type_xsd_tree.find(
+            "{}simpleType".format(LXML_SCHEMA_NAMESPACE)
+        )
     type_name = element_type.attrib["name"]
 
     # format type name to avoid forbidden xml characters
@@ -345,7 +351,9 @@ def _insert_element_type(
         # Type without target namespace
         if type_target_namespace is None:
             # create type name with namespace
-            ns_type_name = _get_ns_type_name(target_namespace_prefix, type_name)
+            ns_type_name = _get_ns_type_name(
+                target_namespace_prefix, type_name
+            )
             # create include element
             dependency_tag = "include"
             dependency_attrib = {"schemaLocation": include_url}
@@ -354,7 +362,9 @@ def _insert_element_type(
             # Same target namespace as base template
             if target_namespace == type_target_namespace:
                 # create type name with namespace
-                ns_type_name = _get_ns_type_name(target_namespace_prefix, type_name)
+                ns_type_name = _get_ns_type_name(
+                    target_namespace_prefix, type_name
+                )
                 # create include element
                 dependency_tag = "include"
                 dependency_attrib = {"schemaLocation": include_url}
@@ -362,7 +372,9 @@ def _insert_element_type(
             else:
                 # create type name with namespace
                 ns_type_name = _get_ns_type_name(
-                    type_target_namespace_prefix, type_name, prefix_required=True
+                    type_target_namespace_prefix,
+                    type_name,
+                    prefix_required=True,
                 )
                 # create import element
                 dependency_tag = "import"
@@ -398,7 +410,8 @@ def _insert_element_type(
 
         if (
             type_target_namespace_prefix in list(root_ns_map.keys())
-            and root_ns_map[type_target_namespace_prefix] != type_target_namespace
+            and root_ns_map[type_target_namespace_prefix]
+            != type_target_namespace
         ):
             raise CoreError(
                 "The namespace prefix is already declared for a different namespace."
@@ -449,7 +462,9 @@ def insert_element_type(
     return new_xsd_string
 
 
-def insert_element_built_in_type(xsd_string, xpath, element_type_name, request):
+def insert_element_built_in_type(
+    xsd_string, xpath, element_type_name, request
+):
     """Insert element with a builtin type in xsd string.
 
     Args:

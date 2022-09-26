@@ -57,10 +57,14 @@ def index(request):
     )
 
     global_active_type_list = (
-        type_version_manager_api.get_active_global_version_manager(request=request)
+        type_version_manager_api.get_active_global_version_manager(
+            request=request
+        )
     )
     user_active_type_list = (
-        type_version_manager_api.get_active_version_manager_by_user_id(request=request)
+        type_version_manager_api.get_active_version_manager_by_user_id(
+            request=request
+        )
     )
 
     context = {
@@ -71,7 +75,10 @@ def index(request):
     }
 
     return render(
-        request, "core_composer_app/user/index.html", assets=assets, context=context
+        request,
+        "core_composer_app/user/index.html",
+        assets=assets,
+        context=context,
     )
 
 
@@ -122,29 +129,43 @@ def build_template(request, template_id):
     xsd_string = XSDTree.tostring(xsd_tree)
 
     # loads XSLT
-    xslt_path = finders.find(join("core_composer_app", "user", "xsl", "xsd2html.xsl"))
+    xslt_path = finders.find(
+        join("core_composer_app", "user", "xsl", "xsd2html.xsl")
+    )
     # reads XSLT
     xslt_string = read_file_content(xslt_path)
     # transform XML to HTML
     xsd_to_html_string = xsl_transform(xsd_string, xslt_string)
 
     # 1) Get user defined types
-    user_types = type_version_manager_api.get_version_managers_by_user(request=request)
+    user_types = type_version_manager_api.get_version_managers_by_user(
+        request=request
+    )
     # 2) Get buckets
     buckets = bucket_api.get_all()
 
     # 3) no_buckets_types: list of types that are not assigned to a specific bucket
-    no_buckets_types = type_version_manager_api.get_no_buckets_types(request=request)
+    no_buckets_types = type_version_manager_api.get_no_buckets_types(
+        request=request
+    )
 
     # 4) Build list of built-in types
     built_in_types = []
     for built_in_type in get_xsd_types():
-        built_in_types.append({"current": "built_in_type", "title": built_in_type})
+        built_in_types.append(
+            {"current": "built_in_type", "title": built_in_type}
+        )
 
     assets = {
         "js": [
-            {"path": "core_composer_app/user/js/build_template.js", "is_raw": False},
-            {"path": "core_composer_app/user/js/build_template.raw.js", "is_raw": True},
+            {
+                "path": "core_composer_app/user/js/build_template.js",
+                "is_raw": False,
+            },
+            {
+                "path": "core_composer_app/user/js/build_template.raw.js",
+                "is_raw": True,
+            },
             {"path": "core_composer_app/user/js/xpath.js", "is_raw": False},
             {"path": "core_composer_app/user/js/menus.js", "is_raw": False},
             {"path": "core_composer_app/user/js/xsd_tree.js", "is_raw": False},

@@ -92,7 +92,10 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("label", models.CharField(max_length=200, unique=True)),
-                ("color", models.CharField(default=None, max_length=7, unique=True)),
+                (
+                    "color",
+                    models.CharField(default=None, max_length=7, unique=True),
+                ),
                 (
                     "types",
                     models.ManyToManyField(

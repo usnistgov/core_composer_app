@@ -7,7 +7,9 @@ from rest_framework import status
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import RequestMock
 from core_composer_app.components.bucket.models import Bucket
-from core_composer_app.components.type_version_manager.models import TypeVersionManager
+from core_composer_app.components.type_version_manager.models import (
+    TypeVersionManager,
+)
 from core_composer_app.rest.bucket import views as bucket_views
 from core_composer_app.rest.bucket.serializers import BucketSerializer
 
@@ -18,7 +20,9 @@ class TestBucketListGetPermission(SimpleTestCase):
     def test_anonymous_returns_http_403(self):
         """test_anonymous_returns_http_403"""
 
-        response = RequestMock.do_request_get(bucket_views.BucketList.as_view(), None)
+        response = RequestMock.do_request_get(
+            bucket_views.BucketList.as_view(), None
+        )
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -57,7 +61,9 @@ class TestBucketListPostPermission(SimpleTestCase):
     def test_anonymous_returns_http_403(self):
         """test_anonymous_returns_http_403"""
 
-        response = RequestMock.do_request_post(bucket_views.BucketList.as_view(), None)
+        response = RequestMock.do_request_post(
+            bucket_views.BucketList.as_view(), None
+        )
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -76,7 +82,10 @@ class TestBucketListPostPermission(SimpleTestCase):
     @patch.object(BucketSerializer, "save")
     @patch.object(BucketSerializer, "data")
     def test_staff_returns_http_201(
-        self, bucket_serializer_data, bucket_serializer_save, bucket_serializer_valid
+        self,
+        bucket_serializer_data,
+        bucket_serializer_save,
+        bucket_serializer_valid,
     ):
         """test_staff_returns_http_201"""
 
@@ -105,7 +114,9 @@ class TestBucketDetailGetPermission(SimpleTestCase):
         """test_anonymous_returns_http_403"""
 
         response = RequestMock.do_request_get(
-            bucket_views.BucketDetail.as_view(), None, param={"pk": self.fake_id}
+            bucket_views.BucketDetail.as_view(),
+            None,
+            param={"pk": self.fake_id},
         )
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -123,14 +134,18 @@ class TestBucketDetailGetPermission(SimpleTestCase):
         mock_user = create_mock_user("1")
 
         response = RequestMock.do_request_get(
-            bucket_views.BucketDetail.as_view(), mock_user, param={"pk": self.fake_id}
+            bucket_views.BucketDetail.as_view(),
+            mock_user,
+            param={"pk": self.fake_id},
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     @patch.object(Bucket, "get_by_id")
     @patch.object(BucketSerializer, "data")
-    def test_staff_returns_http_200(self, bucket_get_by_id, bucket_serializer_data):
+    def test_staff_returns_http_200(
+        self, bucket_get_by_id, bucket_serializer_data
+    ):
         """test_staff_returns_http_200"""
 
         bucket_get_by_id.return_value = {}
@@ -139,7 +154,9 @@ class TestBucketDetailGetPermission(SimpleTestCase):
         mock_user = create_mock_user("1", is_staff=True)
 
         response = RequestMock.do_request_get(
-            bucket_views.BucketDetail.as_view(), mock_user, param={"pk": self.fake_id}
+            bucket_views.BucketDetail.as_view(),
+            mock_user,
+            param={"pk": self.fake_id},
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -157,7 +174,9 @@ class TestBucketDetailDeletePermission(SimpleTestCase):
         """test_anonymous_returns_http_403"""
 
         response = RequestMock.do_request_delete(
-            bucket_views.BucketDetail.as_view(), None, param={"pk": self.fake_id}
+            bucket_views.BucketDetail.as_view(),
+            None,
+            param={"pk": self.fake_id},
         )
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -168,7 +187,9 @@ class TestBucketDetailDeletePermission(SimpleTestCase):
         mock_user = create_mock_user("1")
 
         response = RequestMock.do_request_delete(
-            bucket_views.BucketDetail.as_view(), mock_user, param={"pk": self.fake_id}
+            bucket_views.BucketDetail.as_view(),
+            mock_user,
+            param={"pk": self.fake_id},
         )
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -184,7 +205,9 @@ class TestBucketDetailDeletePermission(SimpleTestCase):
         mock_user = create_mock_user("1", is_staff=True)
 
         response = RequestMock.do_request_delete(
-            bucket_views.BucketDetail.as_view(), mock_user, param={"pk": self.fake_id}
+            bucket_views.BucketDetail.as_view(),
+            mock_user,
+            param={"pk": self.fake_id},
         )
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
@@ -202,7 +225,9 @@ class TestBucketDetailPatchPermission(SimpleTestCase):
         """test_anonymous_returns_http_403"""
 
         response = RequestMock.do_request_patch(
-            bucket_views.BucketDetail.as_view(), None, param={"pk": self.fake_id}
+            bucket_views.BucketDetail.as_view(),
+            None,
+            param={"pk": self.fake_id},
         )
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -213,7 +238,9 @@ class TestBucketDetailPatchPermission(SimpleTestCase):
         mock_user = create_mock_user("1")
 
         response = RequestMock.do_request_patch(
-            bucket_views.BucketDetail.as_view(), mock_user, param={"pk": self.fake_id}
+            bucket_views.BucketDetail.as_view(),
+            mock_user,
+            param={"pk": self.fake_id},
         )
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -239,7 +266,9 @@ class TestBucketDetailPatchPermission(SimpleTestCase):
         mock_user = create_mock_user("1", is_staff=True)
 
         response = RequestMock.do_request_patch(
-            bucket_views.BucketDetail.as_view(), mock_user, param={"pk": self.fake_id}
+            bucket_views.BucketDetail.as_view(),
+            mock_user,
+            param={"pk": self.fake_id},
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
