@@ -98,7 +98,7 @@ class BucketList(APIView):
             bucket_serializer = BucketSerializer(data=request.data)
 
             # Validate data
-            bucket_serializer.is_valid(True)
+            bucket_serializer.is_valid(raise_exception=True)
             # Save data
             bucket_serializer.save()
 
@@ -236,7 +236,7 @@ class BucketDetail(APIView):
             )
 
             # Validate data
-            bucket_serializer.is_valid(True)
+            bucket_serializer.is_valid(raise_exception=True)
             # Save data
             bucket_serializer.save(user=request.user)
 
@@ -315,7 +315,7 @@ class TypeVersionManagerBuckets(AbstractTemplateVersionManagerDetail):
             serializer = BucketsSerializer(data=request.data, many=True)
 
             # Validate data
-            serializer.is_valid(True)
+            serializer.is_valid(raise_exception=True)
 
             # Get list of unique ids
             bucket_ids = set([bucket["id"] for bucket in serializer.validated_data])

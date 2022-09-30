@@ -3,7 +3,7 @@
 from unittest.case import TestCase
 
 from django.test import override_settings
-from mock.mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from core_main_app.commons import exceptions
 from core_main_app.commons.exceptions import ModelError

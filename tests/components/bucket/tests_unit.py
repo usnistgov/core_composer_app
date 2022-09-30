@@ -2,7 +2,7 @@
 """
 from unittest.case import TestCase
 
-from mock.mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from core_main_app.commons import exceptions
 from core_composer_app.components.bucket import api as bucket_api

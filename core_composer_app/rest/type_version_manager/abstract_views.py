@@ -63,8 +63,8 @@ class AbstractTypeList(
             )
 
             # Validate data
-            type_serializer.is_valid(True)
-            type_version_manager_serializer.is_valid(True)
+            type_serializer.is_valid(raise_exception=True)
+            type_version_manager_serializer.is_valid(raise_exception=True)
 
             # Save data
             type_version_manager_object = type_version_manager_serializer.save(
@@ -137,7 +137,7 @@ class TypeVersion(AbstractTemplateVersionManagerDetail):
             )
 
             # Validate data
-            type_serializer.is_valid(True)
+            type_serializer.is_valid(raise_exception=True)
 
             # Save data
             type_serializer.save(
