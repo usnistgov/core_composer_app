@@ -210,6 +210,34 @@ class TestTypeVersionManagerGetGlobalVersions(TestCase):
         self.assertTrue(all(isinstance(item, Type) for item in result))
 
 
+class TestTypeVersionManagerGetActiveGlobalVersions(TestCase):
+    """Test Type Version Manager Get Active Global Versions"""
+
+    @patch.object(TypeVersionManager, "get_active_global_version_manager")
+    def test_get_active_global_version_managers_returns_types(
+        self, mock_get_active_global_version_manager
+    ):
+        """test_get_active_global_version_managers_returns_types"""
+
+        # Arrange
+        mock_user = create_mock_user("1", is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
+        mock_type1 = _create_mock_type()
+        mock_type2 = _create_mock_type()
+
+        mock_get_active_global_version_manager.return_value = [
+            mock_type1,
+            mock_type2,
+        ]
+
+        result = version_manager_api.get_active_global_version_manager(
+            request=mock_request
+        )
+
+        # Assert
+        self.assertTrue(all(isinstance(item, Type) for item in result))
+
+
 class TestTypeVersionManagerGetVersionManagersByUser(TestCase):
     """Test Type Version Manager Get Version Manager By User"""
 
@@ -232,6 +260,60 @@ class TestTypeVersionManagerGetVersionManagersByUser(TestCase):
         ]
 
         result = version_manager_api.get_version_managers_by_user(
+            request=mock_request
+        )
+
+        # Assert
+        self.assertTrue(item.user_id == user_id for item in result)
+
+
+class TestTypeVersionManagerGetActiveVersionManagersByUser(TestCase):
+    """Test Type Version Manager Get Active Version Manager By User"""
+
+    @patch.object(TypeVersionManager, "get_active_version_manager_by_user_id")
+    def test_get_active_version_managers_by_user_returns_types_with_given_user_id(
+        self, mock_get_active_version_manager_by_user_id
+    ):
+        """test_get_version_managers_by_user_returns_types_with_given_user_id"""
+
+        # Arrange
+        user_id = "10"
+        mock_user = create_mock_user(user_id=user_id, is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
+        mock_type1 = _create_mock_type_version_manager(user=user_id)
+        mock_type2 = _create_mock_type_version_manager(user=user_id)
+
+        mock_get_active_version_manager_by_user_id.return_value = [
+            mock_type1,
+            mock_type2,
+        ]
+
+        result = version_manager_api.get_active_version_manager_by_user_id(
+            request=mock_request
+        )
+
+        # Assert
+        self.assertTrue(item.user_id == user_id for item in result)
+
+
+class TestTypeVersionManagerGetAllVersionManagers(TestCase):
+    """Test Type Version Manager Get All Version Manager"""
+
+    @patch.object(TypeVersionManager, "get_all_type_version_manager")
+    def test_get_all_version_manager_by_user_returns_types(
+        self, mock_get_all_type_version_manager
+    ):
+        """test_get_all_version_managers_by_user_returns_types"""
+
+        # Arrange
+        user_id = "10"
+        mock_user = create_mock_user(user_id=user_id, is_superuser=True)
+        mock_request = create_mock_request(user=mock_user)
+        mock_type1 = _create_mock_type_version_manager(user=user_id)
+
+        mock_get_all_type_version_manager.return_value = [mock_type1]
+
+        result = version_manager_api.get_all_version_manager(
             request=mock_request
         )
 
