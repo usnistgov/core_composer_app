@@ -74,6 +74,9 @@ def index(request):
         "user_types": user_active_type_list,
     }
 
+    # Set page title
+    context.update({"page_title": "Composer"})
+
     return render(
         request,
         "core_composer_app/user/index.html",
@@ -203,6 +206,9 @@ def build_template(request, template_id):
         "core_composer_app/user/builder/modals/errors.html",
     ]
 
+    # Set page title
+    context.update({"page_title": "Build Template"})
+
     return render(
         request,
         "core_composer_app/user/build_template.html",
@@ -276,6 +282,9 @@ def manage_type_versions(request, version_manager_id):
 
         modals = ["core_main_app/admin/templates/versions/modals/disable.html"]
 
+        # Set page title
+        context.update({"page_title": "Type Versions"})
+
         return render(
             request,
             "core_composer_app/user/types/versions.html",
@@ -287,5 +296,5 @@ def manage_type_versions(request, version_manager_id):
         return render(
             request,
             "core_main_app/common/commons/error.html",
-            context={"error": str(exception)},
+            context={"error": str(exception), "page_title": "Error"},
         )
