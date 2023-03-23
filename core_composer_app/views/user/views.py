@@ -5,8 +5,12 @@ from os.path import join
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.staticfiles import finders
-from django.urls import reverse_lazy
 
+from core_composer_app.components.bucket import api as bucket_api
+from core_composer_app.components.type_version_manager import (
+    api as type_version_manager_api,
+)
+from core_composer_app.permissions import rights
 from core_main_app.components.template import api as template_api
 from core_main_app.components.template_version_manager import (
     api as template_version_manager_api,
@@ -20,11 +24,7 @@ from xml_utils.commons.constants import LXML_SCHEMA_NAMESPACE
 from xml_utils.xsd_tree.operations.annotation import remove_annotations
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 from xml_utils.xsd_types.xsd_types import get_xsd_types
-from core_composer_app.components.bucket import api as bucket_api
-from core_composer_app.components.type_version_manager import (
-    api as type_version_manager_api,
-)
-from core_composer_app.permissions import rights
+
 
 # TODO: see if sessions are problematic
 
@@ -32,7 +32,6 @@ from core_composer_app.permissions import rights
 @decorators.permission_required(
     content_type=rights.COMPOSER_CONTENT_TYPE,
     permission=rights.COMPOSER_ACCESS,
-    login_url=reverse_lazy("core_main_app_login"),
 )
 def index(request):
     """Page that allows to select a template to start composing.
@@ -88,7 +87,6 @@ def index(request):
 @decorators.permission_required(
     content_type=rights.COMPOSER_CONTENT_TYPE,
     permission=rights.COMPOSER_ACCESS,
-    login_url=reverse_lazy("core_main_app_login"),
 )
 def build_template(request, template_id):
     """View that allows to build the Template.
@@ -221,7 +219,6 @@ def build_template(request, template_id):
 @decorators.permission_required(
     content_type=rights.COMPOSER_CONTENT_TYPE,
     permission=rights.COMPOSER_ACCESS,
-    login_url=reverse_lazy("core_main_app_login"),
 )
 def download_xsd(request):
     """Make the current XSD available for download.
