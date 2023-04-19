@@ -7,7 +7,7 @@ from django.urls import reverse
 from rest_framework import status
 
 from core_main_app.utils.integration_tests.integration_base_test_case import (
-    MongoIntegrationBaseTestCase,
+    IntegrationBaseTestCase,
 )
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import (
@@ -24,7 +24,7 @@ from tests.components.type_version_manager.fixtures.fixtures import (
 fixture_type = TypeVersionManagerFixtures()
 
 
-class TestGlobalTypeVersionManagerList(MongoIntegrationBaseTestCase):
+class TestGlobalTypeVersionManagerList(IntegrationBaseTestCase):
     """Test"""
 
     fixture = fixture_type
@@ -141,7 +141,7 @@ class TestGlobalTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(len(response.data), 0)
 
 
-class TestUserTypeVersionManagerList(MongoIntegrationBaseTestCase):
+class TestUserTypeVersionManagerList(IntegrationBaseTestCase):
     """Test User Type Version Manager List"""
 
     fixture = fixture_type
@@ -258,7 +258,7 @@ class TestUserTypeVersionManagerList(MongoIntegrationBaseTestCase):
         self.assertEqual(len(response.data), 0)
 
 
-class TestUserTypeList(MongoIntegrationBaseTestCase):
+class TestUserTypeList(IntegrationBaseTestCase):
     """Test User Type List"""
 
     fixture = fixture_type
@@ -412,7 +412,7 @@ class TestUserTypeList(MongoIntegrationBaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
-class TestGlobalTypeList(MongoIntegrationBaseTestCase):
+class TestGlobalTypeList(IntegrationBaseTestCase):
     """Test Global Type List"""
 
     fixture = fixture_type

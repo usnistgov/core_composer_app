@@ -8,7 +8,7 @@ from core_composer_app.components.type_version_manager import (
     api as type_vm_api,
 )
 from core_main_app.utils.integration_tests.integration_base_test_case import (
-    MongoIntegrationBaseTestCase,
+    IntegrationBaseTestCase,
 )
 from core_composer_app.components.type_version_manager.models import (
     TypeVersionManager,
@@ -25,7 +25,7 @@ fixture_type_vm = TypeVersionManagerFixtures()
 fixture_type_vm2 = TypeVersionManagerAccessControlFixtures()
 
 
-class TestTypeVersionManagerGet(MongoIntegrationBaseTestCase):
+class TestTypeVersionManagerGet(IntegrationBaseTestCase):
     """TestTypeVersionManagerGet"""
 
     fixture = fixture_type_vm
@@ -167,7 +167,7 @@ class TestTypeVersionManagerGet(MongoIntegrationBaseTestCase):
 
 
 class TestTypeVersionManagerGetActiveGlobalVersionManager(
-    MongoIntegrationBaseTestCase
+    IntegrationBaseTestCase
 ):
     """TestTypeVersionManagerGetActiveGlobalVersionManager"""
 
@@ -255,7 +255,7 @@ class TestTypeVersionManagerGetActiveGlobalVersionManager(
         self.assertTrue(self.fixture.type_vm_1 in version_manager)
 
 
-class TestTypeVersionManagerInsert(MongoIntegrationBaseTestCase):
+class TestTypeVersionManagerInsert(IntegrationBaseTestCase):
     """TestTypeVersionManagerInsert"""
 
     fixture = fixture_type_vm2
@@ -474,7 +474,7 @@ class TestTypeVersionManagerInsert(MongoIntegrationBaseTestCase):
         self.assertIsInstance(result, TypeVersionManager)
 
 
-class TestTypeVersionManagerGetNoBucketsTypes(MongoIntegrationBaseTestCase):
+class TestTypeVersionManagerGetNoBucketsTypes(IntegrationBaseTestCase):
     """Test Type Version Manager Get No Buckets Types"""
 
     fixture = fixture_type_vm2
@@ -562,7 +562,7 @@ class TestTypeVersionManagerGetNoBucketsTypes(MongoIntegrationBaseTestCase):
         self.assertEqual(len(result), 1)
 
 
-class TestTypeVersionManagerGetAllVersionManager(MongoIntegrationBaseTestCase):
+class TestTypeVersionManagerGetAllVersionManager(IntegrationBaseTestCase):
     """Test Type Version Manager Get All Version Manager"""
 
     fixture = fixture_type_vm2

@@ -4,7 +4,7 @@
 from rest_framework import status
 
 from core_main_app.utils.integration_tests.integration_base_test_case import (
-    MongoIntegrationBaseTestCase,
+    IntegrationBaseTestCase,
 )
 from core_main_app.utils.tests_tools.MockUser import create_mock_user
 from core_main_app.utils.tests_tools.RequestMock import RequestMock
@@ -14,7 +14,7 @@ from tests.components.bucket.fixtures.fixtures import BucketFixtures
 fixture_bucket = BucketFixtures()
 
 
-class TestBucketList(MongoIntegrationBaseTestCase):
+class TestBucketList(IntegrationBaseTestCase):
     """Test Bucket List"""
 
     fixture = fixture_bucket
@@ -226,7 +226,7 @@ class TestBucketList(MongoIntegrationBaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
-class TestBucketDetail(MongoIntegrationBaseTestCase):
+class TestBucketDetail(IntegrationBaseTestCase):
     """Test Bucket Detail"""
 
     fixture = fixture_bucket
@@ -362,7 +362,7 @@ class TestBucketDetail(MongoIntegrationBaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 
-class TestTypeVersionManagerBuckets(MongoIntegrationBaseTestCase):
+class TestTypeVersionManagerBuckets(IntegrationBaseTestCase):
     """Test Type Version Manager Buckets"""
 
     fixture = fixture_bucket
