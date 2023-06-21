@@ -1,5 +1,5 @@
 <a href="{% url 'core_composer_build_template' 'new' %}"
-       class="btn btn-success float-right" role="button">
+       class="btn btn-success {% if BOOTSTRAP_VERSION == "4.6.2" %}float-right{% elif BOOTSTRAP_VERSION == "5.1.3"%}float-end{% endif %}" srole="button">
     <i class="fas fa-play"></i> Start Template or Type from scratch
 </a>
 
