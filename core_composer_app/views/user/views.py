@@ -199,7 +199,6 @@ def build_template(request, template_id):
         "core_composer_app/user/builder/modals/change_type.html",
         "core_composer_app/user/builder/modals/save_template.html",
         "core_composer_app/user/builder/modals/save_type.html",
-        "core_composer_app/user/builder/modals/save_success.html",
         "core_composer_app/user/builder/modals/occurrences.html",
         "core_composer_app/user/builder/modals/errors.html",
     ]

@@ -4,6 +4,7 @@ import json
 import logging
 from urllib.parse import urlparse
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponse, HttpResponseBadRequest
 from django.template import loader
@@ -393,6 +394,10 @@ def save_template(request):
             )
         except Exception as exception:
             return _error_response(escape(str(exception)))
+
+        messages.add_message(
+            request, messages.SUCCESS, "Template succesfully saved."
+        )
         return HttpResponse(
             json.dumps(response_dict), content_type="application/javascript"
         )
@@ -489,6 +494,9 @@ def save_type(request):
         except Exception as exception:
             return _error_response(escape(str(exception)))
 
+        messages.add_message(
+            request, messages.SUCCESS, "Type succesfully saved."
+        )
         return HttpResponse(
             json.dumps(response_dict), content_type="application/javascript"
         )
