@@ -96,7 +96,8 @@ var displaySaveSuccess = function(){
  */
 var displayNewTemplateDialog = function(){
     $( "#newTemplateTypeNameError" ).html("");
-    $( "#root-type-name-modal" ).modal({backdrop: 'static', keyboard: false}, 'show');
+    $( "#root-type-name-modal" ).modal('show');
+    $( "#root-type-name-modal" ).modal({backdrop: 'static', keyboard: false})
 };
 
 
