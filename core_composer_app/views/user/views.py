@@ -138,24 +138,32 @@ def build_template(request, template_id):
     # transform XML to HTML
     xsd_to_html_string = xsl_transform(xsd_string, xslt_string)
 
-    # 1) Get user defined types
+    # 1) Get user defined types.
     user_types = type_version_manager_api.get_version_managers_by_user(
         request=request
-    )
-    # 2) Get buckets
-    buckets = bucket_api.get_all()
+    ).filter(is_disabled=False)
 
-    # 3) no_buckets_types: list of types that are not assigned to a specific bucket
+    # 2) Get buckets.
+    buckets = [
+        {
+            "label": bucket.label,
+            "color": bucket.color,
+            "types": bucket.types.filter(is_disabled=False),
+        }
+        for bucket in bucket_api.get_all()
+    ]
+
+    # 3) no_buckets_types: list of types that are not assigned to a specific
+    #   bucket.
     no_buckets_types = type_version_manager_api.get_no_buckets_types(
         request=request
-    )
+    ).filter(is_disabled=False)
 
     # 4) Build list of built-in types
-    built_in_types = []
-    for built_in_type in get_xsd_types():
-        built_in_types.append(
-            {"current": "built_in_type", "title": built_in_type}
-        )
+    built_in_types = [
+        {"current": "built_in_type", "title": built_in_type}
+        for built_in_type in get_xsd_types()
+    ]
 
     assets = {
         "js": [

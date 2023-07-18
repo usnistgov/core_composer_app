@@ -1,15 +1,12 @@
 """Type Version Manager test cases
 """
 from unittest.case import TestCase
+from unittest.mock import Mock, patch, MagicMock
 
 from django.core import exceptions as django_exceptions
 from django.db import IntegrityError
 from django.test import override_settings
-from unittest.mock import Mock, patch
 
-from core_main_app.commons.exceptions import CoreError, ModelError
-from core_main_app.utils.tests_tools.MockUser import create_mock_user
-from core_main_app.utils.tests_tools.RequestMock import create_mock_request
 from core_composer_app.components.bucket.models import Bucket
 from core_composer_app.components.type.models import Type
 from core_composer_app.components.type_version_manager import (
@@ -21,6 +18,9 @@ from core_composer_app.components.type_version_manager.api import (
 from core_composer_app.components.type_version_manager.models import (
     TypeVersionManager,
 )
+from core_main_app.commons.exceptions import CoreError, ModelError
+from core_main_app.utils.tests_tools.MockUser import create_mock_user
+from core_main_app.utils.tests_tools.RequestMock import create_mock_request
 
 
 class TestTypeVersionManagerInsert(TestCase):
@@ -336,59 +336,19 @@ class TestGetNoBucketsTypes(TestCase):
         mock_request = create_mock_request(user=mock_user)
         mock_type1 = _create_mock_type_version_manager()
         mock_type2 = _create_mock_type_version_manager()
-        mock_get_global_version_managers.return_value = [
-            mock_type1,
-            mock_type2,
-        ]
-        mock_get_all_buckets.return_value = []
-
-        result = get_no_buckets_types(request=mock_request)
-        self.assertTrue(
-            all(isinstance(item, TypeVersionManager) for item in result)
+        mock_bucket = _create_mock_bucket(
+            types=[_create_mock_type_version_manager()]
         )
-
-    @patch.object(TypeVersionManager, "get_global_version_managers")
-    @patch.object(Bucket, "get_all")
-    def test_get_no_buckets_types_returns_all_types_if_no_buckets(
-        self, mock_get_all_buckets, mock_get_global_version_managers
-    ):
-        """test_get_no_buckets_types_returns_all_types_if_no_buckets"""
-
-        # Arrange
-        mock_user = create_mock_user("1", is_superuser=True)
-        mock_request = create_mock_request(user=mock_user)
-        mock_type1 = _create_mock_type_version_manager()
-        mock_type2 = _create_mock_type_version_manager()
-        mock_get_global_version_managers.return_value = [
-            mock_type1,
-            mock_type2,
-        ]
-        mock_get_all_buckets.return_value = []
-
-        self.assertTrue(len(get_no_buckets_types(request=mock_request)) == 2)
-
-    @patch.object(TypeVersionManager, "get_global_version_managers")
-    @patch.object(Bucket, "get_all")
-    def test_get_no_buckets_types_returns_all_types_not_in_buckets(
-        self, mock_get_all_buckets, mock_get_global_version_managers
-    ):
-        """test_get_no_buckets_types_returns_all_types_not_in_buckets"""
-
-        # Arrange
-        mock_user = create_mock_user("1", is_superuser=True)
-        mock_request = create_mock_request(user=mock_user)
-        mock_type1 = _create_mock_type_version_manager()
-        mock_type2 = _create_mock_type_version_manager()
-
-        mock_bucket = _create_mock_bucket(types=MockTypes([mock_type1]))
-
-        mock_get_global_version_managers.return_value = [
+        mock_get_global_version_managers.exclude.return_value = [
             mock_type1,
             mock_type2,
         ]
         mock_get_all_buckets.return_value = [mock_bucket]
 
-        self.assertTrue(len(get_no_buckets_types(request=mock_request)) == 1)
+        result = get_no_buckets_types(request=mock_request)
+        self.assertTrue(
+            all(isinstance(item, TypeVersionManager) for item in result)
+        )
 
 
 def _create_mock_bucket(types=None):
@@ -405,7 +365,10 @@ def _create_mock_bucket(types=None):
     mock_bucket = Mock(spec=Bucket)
     mock_bucket.label = "bucket"
     mock_bucket.label = "#000000"
-    mock_bucket.types = types
+
+    mock_bucket_types = MagicMock()
+    mock_bucket_types.all.return_value = types
+    mock_bucket.types = mock_bucket_types
     return mock_bucket
 
 

@@ -126,18 +126,16 @@ def get_no_buckets_types(request):
     Returns:
 
     """
-    # build list of types
-    bucket_types = []
+    # Retrieve IDs of types in buckets.
+    bucket_type_id_list = []
     for bucket in bucket_api.get_all():
-        bucket_types += bucket.types.all()
+        bucket_type_id_list += [
+            bucket_type.pk for bucket_type in bucket.types.all()
+        ]
 
-    all_types = get_global_version_managers(request=request)
-    no_bucket_types = [
-        type_version_manager
-        for type_version_manager in all_types
-        if type_version_manager not in bucket_types
-    ]
-    return no_bucket_types
+    return get_global_version_managers(request=request).exclude(
+        pk__in=bucket_type_id_list
+    )
 
 
 @access_control(is_superuser)
