@@ -54,42 +54,30 @@ class TestTypeVersionManagerInsert(TestCase):
             )
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
-    @patch.object(Type, "dependencies")
-    @patch.object(TypeVersionManager, "save")
-    @patch.object(Type, "save")
     def test_create_version_manager_returns_version_manager(
         self,
-        mock_save_type,
-        mock_save_type_version_manager,
-        mock_dependencies,
     ):
         """test_create_version_manager_returns_version_manager"""
 
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
-        type_filename = "schema.xsd"
-        type_content = (
+        mock_type = MagicMock()
+        mock_type.filename = "schema.xsd"
+        mock_type.content = (
             "<schema xmlns='http://www.w3.org/2001/XMLSchema'><simpleType name='type'>"
             "<restriction base='string'><enumeration value='test'/></restriction>"
             "</simpleType></schema>"
         )
-        type_object = _create_type(type_filename, type_content)
-
-        mock_save_type.return_value = type_object
-
-        version_manager = _create_type_version_manager(title="Schema")
-        mock_save_type_version_manager.return_value = version_manager
-
-        mock_dependencies.return_value = MockDependencies()
+        mock_version_manager = MagicMock()
 
         # Act
         result = version_manager_api.insert(
-            version_manager, type_object, request=mock_request
+            mock_version_manager, mock_type, request=mock_request
         )
 
         # Assert
-        self.assertIsInstance(result, TypeVersionManager)
+        self.assertEqual(result, mock_version_manager)
 
     @override_settings(ROOT_URLCONF="core_main_app.urls")
     @patch.object(Type, "dependencies")
