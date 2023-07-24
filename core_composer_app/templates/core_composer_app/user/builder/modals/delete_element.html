@@ -7,6 +7,6 @@
 Are you sure you want to delete this element from the current template?
 {% endblock %}
 {% block modal_footer %}
-<button class="btn btn-secondary pull-left" {% if BOOTSTRAP_VERSION == "4.6.2" %}data-dismiss{% elif BOOTSTRAP_VERSION == "5.1.3" %}data-bs-dismiss{% endif %}="modal"><i class="fas fa-times"></i> Cancel</button>
+<button class="btn btn-secondary pull-left" {% if BOOTSTRAP_VERSION|first == "4" %}data-dismiss{% elif BOOTSTRAP_VERSION|first == "5"  %}data-bs-dismiss{% endif %}="modal"><i class="fas fa-times"></i> Cancel</button>
 <button id="delete-element" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button>
 {% endblock %}
