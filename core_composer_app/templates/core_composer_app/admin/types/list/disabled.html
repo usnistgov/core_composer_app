@@ -12,12 +12,10 @@
         <tr>
             <td>{{ object.title }}</td>
             <td>
-                {% for bucket in data.buckets %}
-                    {% if object in bucket.types %}
-                        <span class="bucket" style="background:{{ bucket.color}};" bucketid="{{bucket.id}}">
-                            {{ bucket.label }}
-                        </span>
-                    {% endif %}
+                {% for bucket in object.bucket_set.all %}
+                    <span class="bucket" style="background:{{ bucket.color}};" bucketid="{{bucket.id}}">
+                        {{ bucket.label }}
+                    </span>
                 {% endfor %}
             </td>
             <td>
