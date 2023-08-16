@@ -6,7 +6,7 @@ from core_main_app.access_control.decorators import access_control
 from core_main_app.components.template import api as template_api
 from core_main_app.components.template.access_control import (
     can_write,
-    can_read,
+    can_read_id,
 )
 
 from core_composer_app.components.type.models import Type
@@ -31,7 +31,7 @@ def upsert(type_object, request):
     return template_api.upsert(type_object, request=request)
 
 
-@access_control(can_read)
+@access_control(can_read_id)
 def get(type_id, request):
     """Get a type.
 

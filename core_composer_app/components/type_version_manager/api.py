@@ -8,7 +8,7 @@ from core_composer_app.components.type_version_manager.models import (
 )
 from core_main_app.access_control.api import is_superuser
 from core_main_app.access_control.decorators import access_control
-from core_main_app.components.template.access_control import can_read
+from core_main_app.components.template.access_control import can_read_id
 from core_main_app.components.template.access_control import can_read_global
 from core_main_app.components.template_version_manager.access_control import (
     can_write,
@@ -19,7 +19,7 @@ from core_main_app.components.version_manager.utils import (
 )
 
 
-@access_control(can_read)
+@access_control(can_read_id)
 def get_by_id(version_manager_id, request):
     """Get a type version manager by its id.
 
