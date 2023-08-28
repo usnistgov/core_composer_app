@@ -12,6 +12,7 @@ from core_composer_app.components.type_version_manager import (
 )
 from core_composer_app.permissions import rights
 from core_main_app.components.template import api as template_api
+from core_main_app.components.template.models import Template
 from core_main_app.components.template_version_manager import (
     api as template_version_manager_api,
 )
@@ -67,9 +68,13 @@ def index(request):
     )
 
     context = {
-        "global_templates": global_active_template_list,
+        "global_templates": global_active_template_list.filter(
+            template__format=Template.XSD
+        ),
         "global_types": global_active_type_list,
-        "user_templates": user_active_template_list,
+        "user_templates": user_active_template_list.filter(
+            template__format=Template.XSD
+        ),
         "user_types": user_active_type_list,
     }
 
@@ -105,6 +110,15 @@ def build_template(request, template_id):
         xsd_string = read_file_content(base_template_path)
     else:
         template = template_api.get_by_id(template_id, request=request)
+        if template.format != Template.XSD:
+            return render(
+                request,
+                "core_main_app/common/commons/error.html",
+                context={
+                    "error": "Template format not supported.",
+                    "page_title": "Error",
+                },
+            )
         xsd_string = template.content
 
     request.session["newXmlTemplateCompose"] = xsd_string

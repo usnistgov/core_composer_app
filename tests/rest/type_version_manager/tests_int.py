@@ -279,7 +279,7 @@ class TestUserTypeList(IntegrationBaseTestCase):
         )
         self.data = {
             "title": "title",
-            "filename": "filename",
+            "filename": "filename.xsd",
             "content": type_content,
         }
 
@@ -433,7 +433,7 @@ class TestGlobalTypeList(IntegrationBaseTestCase):
         )
         self.data = {
             "title": "title",
-            "filename": "filename",
+            "filename": "filename.xsd",
             "content": type_content,
         }
 

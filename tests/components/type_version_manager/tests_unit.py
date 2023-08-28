@@ -153,7 +153,7 @@ class TestTypeVersionManagerInsert(TestCase):
         # Arrange
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
-        type_filename = "Schema"
+        type_filename = "Schema.xsd"
         type_object = _create_type(type_filename)
 
         mock_save.return_value = type_object

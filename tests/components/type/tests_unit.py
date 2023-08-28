@@ -121,7 +121,7 @@ class TestTypeUpsert(TestCase):
 
         mock_user = create_mock_user("1", is_superuser=True)
         mock_request = create_mock_request(user=mock_user)
-        type_object = _create_type(filename=1)
+        type_object = _create_type(filename="schema.xsd")
         mock_save.side_effect = ModelError("")
         with self.assertRaises(ModelError):
             type_api.upsert(type_object, request=mock_request)
@@ -138,7 +138,7 @@ class TestTypeUpsert(TestCase):
             type_api.upsert(type_object, request=mock_request)
 
 
-def _create_mock_type(filename="", content=""):
+def _create_mock_type(filename="schema.xsd", content=""):
     """Returns a mock type
 
     Args:
@@ -155,7 +155,7 @@ def _create_mock_type(filename="", content=""):
     return mock_type
 
 
-def _create_type(filename="Schema", content=None):
+def _create_type(filename="Schema.xsd", content=None):
     """Returns a type
 
     Args:

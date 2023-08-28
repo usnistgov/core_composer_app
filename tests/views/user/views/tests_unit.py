@@ -79,6 +79,7 @@ class TestBuildTemplate(TestCase):
             mock_no_bucket_types
         )
         mock_get_xsd_types.return_value = mock_built_in_types
+        mock_template_api.get_by_id.return_value = MagicMock(format="XSD")
 
         expected_context = {
             "buckets": [
@@ -156,4 +157,20 @@ class TestBuildTemplate(TestCase):
                     "core_composer_app/user/builder/modals/errors.html",
                 ],
             },
+        )
+
+    @patch.object(user_views, "template_api")
+    def test_build_with_bad_template_format_returns_error_page(
+        self,
+        mock_template_api,
+    ):
+        """test_build_with_bad_template_format_returns_error_page"""
+        mock_template_id = 1
+        mock_template_api.get_by_id.return_value = MagicMock(format="JSON")
+
+        response = user_views.build_template(
+            self.mock_request, mock_template_id
+        )
+        self.assertTrue(
+            "Template format not supported." in response.content.decode()
         )

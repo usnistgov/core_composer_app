@@ -474,7 +474,9 @@ def save_type(request):
             )
             # create type
             type_object = Type(
-                filename=type_name,
+                filename=type_name + ".xsd"
+                if not type_name.endswith(".xsd")
+                else type_name,
                 content=xsd_string,
                 user=str(request.user.id),
             )

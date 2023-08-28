@@ -35,7 +35,7 @@ class TypeVersionManagerFixtures(FixtureInterface):
         self.type_1_1 = Type(
             filename="type1_1.xsd",
             content="content1_1",
-            hash="hash1_1",
+            _hash="hash1_1",
             is_complex=True,
             version_manager=self.type_vm_1,
         )
@@ -43,7 +43,7 @@ class TypeVersionManagerFixtures(FixtureInterface):
         self.type_1_2 = Type(
             filename="type1_2.xsd",
             content="content1_2",
-            hash="hash1_2",
+            _hash="hash1_2",
             is_complex=True,
             version_manager=self.type_vm_1,
             is_disabled=True,
@@ -52,7 +52,7 @@ class TypeVersionManagerFixtures(FixtureInterface):
         self.type_1_3 = Type(
             filename="type1_3.xsd",
             content="content1_3",
-            hash="hash1_3",
+            _hash="hash1_3",
             is_complex=True,
             version_manager=self.type_vm_1,
             is_current=True,
@@ -69,7 +69,7 @@ class TypeVersionManagerFixtures(FixtureInterface):
         self.type_2_1 = Type(
             filename="type2_1.xsd",
             content="content2_1",
-            hash="hash2_1",
+            _hash="hash2_1",
             is_complex=True,
             version_manager=self.type_vm_2,
             is_current=True,
@@ -126,7 +126,7 @@ class TypeVersionManagerAccessControlFixtures(FixtureInterface):
         self.user1_type = Type(
             filename="type1.xsd",
             content=xsd,
-            hash="hash1",
+            _hash="hash1",
             user="1",
             is_current=True,
             version_manager=self.user1_tvm,
@@ -135,7 +135,7 @@ class TypeVersionManagerAccessControlFixtures(FixtureInterface):
         self.user2_type = Type(
             filename="type2.xsd",
             content=xsd,
-            hash="hash2",
+            _hash="hash2",
             user="2",
             is_current=True,
             version_manager=self.user2_tvm,
@@ -144,7 +144,7 @@ class TypeVersionManagerAccessControlFixtures(FixtureInterface):
         self.global_type = Type(
             filename="global_type.xsd",
             content=xsd,
-            hash="global hash",
+            _hash="global hash",
             user=None,
             is_current=True,
             version_manager=self.global_tvm,
