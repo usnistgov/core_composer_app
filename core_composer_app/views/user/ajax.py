@@ -375,7 +375,9 @@ def save_template(request):
             )
             # create template
             template = Template(
-                filename=template_name,
+                filename=template_name + ".xsd"
+                if not template_name.endswith(".xsd")
+                else template_name,
                 content=xsd_string,
                 user=str(request.user.id),
             )
