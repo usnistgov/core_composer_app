@@ -106,7 +106,7 @@ class EditBucketView(EditObjectModalView):
     form_class = EditBucketForm
     model = Bucket
     success_url = reverse_lazy("core-admin:core_composer_app_buckets")
-    success_message = "Label edited with success."
+    success_message = "Label edited."
 
     def _save(self, form):
         """_save

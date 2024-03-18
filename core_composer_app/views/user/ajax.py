@@ -397,9 +397,7 @@ def save_template(request):
         except Exception as exception:
             return _error_response(escape(str(exception)))
 
-        messages.add_message(
-            request, messages.SUCCESS, "Template succesfully saved."
-        )
+        messages.add_message(request, messages.SUCCESS, "Template saved.")
         return HttpResponse(
             json.dumps(response_dict), content_type="application/javascript"
         )
@@ -498,9 +496,7 @@ def save_type(request):
         except Exception as exception:
             return _error_response(escape(str(exception)))
 
-        messages.add_message(
-            request, messages.SUCCESS, "Type succesfully saved."
-        )
+        messages.add_message(request, messages.SUCCESS, "Type saved.")
         return HttpResponse(
             json.dumps(response_dict), content_type="application/javascript"
         )
