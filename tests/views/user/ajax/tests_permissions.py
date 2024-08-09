@@ -56,7 +56,7 @@ class TestSaveTemplate(TestCase):
         )
 
         response = ajax.save_template(self.mock_request)
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_user_without_perm_raises_exception(self):
         """test_user_without_perm_raises_exception"""
@@ -87,7 +87,7 @@ class TestSaveTemplate(TestCase):
         self.mock_request.user = create_mock_user(1, has_perm=True)
 
         response = ajax.save_template(self.mock_request)
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_staff_without_perm_raises_exception(self):
         """test_staff_without_perm_raises_exception"""
@@ -120,7 +120,7 @@ class TestSaveTemplate(TestCase):
         )
 
         response = ajax.save_template(self.mock_request)
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_superuser_without_perm_raises_exception(self):
         """test_superuser_without_perm_raises_exception"""
@@ -155,7 +155,7 @@ class TestSaveTemplate(TestCase):
         )
 
         response = ajax.save_template(self.mock_request)
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
 class TestSaveType(TestCase):
@@ -206,7 +206,7 @@ class TestSaveType(TestCase):
         )
 
         response = ajax.save_type(self.mock_request)
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_user_without_perm_raises_exception(self):
         """test_user_without_perm_raises_exception"""
@@ -239,7 +239,7 @@ class TestSaveType(TestCase):
         self.mock_request.user = create_mock_user(1, has_perm=True)
 
         response = ajax.save_type(self.mock_request)
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_staff_without_perm_raises_exception(self):
         """test_staff_without_perm_raises_exception"""
@@ -274,7 +274,7 @@ class TestSaveType(TestCase):
         )
 
         response = ajax.save_type(self.mock_request)
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_superuser_without_perm_raises_exception(self):
         """test_superuser_without_perm_raises_exception"""
@@ -311,4 +311,4 @@ class TestSaveType(TestCase):
         )
 
         response = ajax.save_type(self.mock_request)
-        self.assertEquals(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
