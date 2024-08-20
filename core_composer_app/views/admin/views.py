@@ -1,5 +1,6 @@
 """Composer admin views
 """
+
 import logging
 
 from django.conf import settings
@@ -258,9 +259,9 @@ def _save_type(request, assets, context):
             request, assets, context, xsd_error, xsd_data, xsd_file.name
         )
     except exceptions.NotUniqueError:
-        context[
-            "errors"
-        ] = "A type with the same name already exists. Please choose another name."
+        context["errors"] = (
+            "A type with the same name already exists. Please choose another name."
+        )
         return _upload_type_response(request, assets, context)
     except Exception as exception:
         context["errors"] = html_escape(str(exception))
@@ -534,9 +535,9 @@ def upload_bucket(request):
                     reverse("core-admin:core_composer_app_buckets")
                 )
             except NotUniqueError:
-                context[
-                    "errors"
-                ] = "A bucket with the same name already exists."
+                context["errors"] = (
+                    "A bucket with the same name already exists."
+                )
             except Exception as exception:
                 context["errors"] = str(exception)
 

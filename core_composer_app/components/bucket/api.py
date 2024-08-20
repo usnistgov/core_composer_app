@@ -1,5 +1,6 @@
 """Bucket api
 """
+
 import random
 
 from core_main_app.commons.exceptions import ApiError

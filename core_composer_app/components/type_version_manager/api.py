@@ -1,6 +1,7 @@
 """
 Type Version Manager API
 """
+
 from core_composer_app.components.bucket import api as bucket_api
 from core_composer_app.components.type import api as type_api
 from core_composer_app.components.type_version_manager.models import (

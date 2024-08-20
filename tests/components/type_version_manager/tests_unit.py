@@ -1,5 +1,6 @@
 """Type Version Manager test cases
 """
+
 from unittest.case import TestCase
 from unittest.mock import Mock, patch, MagicMock
 

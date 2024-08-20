@@ -1,6 +1,7 @@
 """
 Type models
 """
+
 from django.db import models
 
 from core_main_app.commons import exceptions

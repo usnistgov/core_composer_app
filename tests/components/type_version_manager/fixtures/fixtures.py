@@ -1,5 +1,6 @@
 """ Fixtures files for type version manager
 """
+
 from core_main_app.utils.integration_tests.fixture_interface import (
     FixtureInterface,
 )

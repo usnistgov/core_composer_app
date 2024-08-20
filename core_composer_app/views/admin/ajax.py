@@ -1,5 +1,6 @@
 """Composer AJAX admin views
 """
+
 import json
 
 from django.contrib.admin.views.decorators import staff_member_required

@@ -1,5 +1,6 @@
 """ Integration Test for Type Version Manager Rest API
 """
+
 import json
 
 from django.test import override_settings

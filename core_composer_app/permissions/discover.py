@@ -1,5 +1,6 @@
 """ Initialize permissions for core composer app.
 """
+
 import logging
 
 from django.contrib.auth.models import Permission, Group

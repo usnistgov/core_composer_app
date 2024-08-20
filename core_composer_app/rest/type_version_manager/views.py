@@ -1,5 +1,6 @@
 """ REST views for the type version manager API
 """
+
 from django.utils.decorators import method_decorator
 from rest_framework.permissions import IsAuthenticated
 

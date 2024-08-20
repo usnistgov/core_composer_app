@@ -1,5 +1,6 @@
 """XML utils for Composer app
 """
+
 from core_main_app.commons.exceptions import CoreError, XMLError
 from core_main_app.utils.xml import is_well_formed_xml, validate_xml_schema
 

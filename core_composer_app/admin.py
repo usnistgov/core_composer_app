@@ -1,5 +1,6 @@
 """Url router for the administration site
 """
+
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required

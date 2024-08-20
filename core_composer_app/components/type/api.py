@@ -1,6 +1,7 @@
 """
 Type API
 """
+
 from core_main_app.access_control.api import is_superuser
 from core_main_app.access_control.decorators import access_control
 from core_main_app.components.template import api as template_api

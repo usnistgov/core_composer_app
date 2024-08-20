@@ -1,5 +1,6 @@
 """Composer app user views
 """
+
 from os.path import join
 
 from django.conf import settings

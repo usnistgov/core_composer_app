@@ -1,5 +1,6 @@
 """Serializers used throughout the Rest API
 """
+
 from core_main_app.components.template.api import (
     init_template_with_dependencies,
 )

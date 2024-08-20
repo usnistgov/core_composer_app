@@ -1,5 +1,6 @@
 """ Fixtures files for type version manager
 """
+
 from core_composer_app.components.bucket.models import Bucket
 from tests.components.type_version_manager.fixtures.fixtures import (
     TypeVersionManagerFixtures,

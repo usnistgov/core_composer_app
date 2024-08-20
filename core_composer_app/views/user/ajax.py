@@ -1,5 +1,6 @@
 """AJAX user views of composer application
 """
+
 import json
 import logging
 from urllib.parse import urlparse
@@ -375,9 +376,11 @@ def save_template(request):
             )
             # create template
             template = Template(
-                filename=template_name + ".xsd"
-                if not template_name.endswith(".xsd")
-                else template_name,
+                filename=(
+                    template_name + ".xsd"
+                    if not template_name.endswith(".xsd")
+                    else template_name
+                ),
                 content=xsd_string,
                 user=str(request.user.id),
             )
@@ -474,9 +477,11 @@ def save_type(request):
             )
             # create type
             type_object = Type(
-                filename=type_name + ".xsd"
-                if not type_name.endswith(".xsd")
-                else type_name,
+                filename=(
+                    type_name + ".xsd"
+                    if not type_name.endswith(".xsd")
+                    else type_name
+                ),
                 content=xsd_string,
                 user=str(request.user.id),
             )

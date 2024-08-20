@@ -1,5 +1,6 @@
 """Composer models
 """
+
 from django.db import models
 
 from core_main_app.permissions.utils import get_formatted_name
