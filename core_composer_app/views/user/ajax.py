@@ -1,5 +1,4 @@
-"""AJAX user views of composer application
-"""
+"""AJAX user views of composer application"""
 
 import json
 import logging
@@ -37,7 +36,6 @@ from core_composer_app.components.type_version_manager.models import (
 )
 from core_composer_app.permissions import rights
 from core_composer_app.utils import xml as composer_xml_utils
-
 
 logger = logging.getLogger(__name__)
 

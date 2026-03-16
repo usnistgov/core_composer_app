@@ -1,5 +1,4 @@
-"""Bucket test cases
-"""
+"""Bucket test cases"""
 
 from unittest.case import TestCase
 

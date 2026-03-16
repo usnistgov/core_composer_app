@@ -1,5 +1,4 @@
-"""Url router for the administration site
-"""
+"""Url router for the administration site"""
 
 from django.conf import settings
 from django.contrib import admin
@@ -23,7 +22,6 @@ from core_composer_app.views.admin import (
 )
 from core_composer_app.views.admin.ajax import EditBucketView
 from core_composer_app.views.user.ajax import EditTypeVersionManagerView
-
 
 parser_url = []
 if "core_parser_app" in settings.INSTALLED_APPS:

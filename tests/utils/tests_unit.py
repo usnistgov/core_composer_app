@@ -1,5 +1,4 @@
-"""Unit tests for composer xml operations
-"""
+"""Unit tests for composer xml operations"""
 
 # TODO: add tests for other xml utils
 

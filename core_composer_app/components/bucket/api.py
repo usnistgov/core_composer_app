@@ -1,5 +1,4 @@
-"""Bucket api
-"""
+"""Bucket api"""
 
 import random
 

@@ -1,5 +1,4 @@
-""" REST views for the type version manager API
-"""
+"""REST views for the type version manager API"""
 
 from django.db.migrations.serializer import TypeSerializer
 from django.utils.decorators import method_decorator

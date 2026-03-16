@@ -1,5 +1,4 @@
-"""Url router for the REST API
-"""
+"""Url router for the REST API"""
 
 from django.urls import re_path
 
@@ -11,7 +10,6 @@ from core_composer_app.rest.bucket import views as bucket_views
 from core_composer_app.rest.type_version_manager import (
     views as type_version_manager_views,
 )
-
 
 urlpatterns = [
     re_path(

@@ -1,5 +1,4 @@
-"""Type unit tests
-"""
+"""Type unit tests"""
 
 from unittest.case import TestCase
 

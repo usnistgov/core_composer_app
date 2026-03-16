@@ -1,5 +1,4 @@
-""" Setup for core composer app
-"""
+"""Setup for core composer app"""
 
 from os import chdir, pardir
 from os.path import join, exists, dirname, normpath, abspath

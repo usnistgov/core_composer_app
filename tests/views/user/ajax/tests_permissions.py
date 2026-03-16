@@ -1,5 +1,4 @@
-""" Permission tests for AJAX views in `views.user` package.
-"""
+"""Permission tests for AJAX views in `views.user` package."""
 
 from unittest import TestCase
 from unittest.mock import patch, MagicMock

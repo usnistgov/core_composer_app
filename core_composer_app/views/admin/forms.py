@@ -1,5 +1,4 @@
-"""Composer Admin Forms
-"""
+"""Composer Admin Forms"""
 
 from django import forms
 from django.forms import ModelForm

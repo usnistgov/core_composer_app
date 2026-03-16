@@ -1,5 +1,4 @@
-"""Composer admin views
-"""
+"""Composer admin views"""
 
 import logging
 
@@ -39,7 +38,6 @@ from core_composer_app.views.admin.forms import (
     EditTypeBucketsForm,
 )
 from core_composer_app.views.user.ajax import EditTypeVersionManagerView
-
 
 logger = logging.getLogger(__name__)
 

@@ -1,5 +1,4 @@
-"""Serializers used throughout the bucket Rest API
-"""
+"""Serializers used throughout the bucket Rest API"""
 
 from django.http import Http404
 from rest_framework.fields import CharField

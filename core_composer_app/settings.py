@@ -1,5 +1,4 @@
-"""Core Composer App Settings
-"""
+"""Core Composer App Settings"""
 
 from django.conf import settings
 

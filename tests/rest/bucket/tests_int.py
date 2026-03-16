@@ -1,5 +1,4 @@
-""" Integration Test for Bucket Rest API
-"""
+"""Integration Test for Bucket Rest API"""
 
 from rest_framework import status
 

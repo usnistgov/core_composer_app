@@ -1,5 +1,4 @@
-""" Custom admin site for the Type Version Manager model
-"""
+"""Custom admin site for the Type Version Manager model"""
 
 from django.contrib import admin
 

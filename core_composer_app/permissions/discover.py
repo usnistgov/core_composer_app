@@ -1,5 +1,4 @@
-""" Initialize permissions for core composer app.
-"""
+"""Initialize permissions for core composer app."""
 
 import logging
 
@@ -7,7 +6,6 @@ from django.contrib.auth.models import Permission, Group
 
 from core_main_app.permissions import rights as main_rights
 from core_composer_app.permissions import rights as composer_rights
-
 
 logger = logging.getLogger(__name__)
 

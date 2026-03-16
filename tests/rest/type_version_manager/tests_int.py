@@ -1,5 +1,4 @@
-""" Integration Test for Type Version Manager Rest API
-"""
+"""Integration Test for Type Version Manager Rest API"""
 
 import json
 

@@ -1,5 +1,4 @@
-"""Composer models
-"""
+"""Composer models"""
 
 from django.db import models
 

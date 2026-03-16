@@ -1,5 +1,4 @@
-""" Rights for core composer app
-"""
+"""Rights for core composer app"""
 
 COMPOSER_CONTENT_TYPE = "core_composer_app"
 COMPOSER_ACCESS = "access_composer"

@@ -1,5 +1,4 @@
-"""Composer AJAX admin views
-"""
+"""Composer AJAX admin views"""
 
 import json
 

@@ -1,5 +1,4 @@
-""" Url router for the composer application
-"""
+"""Url router for the composer application"""
 
 from django.conf import settings
 from django.conf.urls import include

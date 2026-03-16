@@ -1,5 +1,4 @@
-""" Unit tests for user AJAX views.
-"""
+"""Unit tests for user AJAX views."""
 
 from unittest import TestCase
 from unittest.mock import patch, MagicMock

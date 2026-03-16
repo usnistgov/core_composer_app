@@ -1,5 +1,4 @@
-""" Add Composer in main menu
-"""
+"""Add Composer in main menu"""
 
 from django.urls import reverse
 from menu import Menu, MenuItem

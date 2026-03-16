@@ -1,5 +1,4 @@
-"""Composer app user views
-"""
+"""Composer app user views"""
 
 from os.path import join
 
@@ -26,7 +25,6 @@ from xml_utils.commons.constants import LXML_SCHEMA_NAMESPACE
 from xml_utils.xsd_tree.operations.annotation import remove_annotations
 from xml_utils.xsd_tree.xsd_tree import XSDTree
 from xml_utils.xsd_types.xsd_types import get_xsd_types
-
 
 # TODO: see if sessions are problematic
 

@@ -1,5 +1,4 @@
-""" Authentication tests for Type Version Manager REST API
-"""
+"""Authentication tests for Type Version Manager REST API"""
 
 from django.test import SimpleTestCase
 from unittest.mock import patch
